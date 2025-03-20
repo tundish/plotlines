@@ -1,0 +1,38 @@
+[project]
+name = "sagids"
+version = "0.0.0"
+description = "Splines and Graphs in Discrete Space"
+readme = "README.md"
+authors = [
+    {name = "D E Haynes"}
+]
+maintainers = [
+    {name = "Tundish", email = "tundish@gigeconomy.org.uk"}
+]
+license = {file = "COPYING"}
+classifiers = [
+    "Topic :: Multimedia",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Environment :: Web Environment",
+    "Programming Language :: Python :: 3 :: Only",
+]
+requires-python = ">=3.11"
+dependencies = [
+]
+
+[project.optional-dependencies]
+export = [
+    "json2xml >= 5.0.5",
+    "svg-turtle >= 1.0.0",
+]
+
+[project.urls]
+
+[project.scripts]
+sagids = "sagids.main:run"
+
+[tool.setuptools.package-data]
+sagids = [
+]
+
