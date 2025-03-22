@@ -18,51 +18,10 @@
 # If not, see <https://www.gnu.org/licenses/>.
 
 
-from collections.abc import Callable
-from collections import namedtuple
-from fractions import Fraction
-import functools
-import math
 import turtle
-
 import unittest
 
-Finite = namedtuple("Finite", ["min", "max", "modulus", "type"], defaults=[None, int])
-
-
-class Bernstein:
-
-    def __init__(self, *args):
-        self.points = args
-        self.coefficients = dict()
-
-    @property
-    def order(self) -> int:
-        return len(self.points) - 1
-
-    def blend(self, pos) -> list[Callable]:
-        return [functools.partial(self.basis, pos=pos, index=n, order=self.order) for n, _ in enumerate(self.points)]
-
-    def coefficient(self, index: int, order=None) -> int:
-        f = math.factorial
-        return self.coefficients.setdefault(
-            (index, order),
-            Fraction(f(order), f(index) * f(order - index))
-        )
-
-    def basis(self, point, *, pos: float | int, index: int, order: int, coerce: type = float):
-        coeff = self.coefficient(index, order)
-        k = coeff * pos ** index * (1 - pos) ** (order - index)
-        rv = coerce(k) * point
-        return rv
-
-    def __call__(self,  pos: float | int):
-        blend = self.blend(pos)
-        vals = [fn(p) for fn, p in zip(blend, self.points)]
-        try:
-            return sum(vals[1:], start=vals[0])
-        except IndexError:
-            return (vals or None) and vals[0]
+from sagids.basis import Bernstein
 
 
 class BernsteinTests(unittest.TestCase):
