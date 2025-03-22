@@ -1,6 +1,6 @@
 [project]
 name = "sagids"
-version = "0.0.0"
+dynamic = ["version"]
 description = "Splines and Graphs in Discrete Space"
 readme = "README.md"
 authors = [
@@ -32,7 +32,18 @@ export = [
 [project.scripts]
 sagids = "sagids.main:run"
 
+[build-system]
+requires = ["setuptools>=75.0.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = [
+    "sagids",
+]
+
 [tool.setuptools.package-data]
 sagids = [
 ]
 
+[tool.setuptools.dynamic]
+version = {attr = "sagids.__version__"}

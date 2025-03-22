@@ -37,9 +37,6 @@ class Bernstein:
     def order(self) -> int:
         return len(self.points) - 1
 
-    def blend(self, pos) -> list[Callable]:
-        return [functools.partial(self.basis, pos=pos, index=n, order=self.order) for n, _ in enumerate(self.points)]
-
     def coefficient(self, index: int, order=None) -> int:
         f = math.factorial
         return self.coefficients.setdefault(
@@ -47,14 +44,21 @@ class Bernstein:
             Fraction(f(order), f(index) * f(order - index))
         )
 
-    def basis(self, point, *, pos: float | int, index: int, order: int, coerce: type = float):
+    def blend(self, pos, coerce: type = float) -> list[Callable]:
+        return [
+            functools.partial(self.basis, pos=pos, index=n, order=self.order, coerce=coerce)
+            for n, _ in enumerate(self.points)
+        ]
+
+    def basis(self, point, *, pos: float | int, index: int, order: int, coerce: type):
         coeff = self.coefficient(index, order)
         k = coeff * pos ** index * (1 - pos) ** (order - index)
         rv = coerce(k) * point
         return rv
 
     def __call__(self,  pos: float | int):
-        blend = self.blend(pos)
+        coerce = type(pos)
+        blend = self.blend(pos, coerce=coerce)
         vals = [fn(p) for fn, p in zip(blend, self.points)]
         try:
             return sum(vals[1:], start=vals[0])
