@@ -32,10 +32,8 @@ Finite = namedtuple("Finite", ["min", "max", "modulus", "type"], defaults=[None,
 
 class Bernstein:
 
-    def __init__(self, *args, point_factory=turtle.Vec2D):
+    def __init__(self, *args):
         self.points = args
-        self.point_factory = point_factory
-        self.params = dict(u=Finite(0, 1, type=float))
         self.coefficients = dict()
 
     @property
@@ -52,14 +50,19 @@ class Bernstein:
             Fraction(f(order), f(index) * f(order - index))
         )
 
-    def basis(self, point, *, pos: float | int, index: int, order: int):
+    def basis(self, point, *, pos: float | int, index: int, order: int, coerce: type = float):
         coeff = self.coefficient(index, order)
         k = coeff * pos ** index * (1 - pos) ** (order - index)
-        return float(k) * point
+        rv = coerce(k) * point
+        return rv
 
     def __call__(self,  pos: float | int):
         blend = self.blend(pos)
-        return [fn(p) for fn, p in zip(blend, self.points)]
+        vals = [fn(p) for fn, p in zip(blend, self.points)]
+        try:
+            return sum(vals[1:], start=vals[0])
+        except IndexError:
+            return (vals or None) and vals[0]
 
 
 class BernsteinTests(unittest.TestCase):
@@ -77,9 +80,8 @@ class BernsteinTests(unittest.TestCase):
             turtle.Vec2D(5, 0),
         ]
         poly = Bernstein(*points)
-        self.assertEqual(poly(0)[0], points[0])
-        self.assertEqual(poly(1)[-1], points[-1])
-        for i in range(2):
-            with self.subTest(i=i):
-                self.assertEqual(poly.coefficient(i, order=1), 1)
+        self.assertEqual(poly.order, 2)
+        self.assertEqual(poly(0), points[0])
+        self.assertEqual(poly(1), points[2])
+        self.assertEqual(poly(0.5), (2.75, 2))
 
