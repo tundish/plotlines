@@ -54,8 +54,8 @@ class Bernstein:
 
     def basis(self, point, *, pos: float | int, index: int, order: int):
         coeff = self.coefficient(index, order)
-        k = coeff * pos ** i * (1 - pos) ** (order - index)
-        return k * point
+        k = coeff * pos ** index * (1 - pos) ** (order - index)
+        return float(k) * point
 
     def __call__(self,  pos: float | int):
         blend = self.blend(pos)
@@ -64,11 +64,22 @@ class Bernstein:
 
 class BernsteinTests(unittest.TestCase):
 
-    def test_n_1(self):
+    def test_empty(self):
         poly = Bernstein()
         for i in range(2):
             with self.subTest(i=i):
                 self.assertEqual(poly.coefficient(i, order=1), 1)
 
-        rv = poly.blend(0)
-        self.fail(rv)
+    def test_n_2(self):
+        points = [
+            turtle.Vec2D(0, 0),
+            turtle.Vec2D(3, 4),
+            turtle.Vec2D(5, 0),
+        ]
+        poly = Bernstein(*points)
+        self.assertEqual(poly(0)[0], points[0])
+        self.assertEqual(poly(1)[-1], points[-1])
+        for i in range(2):
+            with self.subTest(i=i):
+                self.assertEqual(poly.coefficient(i, order=1), 1)
+
