@@ -18,27 +18,57 @@
 # If not, see <https://www.gnu.org/licenses/>.
 
 
+from collections.abc import Callable
 from collections import namedtuple
-import unittest
-
+from fractions import Fraction
+import functools
+import math
 import turtle
 
+import unittest
 
 Finite = namedtuple("Finite", ["min", "max", "modulus", "type"], defaults=[None, int])
 
 
 class Bernstein:
 
-    def __init__(self, *args):
+    def __init__(self, *args, point_factory=turtle.Vec2D):
+        self.points = args
+        self.point_factory = point_factory
         self.params = dict(u=Finite(0, 1, type=float))
+        self.coefficients = dict()
 
-    def __call__(self,  *args, vec_factory=turtle.Vec2D):
-        return vec_factory(*args)
+    @property
+    def order(self) -> int:
+        return len(self.points) - 1
+
+    def blend(self, pos) -> list[Callable]:
+        return [functools.partial(self.basis, pos=pos, index=n, order=self.order) for n, _ in enumerate(self.points)]
+
+    def coefficient(self, index: int, order=None) -> int:
+        f = math.factorial
+        return self.coefficients.setdefault(
+            (index, order),
+            Fraction(f(order), f(index) * f(order - index))
+        )
+
+    def basis(self, point, *, pos: float | int, index: int, order: int):
+        coeff = self.coefficient(index, order)
+        k = coeff * pos ** i * (1 - pos) ** (order - index)
+        return k * point
+
+    def __call__(self,  pos: float | int):
+        blend = self.blend(pos)
+        return [fn(p) for fn, p in zip(blend, self.points)]
 
 
 class BernsteinTests(unittest.TestCase):
 
     def test_n_1(self):
-        poly = Bernstein(0, 1)
-        rv = poly(3, 4)
+        poly = Bernstein()
+        for i in range(2):
+            with self.subTest(i=i):
+                self.assertEqual(poly.coefficient(i, order=1), 1)
+
+        rv = poly.blend(0)
         self.fail(rv)
