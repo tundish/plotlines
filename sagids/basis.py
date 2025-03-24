@@ -27,7 +27,7 @@ import math
 Finite = namedtuple("Finite", ["min", "max", "modulus", "type"], defaults=[None, int])
 
 
-class Bernstein:
+class Bezier:
 
     def __init__(self, *args):
         self.points = args
@@ -37,7 +37,7 @@ class Bernstein:
     def order(self) -> int:
         return len(self.points) - 1
 
-    def coefficient(self, index: int, order=None) -> int:
+    def bernstein(self, index: int, order=None) -> int:
         f = math.factorial
         return self.coefficients.setdefault(
             (index, order),
@@ -51,7 +51,7 @@ class Bernstein:
         ]
 
     def basis(self, point, *, pos: float | int, index: int, order: int, coerce: type):
-        coeff = self.coefficient(index, order)
+        coeff = self.bernstein(index, order)
         k = coeff * pos ** index * (1 - pos) ** (order - index)
         rv = coerce(k) * point
         return rv

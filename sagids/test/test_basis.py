@@ -21,16 +21,16 @@
 import turtle
 import unittest
 
-from sagids.basis import Bernstein
+from sagids.basis import Bezier
 
 
 class BernsteinTests(unittest.TestCase):
 
     def test_empty(self):
-        poly = Bernstein()
+        poly = Bezier()
         for i in range(2):
             with self.subTest(i=i):
-                self.assertEqual(poly.coefficient(i, order=1), 1)
+                self.assertEqual(poly.bernstein(i, order=1), 1)
 
     def test_n_2(self):
         points = [
@@ -38,7 +38,7 @@ class BernsteinTests(unittest.TestCase):
             turtle.Vec2D(3, 4),
             turtle.Vec2D(5, 0),
         ]
-        poly = Bernstein(*points)
+        poly = Bezier(*points)
         self.assertEqual(poly.order, 2)
         self.assertEqual(poly(0), points[0])
         self.assertEqual(poly(1), points[2])
