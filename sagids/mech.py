@@ -22,8 +22,10 @@ from decimal import Decimal
 from fractions import Fraction
 import itertools
 
+
 def pairs(degree=2):
     return itertools.product(range(10), repeat=degree)
+
 
 def rationalize(seq):
     for pair in seq:
@@ -32,5 +34,6 @@ def rationalize(seq):
         except ZeroDivisionError:
             yield Decimal("inf")
 
-p = rationalize(pairs())
-print(*list(p), sep="\n")
+
+witness = Counter(rationalize(pairs()))
+print(*witness.items(), sep="\n")
