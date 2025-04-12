@@ -18,9 +18,13 @@
 # If not, see <https://www.gnu.org/licenses/>.
 
 from collections import Counter
+from collections import namedtuple
 from decimal import Decimal
 from fractions import Fraction
 import itertools
+
+
+Mark = namedtuple("Mark", ["sector", "region"])
 
 
 def pairs(degree=2):
@@ -37,3 +41,9 @@ def rationalize(seq):
 
 witness = Counter(rationalize(pairs()))
 print(*witness.items(), sep="\n")
+
+n_sectors = 4
+n_regions = 4
+
+grid = [Mark(*values) for values in itertools.product(range(n_sectors), range(n_regions))]
+print(*grid, sep="\n")
