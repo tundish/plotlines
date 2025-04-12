@@ -22,9 +22,17 @@ from collections import namedtuple
 from decimal import Decimal
 from fractions import Fraction
 import itertools
+import turtle
 
+# Game of ninths
+# + Starting values?
+# + Initial position on centre points?
+# + Send to infinity
+# + Reduce to zero
+# + Modes of attack
+# + Positions for attack
 
-Mark = namedtuple("Mark", ["sector", "region"])
+Mark = namedtuple("Mark", ["sector", "region", "spot"])
 
 
 def pairs(degree=2):
@@ -39,11 +47,17 @@ def rationalize(seq):
             yield Decimal("inf")
 
 
+def marks(n_sectors=4, regions=[1, 3, 5, 7]):
+    return [
+        Mark(*values, spot=n)
+        for n, values in enumerate(
+            itertools.product(range(n_sectors), regions)
+        )
+    ]
+
+
 witness = Counter(rationalize(pairs()))
 print(*witness.items(), sep="\n")
 
-n_sectors = 4
-n_regions = 4
-
-grid = [Mark(*values) for values in itertools.product(range(n_sectors), range(n_regions))]
+grid = marks()
 print(*grid, sep="\n")
