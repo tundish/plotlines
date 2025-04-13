@@ -54,8 +54,14 @@ def marks(n_sectors=4, regions=[1, 3, 5, 7]):
     ]
 
 
+def grid():
+    pass
+
+
 witness = Counter(rationalize(pairs()))
 print(*witness.items(), sep="\n")
 
-grid = marks()
-print(*grid, sep="\n")
+m = marks()
+print(*m, sep="\n")
+
+g = grid()
