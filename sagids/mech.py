@@ -24,13 +24,11 @@ from fractions import Fraction
 import itertools
 import turtle
 
-# Game of ninths
-# + Starting values?
-# + Initial position on centre points?
-# + Send to infinity
-# + Reduce to zero
-# + Modes of attack
-# + Positions for attack
+# Game of three-sixteenths
+# + Number the board cyclically 1,3,5,7
+# + Initially register set of unique ninths.
+# + Initial position on centre points.
+# + Reset and replay after target met.
 
 Mark = namedtuple("Mark", ["sector", "region", "spot"])
 
