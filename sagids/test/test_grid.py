@@ -22,7 +22,9 @@ import unittest
 
 
 import dataclasses
+from decimal import Decimal
 from fractions import Fraction
+import itertools
 import random
 import turtle
 
@@ -53,7 +55,10 @@ class Grid:
     @classmethod
     def build(cls, n_sectors=4, n_regions=4):
         markers = cls.build_markers(k=n_sectors)
-        return cls(markers)
+        size = int(Decimal(n_sectors).sqrt() * Decimal(n_regions).sqrt())
+        cells = [cls.Cell() for pos in itertools.product(range(size), repeat=2)]
+        print(f"{size=}")
+        return cls(markers, cells=cells)
 
     def __init__(self, markers: list = None, cells: list = None):
         self.markers = markers or []
@@ -77,5 +82,6 @@ class GridTests(unittest.TestCase):
     def test_init(self):
         grid = Grid.build()
         self.assertEqual(len(grid.markers), 4)
+        self.assertEqual(len(grid.cells), 16)
         print(f"{grid=}")
 
