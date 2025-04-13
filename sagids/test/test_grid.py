@@ -44,11 +44,12 @@ class Grid:
 
     @classmethod
     def build(cls, n_sectors=4, n_regions=4):
-        return cls()
+        marks = cls.build_registers(k=n_sectors)
+        return cls(marks)
 
-    def __init__(self, slots=[]):
-        self.marks = []
-        self.slots = []
+    def __init__(self, marks: list = None, slots: list = None):
+        self.marks = marks or []
+        self.slots = slots or []
 
 
 class GridTests(unittest.TestCase):
@@ -59,8 +60,9 @@ class GridTests(unittest.TestCase):
                 rv = Grid.build_registers(n)
                 self.assertEqual(len(rv), n)
                 self.assertEqual(len({i.value for i in rv}), n)
-                print(rv)
 
     def test_init(self):
-        grid = Grid()
+        grid = Grid.build()
+        self.assertEqual(len(grid.marks), 4)
+        print(f"{grid=}")
 
