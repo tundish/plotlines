@@ -36,9 +36,25 @@ class GridTests(unittest.TestCase):
     def test_init(self):
         grid = Grid.build()
         self.assertEqual(len(grid.markers), 4)
+        self.assertEqual(set(grid.markers), {1, 2, 3, 4})
         self.assertEqual(len(grid.cells), 16)
 
     def test_cell_values(self):
+        grid = Grid.build()
+        rows = defaultdict(list)
+        for cell in grid.cells:
+            rows[cell.spot[0]].append(cell)
+
+        for row in rows:
+            with self.subTest(row=row):
+                cells = rows[row]
+                if row in [0, 2]:
+                    self.assertEqual([cell.value for cell in cells], [1, 7, 1, 7])
+                elif row in [1, 3]:
+                    self.assertEqual([cell.value for cell in cells], [3, 5, 3, 5])
+        print(f"{grid.cells=}")
+
+    def test_cell_sight(self):
         grid = Grid.build()
         rows = defaultdict(list)
         for cell in grid.cells:
