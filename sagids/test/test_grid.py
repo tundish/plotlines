@@ -21,61 +21,7 @@
 from collections import defaultdict
 import unittest
 
-
-import dataclasses
-from decimal import Decimal
-from fractions import Fraction
-import itertools
-import random
-import turtle
-
-
-class Grid:
-
-    @dataclasses.dataclass
-    class Cell:
-        spot: turtle.Vec2D
-        parent: "Grid" = None
-
-        @property
-        def value(self) -> int:
-            return {
-                0: {0: 1, 1: 7},
-                1: {0: 3, 1: 5},
-            }[int(self.spot[0]) % 2][int(self.spot[1]) % 2]
-
-    @dataclasses.dataclass
-    class Marker:
-        value: Fraction = None
-        parent: "Grid" = None
-        cell: "Cell" = None
-
-    @classmethod
-    def build_markers(cls, k=4):
-        return [
-            cls.Marker(value=v)
-            for v in random.sample(
-                [Fraction(n, 9) for n in [0, 1, 2, 4, 5, 7, 8]],
-                k
-            )
-        ]
-
-    @classmethod
-    def build(cls, n_sectors=4, n_regions=4):
-        markers = cls.build_markers(k=n_sectors)
-        size = int(Decimal(n_sectors).sqrt() * Decimal(n_regions).sqrt())
-        cells = [cls.Cell(turtle.Vec2D(*pos)) for pos in itertools.product(range(size), repeat=2)]
-        print(f"{size=}")
-        return cls(markers, cells=cells)
-
-    def __init__(self, markers: list = None, cells: list = None):
-        self.markers = markers or []
-        for mark in self.markers:
-            mark.parent = self
-
-        self.cells = cells or []
-        for cell in self.cells:
-            cell.parent = self
+from sagids.grid import Grid
 
 
 class GridTests(unittest.TestCase):
@@ -105,7 +51,5 @@ class GridTests(unittest.TestCase):
                     self.assertEqual([cell.value for cell in cells], [1, 7, 1, 7])
                 elif row in [1, 3]:
                     self.assertEqual([cell.value for cell in cells], [3, 5, 3, 5])
-                print(cells)
-        print(f"{rows=}")
         print(f"{grid.cells=}")
 
