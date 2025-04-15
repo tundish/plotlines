@@ -39,7 +39,10 @@ class Grid:
 
         @property
         def value(self) -> int:
-            return 0
+            return {
+                0: {0: 1, 1: 7},
+                1: {0: 3, 1: 5},
+            }[int(self.spot[0]) % 2][int(self.spot[1]) % 2]
 
     @dataclasses.dataclass
     class Marker:
