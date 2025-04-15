@@ -18,6 +18,7 @@
 # If not, see <https://www.gnu.org/licenses/>.
 
 
+from collections import defaultdict
 import unittest
 
 
@@ -33,8 +34,12 @@ class Grid:
 
     @dataclasses.dataclass
     class Cell:
-        value: Fraction = None
+        spot: turtle.Vec2D
         parent: "Grid" = None
+
+        @property
+        def value(self) -> int:
+            return 0
 
     @dataclasses.dataclass
     class Marker:
@@ -56,7 +61,7 @@ class Grid:
     def build(cls, n_sectors=4, n_regions=4):
         markers = cls.build_markers(k=n_sectors)
         size = int(Decimal(n_sectors).sqrt() * Decimal(n_regions).sqrt())
-        cells = [cls.Cell() for pos in itertools.product(range(size), repeat=2)]
+        cells = [cls.Cell(turtle.Vec2D(*pos)) for pos in itertools.product(range(size), repeat=2)]
         print(f"{size=}")
         return cls(markers, cells=cells)
 
@@ -83,5 +88,21 @@ class GridTests(unittest.TestCase):
         grid = Grid.build()
         self.assertEqual(len(grid.markers), 4)
         self.assertEqual(len(grid.cells), 16)
-        print(f"{grid=}")
+
+    def test_cell_values(self):
+        grid = Grid.build()
+        rows = defaultdict(list)
+        for cell in grid.cells:
+            rows[cell.spot[0]].append(cell)
+
+        for row in rows:
+            with self.subTest(row=row):
+                cells = rows[row]
+                if row in [0, 2]:
+                    self.assertEqual([cell.value for cell in cells], [1, 7, 1, 7])
+                elif row in [1, 3]:
+                    self.assertEqual([cell.value for cell in cells], [3, 5, 3, 5])
+                print(cells)
+        print(f"{rows=}")
+        print(f"{grid.cells=}")
 
