@@ -61,7 +61,7 @@ class GridTests(unittest.TestCase):
 
     def test_marker_zone(self):
         grid = Grid.build()
-        grid.mark((0, 2), (1, 0), (2, 1), (3, 2))
+        grid.mark((1, 0), (0, 2), (2, 1), (3, 2))
 
         witness = set()
         for marker in grid.markers.values():

@@ -51,7 +51,8 @@ class Grid:
         def zone(self):
             if not self.cell:
                 return []
-            return self.parent.cells
+            quadrant = tuple(i // 2 for i in self.cell.spot)
+            return [i for i in self.parent.cells if i[0] // 2 == quadrant[0] and i[1] // 2 == quadrant[1]]
 
     @classmethod
     def build_markers(cls, k=4):
