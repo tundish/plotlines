@@ -52,7 +52,7 @@ class Grid:
         return [
             cls.Marker(id=n+1, value=v)
             for n, v in enumerate(random.sample(
-                [Fraction(n, 9) for n in [0, 1, 2, 4, 5, 7, 8]],
+                [Fraction(n, 9) for n in [1, 2, 4, 5, 7, 8]],
                 k
             ))
         ]
@@ -61,14 +61,22 @@ class Grid:
     def build(cls, n_sectors=4, n_regions=4):
         markers = cls.build_markers(k=n_sectors)
         size = int(Decimal(n_sectors).sqrt() * Decimal(n_regions).sqrt())
-        cells = [cls.Cell(turtle.Vec2D(*pos)) for pos in itertools.product(range(size), repeat=2)]
+        cells = {pos: cls.Cell(turtle.Vec2D(*pos)) for pos in itertools.product(range(size), repeat=2)}
         return cls(markers, cells=cells)
 
-    def __init__(self, markers: list = None, cells: list = None):
+    def __init__(self, markers: list = None, cells: dict = None):
         self.markers = {i.id: i for i in markers}
         for mark in self.markers.values():
             mark.parent = self
 
-        self.cells = cells or []
-        for cell in self.cells:
+        self.cells = cells or dict()
+        for cell in self.cells.values():
             cell.parent = self
+
+    def mark(self, *args: tuple[int, int]):
+        for spot, marker in zip(args, self.markers.values()):
+            try:
+                marker.cell = self.cells[spot]
+            except KeyError:
+                pass
+        return self

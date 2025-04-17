@@ -27,7 +27,7 @@ from sagids.grid import Grid
 class GridTests(unittest.TestCase):
 
     def test_markers(self):
-        for n in range(8):
+        for n in range(7):
             with self.subTest(n=n):
                 rv = Grid.build_markers(n)
                 self.assertEqual(len(rv), n)
@@ -42,7 +42,7 @@ class GridTests(unittest.TestCase):
     def test_cell_values(self):
         grid = Grid.build()
         rows = defaultdict(list)
-        for cell in grid.cells:
+        for cell in grid.cells.values():
             rows[cell.spot[0]].append(cell)
 
         for row in rows:
@@ -57,15 +57,12 @@ class GridTests(unittest.TestCase):
     def test_cell_sight(self):
         grid = Grid.build()
         rows = defaultdict(list)
-        for cell in grid.cells:
-            rows[cell.spot[0]].append(cell)
+        grid.mark((0, 1), (1, 0), (2, 1), (3, 2))
+        self.assertIn((0, 0), grid.cells)
+        print(*list(grid.markers.values()), sep="\n")
 
-        for row in rows:
-            with self.subTest(row=row):
-                cells = rows[row]
-                if row in [0, 2]:
-                    self.assertEqual([cell.value for cell in cells], [1, 7, 1, 7])
-                elif row in [1, 3]:
-                    self.assertEqual([cell.value for cell in cells], [3, 5, 3, 5])
-        print(f"{grid.cells=}")
-
+    def test_marker_zone(self):
+        grid = Grid.build()
+        for marker in grid.markers.values():
+            with self.subTest(marker=marker):
+                print(marker.zone)
