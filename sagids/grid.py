@@ -54,6 +54,10 @@ class Grid:
             quadrant = tuple(i // 2 for i in self.cell.spot)
             return [i for i in self.parent.cells if i[0] // 2 == quadrant[0] and i[1] // 2 == quadrant[1]]
 
+        def is_aligned(self, marker: "Marker"):
+            vector = marker.cell.spot - self.cell.spot
+            return abs(vector[0]) == abs(vector[1])
+
     @classmethod
     def build_markers(cls, k=4):
         return [

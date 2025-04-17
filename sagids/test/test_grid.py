@@ -38,6 +38,7 @@ class GridTests(unittest.TestCase):
         self.assertEqual(len(grid.markers), 4)
         self.assertEqual(set(grid.markers), {1, 2, 3, 4})
         self.assertEqual(len(grid.cells), 16)
+        self.assertIn((0, 0), grid.cells)
 
     def test_cell_values(self):
         grid = Grid.build()
@@ -53,11 +54,22 @@ class GridTests(unittest.TestCase):
                 elif row in [1, 3]:
                     self.assertEqual([cell.value for cell in cells], [3, 5, 3, 5])
 
-    def test_cell_sight(self):
+    def test_makers_aligned(self):
         grid = Grid.build()
         rows = defaultdict(list)
         grid.mark((0, 1), (1, 0), (2, 1), (3, 2))
-        self.assertIn((0, 0), grid.cells)
+        self.assertTrue(grid.markers[1].is_aligned(grid.markers[2]))
+        self.assertTrue(grid.markers[2].is_aligned(grid.markers[1]))
+        self.assertTrue(grid.markers[2].is_aligned(grid.markers[3]))
+        self.assertTrue(grid.markers[2].is_aligned(grid.markers[4]))
+        self.assertTrue(grid.markers[3].is_aligned(grid.markers[2]))
+        self.assertTrue(grid.markers[3].is_aligned(grid.markers[4]))
+        self.assertTrue(grid.markers[4].is_aligned(grid.markers[3]))
+        self.assertTrue(grid.markers[4].is_aligned(grid.markers[2]))
+        self.assertFalse(grid.markers[4].is_aligned(grid.markers[1]))
+        self.assertFalse(grid.markers[3].is_aligned(grid.markers[1]))
+        self.assertFalse(grid.markers[1].is_aligned(grid.markers[3]))
+        self.assertFalse(grid.markers[1].is_aligned(grid.markers[4]))
 
     def test_marker_zone(self):
         grid = Grid.build()
