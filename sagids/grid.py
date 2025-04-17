@@ -47,6 +47,12 @@ class Grid:
         parent: "Grid" = None
         cell: "Cell" = None
 
+        @property
+        def zone(self):
+            if not self.cell:
+                return []
+            return self.parent.cells
+
     @classmethod
     def build_markers(cls, k=4):
         return [

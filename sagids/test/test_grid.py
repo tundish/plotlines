@@ -52,17 +52,20 @@ class GridTests(unittest.TestCase):
                     self.assertEqual([cell.value for cell in cells], [1, 7, 1, 7])
                 elif row in [1, 3]:
                     self.assertEqual([cell.value for cell in cells], [3, 5, 3, 5])
-        print(f"{grid.cells=}")
 
     def test_cell_sight(self):
         grid = Grid.build()
         rows = defaultdict(list)
         grid.mark((0, 1), (1, 0), (2, 1), (3, 2))
         self.assertIn((0, 0), grid.cells)
-        print(*list(grid.markers.values()), sep="\n")
 
     def test_marker_zone(self):
         grid = Grid.build()
+        grid.mark((0, 2), (1, 0), (2, 1), (3, 2))
+
+        witness = set()
         for marker in grid.markers.values():
             with self.subTest(marker=marker):
-                print(marker.zone)
+                self.assertEqual(len(marker.zone), 4, marker.zone)
+                self.assertFalse(witness.intersection(set(marker.zone)))
+                witness = witness.union(set(marker.zone))
