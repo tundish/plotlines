@@ -144,7 +144,10 @@ def game(grid, limit=sys.maxsize, goal = Fraction(3, 16)):
             chosen = next((i for i in options if i.total == goal), random.choice(options))
             marker.cell = chosen.cell
             marker.value = chosen.result
-            logger.info(f"Player {marker.id} moves to {marker.cell.spot}. Takes value {marker.value}.")
+            logger.info(
+                f"Player {marker.id} moves to {marker.cell.spot}[{marker.cell.value}]. "
+                f"Takes value {marker.value}."
+            )
             moves.append(chosen)
             if chosen.total == goal:
                 logger.info(
@@ -164,7 +167,10 @@ def run():
     grid = Grid.build()
     grid.mark(*grid.partition())
     for marker in grid.markers.values():
-        logger.info(f"Player {marker.id} spotted  {marker.cell.spot}. Takes value {marker.value}.")
+        logger.info(
+            f"Player {marker.id} spotted  {marker.cell.spot}[{marker.cell.value}]. "
+            f"Takes value {marker.value}."
+        )
 
     moves = game(grid, limit=100000)
     logger.info(f"Game ends after {len(moves)} moves.")
