@@ -44,15 +44,16 @@ class Grid:
     class Marker:
         id: int
         value: Fraction = None
-        parent: "Grid" = None
+        grid: "Grid" = None
         cell: "Cell" = None
 
         @property
         def zone(self):
-            if not self.cell:
+            try:
+                quadrant = tuple(i // 2 for i in self.cell.spot)
+                return [spot for spot in self.grid.cells if tuple(i // 2 for i in spot) == quadrant]
+            except AttributeError:
                 return []
-            quadrant = tuple(i // 2 for i in self.cell.spot)
-            return [i for i in self.parent.cells if i[0] // 2 == quadrant[0] and i[1] // 2 == quadrant[1]]
 
         def visits(self, marker: "Marker"):
             vector = marker.cell.spot - self.cell.spot
@@ -81,7 +82,7 @@ class Grid:
     def __init__(self, markers: list = None, cells: dict = None):
         self.markers = {i.id: i for i in markers}
         for mark in self.markers.values():
-            mark.parent = self
+            mark.grid = self
 
         self.cells = cells or dict()
 
@@ -91,7 +92,7 @@ class Grid:
         while len(markers) < len(self.markers):
             cell = random.choice(list(pool))
             if not any(cell in m.zone for m in markers):
-                m = self.Marker(len(markers), parent=self, cell=cell)
+                m = self.Marker(len(markers), grid=self, cell=cell)
                 if not any(m.visits(i) for i in markers):
                     markers.append(m)
                     zone = [self.Cell(spot=spot) for spot in m.zone]

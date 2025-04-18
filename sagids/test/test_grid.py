@@ -97,8 +97,8 @@ class GridTests(unittest.TestCase):
                         continue
 
                     self.assertFalse(
-                        Grid.Marker(n, parent=grid, cell=pair[0]).visits(
-                            Grid.Marker(n, parent=grid, cell=pair[1])
+                        Grid.Marker(n, grid=grid, cell=pair[0]).visits(
+                            Grid.Marker(n, grid=grid, cell=pair[1])
                         ),
                         pair
                     )
