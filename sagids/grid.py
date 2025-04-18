@@ -32,7 +32,6 @@ class Grid:
     @dataclasses.dataclass(frozen=True)
     class Cell:
         spot: turtle.Vec2D
-        parent: "Grid" = None
 
         @property
         def value(self) -> int:
@@ -74,7 +73,7 @@ class Grid:
         rv = cls(markers=cls.build_markers(k=n_sectors))
         size = int(Decimal(n_sectors).sqrt() * Decimal(n_regions).sqrt())
         rv.cells = {
-            pos: cls.Cell(turtle.Vec2D(*pos), parent=rv)
+            pos: cls.Cell(turtle.Vec2D(*pos))
             for pos in itertools.product(range(size), repeat=2)
         }
         return rv
@@ -95,7 +94,7 @@ class Grid:
                 m = self.Marker(len(markers), parent=self, cell=cell)
                 if not any(m.visits(i) for i in markers):
                     markers.append(m)
-                    zone = [self.Cell(spot=spot, parent=self) for spot in m.zone]
+                    zone = [self.Cell(spot=spot) for spot in m.zone]
                     pool = pool - set(zone)
         return [m.cell for m in markers]
 

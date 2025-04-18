@@ -21,6 +21,7 @@
 from collections import defaultdict
 from collections import Counter
 import itertools
+from turtle import Vec2D as V
 import unittest
 
 from sagids.grid import Grid
@@ -59,7 +60,7 @@ class GridTests(unittest.TestCase):
     def test_makers_aligned(self):
         grid = Grid.build()
         rows = defaultdict(list)
-        grid.mark((0, 1), (1, 0), (2, 1), (3, 2))
+        grid.mark(grid.Cell(V(0, 1)), grid.Cell(V(1, 0)), grid.Cell(V(2, 1)), grid.Cell(V(3, 2)))
         self.assertTrue(grid.markers[1].visits(grid.markers[2]))
         self.assertTrue(grid.markers[2].visits(grid.markers[1]))
         self.assertTrue(grid.markers[2].visits(grid.markers[3]))
@@ -75,7 +76,7 @@ class GridTests(unittest.TestCase):
 
     def test_marker_zone(self):
         grid = Grid.build()
-        grid.mark((1, 0), (0, 2), (2, 1), (3, 2))
+        grid.mark(grid.Cell(V(1, 0)), grid.Cell(V(0, 2)), grid.Cell(V(2, 1)), grid.Cell(V(3, 2)))
 
         witness = set()
         for marker in grid.markers.values():
