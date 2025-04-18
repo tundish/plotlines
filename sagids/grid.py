@@ -23,14 +23,16 @@ import dataclasses
 from decimal import Decimal
 from fractions import Fraction
 import itertools
+import logging
 import pprint
 import random
+import sys
 import turtle
 
 
 class Grid:
 
-    Option = namedtuple("Option", ["cell", "result", "transit", "total"], defaults=[None, None])
+    Option = namedtuple("Option", ["marker", "cell", "result", "transit", "total"], defaults=[None, None])
 
     @dataclasses.dataclass(frozen=True)
     class Cell:
@@ -75,10 +77,10 @@ class Grid:
         def options(self, cell: "Cell"):
             transits = [m for m in self.grid.markers.values() if m is not self and m.cell.transits(cell)]
             for r in self.results(cell.value):
-                yield self.grid.Option(cell, r)
+                yield self.grid.Option(self, cell, r)
                 for t in transits:
                     val = r + t.value
-                    yield self.grid.Option(cell, r, t, val)
+                    yield self.grid.Option(self, cell, r, t, val)
 
     @classmethod
     def build_markers(cls, k=4):
@@ -126,26 +128,43 @@ class Grid:
         return self
 
 
+def game(grid, limit=sys.maxsize, goal = Fraction(3, 16)):
+    logger = logging.getLogger()
+
+    moves = []
+    n = 0
+    while n < limit:
+        for marker in grid.markers.values():
+            options = list()
+            for spot in marker.zone:
+                cell = grid.cells[spot]
+                if cell == marker.cell:
+                    continue
+
+                options.extend(marker.options(cell))
+
+            chosen = next((i for i in options if i.total == goal), random.choice(options))
+            logger.info(f"{marker.id} moves to {cell.spot}. Takes value {chosen.result}.")
+            marker.cell = chosen.cell
+            marker.value = chosen.result
+            moves.append(chosen)
+            if chosen.total == goal:
+                break
+
+        n += 1
+    return moves
+
+
 def run():
+    logging.basicConfig(level=logging.INFO)
+    logger = logging.getLogger()
+
     grid = Grid.build()
     grid.mark(*grid.partition())
     pprint.pprint(vars(grid))
 
-    goal = Fraction(3, 16)
-    n = 0
-    while n < 12:
-        for m in grid.markers.values():
-            options = list()
-            for s in m.zone:
-                c = grid.cells[s]
-                if m.cell == c:
-                    continue
-
-                options.extend(m.options(c))
-
-            choice = next((i for i in options if i.total == goal), random.choice(options))
-            print(f"{choice=}")
-        n += 1
+    moves = game(grid, limit=100000)
+    logger.info(f"Game ends after {len(moves)} moves.")
 
 
 if __name__ == "__main__":
