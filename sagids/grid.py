@@ -59,13 +59,15 @@ class Grid:
             except AttributeError:
                 return []
 
-        def updates(self, cardinal: int):
-            for n in range(cardinal):
-                num, den = n, cardinal - n
-                yield Fraction(
-                    (self.value.numerator + num) % 10,
-                    (self.value.denominator + num) % 10,
-                )
+        def results(self, cardinal: int):
+            for n, d in zip(range(0, cardinal + 1), range(cardinal, -1, -1)):
+                try:
+                    yield Fraction(
+                        (self.value.numerator + n) % 10,
+                        (self.value.denominator + d) % 10,
+                    )
+                except ZeroDivisionError:
+                    pass
 
         def options(self, cell: "Cell") -> dict[Fraction, "Marker"]:
             for n in range(cell.value + 1):

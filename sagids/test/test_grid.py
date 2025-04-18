@@ -86,11 +86,12 @@ class GridTests(unittest.TestCase):
                 self.assertFalse(witness.intersection(set(marker.zone)))
                 witness = witness.union(set(marker.zone))
 
-    def test_marker_updates(self):
-        m = Grid.Marker(0, value=Fraction(0, 9))
+    def test_marker_results(self):
+        m = Grid.Marker(0, value=Fraction(1, 9))
 
-        self.assertEqual(list(m.updates(0)), [])
-        self.assertEqual(list(m.updates(1)), [Fraction(1, 9)])
+        self.assertEqual(sorted(m.results(0)), [Fraction(1, 9)])
+        self.assertEqual(sorted(m.results(1)), [Fraction(2, 9)])
+        self.assertEqual(sorted(m.results(3)), [Fraction(4, 9), Fraction(1, 2), Fraction(2, 1)])
 
     def test_partition(self):
         witness = Counter()
