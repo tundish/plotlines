@@ -18,6 +18,7 @@
 # If not, see <https://www.gnu.org/licenses/>.
 
 
+from collections import namedtuple
 import dataclasses
 from decimal import Decimal
 from fractions import Fraction
@@ -28,6 +29,8 @@ import turtle
 
 
 class Grid:
+
+    Option = namedtuple("Option", ["cell", "result", "transit", "total"], defaults=[None, None])
 
     @dataclasses.dataclass(frozen=True)
     class Cell:
@@ -69,14 +72,18 @@ class Grid:
                 except ZeroDivisionError:
                     pass
 
-        def options(self, cell: "Cell") -> dict[Fraction, "Marker"]:
-            for n in range(cell.value + 1):
-                num, den = n, cell.value - n
-                result = Fraction(
-                    (self.value.numerator + num) % 10,
-                    (self.value.denominator + num) % 10,
-                )
-            return {}
+        def options(self, cell: "Cell", goal: Fraction = Fraction(3, 16)):
+            transits = [m for m in self.grid.markers.values() if m is not self and m.cell.transits(cell)]
+            rv = {}
+            for r in self.results(cell.value):
+                rv[r] = self.grid.Option(r, None)
+                for t in transits:
+                    val = self.value + t.value
+                    if val == goal:
+                        return {val: self.grid.Option(r, t)}
+                    else:
+                        rv[val] = self.grid.Option(r, t)
+            return rv
 
     @classmethod
     def build_markers(cls, k=4):
@@ -137,10 +144,8 @@ def run():
                 if m.cell == c:
                     continue
 
-                transits = [m for m in grid.markers.values() if m.cell.transits(c)]
-                for f in m.results(c.value):
-                    for t in transits:
-                        print(m.value + t.value)
+                for val, o in m.options(c).items():
+                    print(val, f"{o=}")
         n += 1
 
 
