@@ -72,18 +72,13 @@ class Grid:
                 except ZeroDivisionError:
                     pass
 
-        def options(self, cell: "Cell", goal: Fraction = Fraction(3, 16)):
+        def options(self, cell: "Cell"):
             transits = [m for m in self.grid.markers.values() if m is not self and m.cell.transits(cell)]
-            rv = {}
             for r in self.results(cell.value):
-                rv[r] = self.grid.Option(r, None)
+                yield self.grid.Option(cell, r)
                 for t in transits:
-                    val = self.value + t.value
-                    if val == goal:
-                        return {val: self.grid.Option(r, t)}
-                    else:
-                        rv[val] = self.grid.Option(r, t)
-            return rv
+                    val = r + t.value
+                    yield self.grid.Option(cell, r, t, val)
 
     @classmethod
     def build_markers(cls, k=4):
@@ -136,16 +131,20 @@ def run():
     grid.mark(*grid.partition())
     pprint.pprint(vars(grid))
 
+    goal = Fraction(3, 16)
     n = 0
     while n < 12:
         for m in grid.markers.values():
+            options = list()
             for s in m.zone:
                 c = grid.cells[s]
                 if m.cell == c:
                     continue
 
-                for val, o in m.options(c).items():
-                    print(val, f"{o=}")
+                options.extend(m.options(c))
+
+            choice = next((i for i in options if i.total == goal), random.choice(options))
+            print(f"{choice=}")
         n += 1
 
 
