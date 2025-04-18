@@ -61,18 +61,18 @@ class GridTests(unittest.TestCase):
         grid = Grid.build()
         rows = defaultdict(list)
         grid.mark(grid.Cell(V(0, 1)), grid.Cell(V(1, 0)), grid.Cell(V(2, 1)), grid.Cell(V(3, 2)))
-        self.assertTrue(grid.markers[1].visits(grid.markers[2]))
-        self.assertTrue(grid.markers[2].visits(grid.markers[1]))
-        self.assertTrue(grid.markers[2].visits(grid.markers[3]))
-        self.assertTrue(grid.markers[2].visits(grid.markers[4]))
-        self.assertTrue(grid.markers[3].visits(grid.markers[2]))
-        self.assertTrue(grid.markers[3].visits(grid.markers[4]))
-        self.assertTrue(grid.markers[4].visits(grid.markers[3]))
-        self.assertTrue(grid.markers[4].visits(grid.markers[2]))
-        self.assertFalse(grid.markers[4].visits(grid.markers[1]))
-        self.assertFalse(grid.markers[3].visits(grid.markers[1]))
-        self.assertFalse(grid.markers[1].visits(grid.markers[3]))
-        self.assertFalse(grid.markers[1].visits(grid.markers[4]))
+        self.assertTrue(grid.markers[1].cell.transits(grid.markers[2].cell))
+        self.assertTrue(grid.markers[2].cell.transits(grid.markers[1].cell))
+        self.assertTrue(grid.markers[2].cell.transits(grid.markers[3].cell))
+        self.assertTrue(grid.markers[2].cell.transits(grid.markers[4].cell))
+        self.assertTrue(grid.markers[3].cell.transits(grid.markers[2].cell))
+        self.assertTrue(grid.markers[3].cell.transits(grid.markers[4].cell))
+        self.assertTrue(grid.markers[4].cell.transits(grid.markers[3].cell))
+        self.assertTrue(grid.markers[4].cell.transits(grid.markers[2].cell))
+        self.assertFalse(grid.markers[4].cell.transits(grid.markers[1].cell))
+        self.assertFalse(grid.markers[3].cell.transits(grid.markers[1].cell))
+        self.assertFalse(grid.markers[1].cell.transits(grid.markers[3].cell))
+        self.assertFalse(grid.markers[1].cell.transits(grid.markers[4].cell))
 
     def test_marker_zone(self):
         grid = Grid.build()
@@ -96,11 +96,7 @@ class GridTests(unittest.TestCase):
                     if pair[0] == pair[1]:
                         continue
 
-                    self.assertFalse(
-                        Grid.Marker(n, grid=grid, cell=pair[0]).visits(
-                            Grid.Marker(n, grid=grid, cell=pair[1])
-                        ),
-                        pair
-                    )
+                    self.assertFalse(pair[0].transits(pair[1]), pair)
                     witness[frozenset(rv)] += 1
+
         self.assertLessEqual(len(witness), 56)

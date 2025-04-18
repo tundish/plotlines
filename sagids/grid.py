@@ -40,6 +40,11 @@ class Grid:
                 1: {0: 3, 1: 5},
             }[int(self.spot[0]) % 2][int(self.spot[1]) % 2]
 
+        def transits(self, cell: "Cell") -> bool:
+            vector = cell.spot - self.spot
+            return abs(vector[0]) == abs(vector[1])
+
+
     @dataclasses.dataclass
     class Marker:
         id: int
@@ -54,10 +59,6 @@ class Grid:
                 return [spot for spot in self.grid.cells if tuple(i // 2 for i in spot) == quadrant]
             except AttributeError:
                 return []
-
-        def visits(self, marker: "Marker"):
-            vector = marker.cell.spot - self.cell.spot
-            return abs(vector[0]) == abs(vector[1])
 
     @classmethod
     def build_markers(cls, k=4):
@@ -93,7 +94,7 @@ class Grid:
             cell = random.choice(list(pool))
             if not any(cell in m.zone for m in markers):
                 m = self.Marker(len(markers), grid=self, cell=cell)
-                if not any(m.visits(i) for i in markers):
+                if not any(m.cell.transits(i.cell) for i in markers):
                     markers.append(m)
                     zone = [self.Cell(spot=spot) for spot in m.zone]
                     pool = pool - set(zone)
@@ -109,6 +110,21 @@ def run():
     grid = Grid.build()
     grid.mark(*grid.partition())
     pprint.pprint(vars(grid))
+
+    n = 0
+    while True:
+        for m in grid.markers.values():
+            for s in m.zone:
+                c = grid.cells[s]
+                if m.cell == c:
+                    continue
+                for o in grid.markers.values():
+                    if m is o:
+                        continue
+
+                    if m.cell.transits(o.cell):
+                        print(m, o, f"{c=}")
+        n += 1
 
 
 if __name__ == "__main__":
