@@ -29,7 +29,7 @@ import turtle
 
 class Grid:
 
-    @dataclasses.dataclass
+    @dataclasses.dataclass(frozen=True)
     class Cell:
         spot: turtle.Vec2D
         parent: "Grid" = None
@@ -55,7 +55,7 @@ class Grid:
             quadrant = tuple(i // 2 for i in self.cell.spot)
             return [i for i in self.parent.cells if i[0] // 2 == quadrant[0] and i[1] // 2 == quadrant[1]]
 
-        def is_aligned(self, marker: "Marker"):
+        def visits(self, marker: "Marker"):
             vector = marker.cell.spot - self.cell.spot
             return abs(vector[0]) == abs(vector[1])
 
@@ -70,15 +70,14 @@ class Grid:
         ]
 
     @classmethod
-    def init_spots(cls, k=4):
-        return []
-
-    @classmethod
     def build(cls, n_sectors=4, n_regions=4):
-        markers = cls.build_markers(k=n_sectors)
+        rv = cls(markers=cls.build_markers(k=n_sectors))
         size = int(Decimal(n_sectors).sqrt() * Decimal(n_regions).sqrt())
-        cells = {pos: cls.Cell(turtle.Vec2D(*pos)) for pos in itertools.product(range(size), repeat=2)}
-        return cls(markers, cells=cells)
+        rv.cells = {
+            pos: cls.Cell(turtle.Vec2D(*pos), parent=rv)
+            for pos in itertools.product(range(size), repeat=2)
+        }
+        return rv
 
     def __init__(self, markers: list = None, cells: dict = None):
         self.markers = {i.id: i for i in markers}
@@ -86,8 +85,19 @@ class Grid:
             mark.parent = self
 
         self.cells = cells or dict()
-        for cell in self.cells.values():
-            cell.parent = self
+
+    def partition(self) -> list["Cell"]:
+        markers = []
+        pool = set(self.cells.values())
+        while len(markers) < len(self.markers):
+            cell = random.choice(list(pool))
+            if not any(cell in m.zone for m in markers):
+                m = self.Marker(len(markers), parent=self, cell=cell)
+                if not any(m.visits(i) for i in markers):
+                    markers.append(m)
+                    zone = [self.Cell(spot=spot, parent=self) for spot in m.zone]
+                    pool = pool - set(zone)
+        return [m.cell for m in markers]
 
     def mark(self, *args: tuple[int, int]):
         for spot, marker in zip(args, self.markers.values()):

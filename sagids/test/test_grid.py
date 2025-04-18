@@ -19,6 +19,8 @@
 
 
 from collections import defaultdict
+from collections import Counter
+import itertools
 import unittest
 
 from sagids.grid import Grid
@@ -58,18 +60,18 @@ class GridTests(unittest.TestCase):
         grid = Grid.build()
         rows = defaultdict(list)
         grid.mark((0, 1), (1, 0), (2, 1), (3, 2))
-        self.assertTrue(grid.markers[1].is_aligned(grid.markers[2]))
-        self.assertTrue(grid.markers[2].is_aligned(grid.markers[1]))
-        self.assertTrue(grid.markers[2].is_aligned(grid.markers[3]))
-        self.assertTrue(grid.markers[2].is_aligned(grid.markers[4]))
-        self.assertTrue(grid.markers[3].is_aligned(grid.markers[2]))
-        self.assertTrue(grid.markers[3].is_aligned(grid.markers[4]))
-        self.assertTrue(grid.markers[4].is_aligned(grid.markers[3]))
-        self.assertTrue(grid.markers[4].is_aligned(grid.markers[2]))
-        self.assertFalse(grid.markers[4].is_aligned(grid.markers[1]))
-        self.assertFalse(grid.markers[3].is_aligned(grid.markers[1]))
-        self.assertFalse(grid.markers[1].is_aligned(grid.markers[3]))
-        self.assertFalse(grid.markers[1].is_aligned(grid.markers[4]))
+        self.assertTrue(grid.markers[1].visits(grid.markers[2]))
+        self.assertTrue(grid.markers[2].visits(grid.markers[1]))
+        self.assertTrue(grid.markers[2].visits(grid.markers[3]))
+        self.assertTrue(grid.markers[2].visits(grid.markers[4]))
+        self.assertTrue(grid.markers[3].visits(grid.markers[2]))
+        self.assertTrue(grid.markers[3].visits(grid.markers[4]))
+        self.assertTrue(grid.markers[4].visits(grid.markers[3]))
+        self.assertTrue(grid.markers[4].visits(grid.markers[2]))
+        self.assertFalse(grid.markers[4].visits(grid.markers[1]))
+        self.assertFalse(grid.markers[3].visits(grid.markers[1]))
+        self.assertFalse(grid.markers[1].visits(grid.markers[3]))
+        self.assertFalse(grid.markers[1].visits(grid.markers[4]))
 
     def test_marker_zone(self):
         grid = Grid.build()
@@ -82,6 +84,22 @@ class GridTests(unittest.TestCase):
                 self.assertFalse(witness.intersection(set(marker.zone)))
                 witness = witness.union(set(marker.zone))
 
-    def test_init_spots(self):
-        self.fail()
+    def test_partition(self):
+        witness = Counter()
         grid = Grid.build()
+        for n in range(100):
+            rv = grid.partition()
+            with self.subTest(n=n, rv=rv):
+                self.assertEqual(len(set(rv)), 4, rv)
+                for pair in itertools.product(rv, repeat=2):
+                    if pair[0] == pair[1]:
+                        continue
+
+                    self.assertFalse(
+                        Grid.Marker(n, parent=grid, cell=pair[0]).visits(
+                            Grid.Marker(n, parent=grid, cell=pair[1])
+                        ),
+                        pair
+                    )
+                    witness[frozenset(rv)] += 1
+        self.assertLessEqual(len(witness), 56)
