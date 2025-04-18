@@ -79,7 +79,7 @@ class Grid:
             for r in self.results(cell.value):
                 yield self.grid.Option(self, cell, r)
                 for t in transits:
-                    val = r + t.value
+                    val = r * t.value
                     yield self.grid.Option(self, cell, r, t, val)
 
     @classmethod
@@ -144,12 +144,16 @@ def game(grid, limit=sys.maxsize, goal = Fraction(3, 16)):
                 options.extend(marker.options(cell))
 
             chosen = next((i for i in options if i.total == goal), random.choice(options))
-            logger.info(f"{marker.id} moves to {cell.spot}. Takes value {chosen.result}.")
+            logger.info(f"Player {marker.id} moves to {cell.spot}. Takes value {chosen.result}.")
             marker.cell = chosen.cell
             marker.value = chosen.result
             moves.append(chosen)
             if chosen.total == goal:
-                break
+                logger.info(
+                    f"Player {marker.id} wins against player {chosen.transit.id}. "
+                    f"({marker.value} * {chosen.transit.value})."
+                )
+                return moves
 
         n += 1
     return moves
