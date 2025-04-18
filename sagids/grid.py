@@ -168,7 +168,7 @@ def run():
     grid.mark(*grid.partition())
     for marker in grid.markers.values():
         logger.info(
-            f"Player {marker.id} spotted  {marker.cell.spot}[{marker.cell.value}]. "
+            f"Player {marker.id} first at {marker.cell.spot}[{marker.cell.value}]. "
             f"Takes value {marker.value}."
         )
 
