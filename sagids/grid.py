@@ -130,18 +130,17 @@ def run():
     pprint.pprint(vars(grid))
 
     n = 0
-    while True:
+    while n < 12:
         for m in grid.markers.values():
             for s in m.zone:
                 c = grid.cells[s]
                 if m.cell == c:
                     continue
-                for o in grid.markers.values():
-                    if m is o:
-                        continue
 
-                    if m.cell.transits(o.cell):
-                        print(m, o, f"{c=}")
+                transits = [m for m in grid.markers.values() if m.cell.transits(c)]
+                for f in m.results(c.value):
+                    for t in transits:
+                        print(m.value + t.value)
         n += 1
 
 
