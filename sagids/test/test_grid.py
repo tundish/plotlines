@@ -81,3 +81,7 @@ class GridTests(unittest.TestCase):
                 self.assertEqual(len(marker.zone), 4, marker.zone)
                 self.assertFalse(witness.intersection(set(marker.zone)))
                 witness = witness.union(set(marker.zone))
+
+    def test_init_spots(self):
+        self.fail()
+        grid = Grid.build()

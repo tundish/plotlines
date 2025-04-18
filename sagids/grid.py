@@ -22,6 +22,7 @@ import dataclasses
 from decimal import Decimal
 from fractions import Fraction
 import itertools
+import pprint
 import random
 import turtle
 
@@ -69,6 +70,10 @@ class Grid:
         ]
 
     @classmethod
+    def init_spots(cls, k=4):
+        return []
+
+    @classmethod
     def build(cls, n_sectors=4, n_regions=4):
         markers = cls.build_markers(k=n_sectors)
         size = int(Decimal(n_sectors).sqrt() * Decimal(n_regions).sqrt())
@@ -91,3 +96,12 @@ class Grid:
             except KeyError:
                 pass
         return self
+
+
+def run():
+    grid = Grid.build().mark((0, 0), (1, 2), (3, 1), (3, 2))
+    pprint.pprint(vars(grid))
+
+
+if __name__ == "__main__":
+    run()
