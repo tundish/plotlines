@@ -99,17 +99,15 @@ class Grid:
                     pool = pool - set(zone)
         return [m.cell for m in markers]
 
-    def mark(self, *args: tuple[int, int]):
-        for spot, marker in zip(args, self.markers.values()):
-            try:
-                marker.cell = self.cells[spot]
-            except KeyError:
-                pass
+    def mark(self, *args: tuple["Cell"]):
+        for cell, marker in zip(args, self.markers.values()):
+            marker.cell = self.cells[cell.spot]
         return self
 
 
 def run():
-    grid = Grid.build().mark((0, 0), (1, 2), (3, 1), (3, 2))
+    grid = Grid.build()
+    grid.mark(*grid.partition())
     pprint.pprint(vars(grid))
 
 
