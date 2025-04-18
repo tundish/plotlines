@@ -20,6 +20,7 @@
 
 from collections import defaultdict
 from collections import Counter
+from fractions import Fraction
 import itertools
 from turtle import Vec2D as V
 import unittest
@@ -84,6 +85,12 @@ class GridTests(unittest.TestCase):
                 self.assertEqual(len(marker.zone), 4, marker.zone)
                 self.assertFalse(witness.intersection(set(marker.zone)))
                 witness = witness.union(set(marker.zone))
+
+    def test_marker_updates(self):
+        m = Grid.Marker(0, value=Fraction(0, 9))
+
+        self.assertEqual(list(m.updates(0)), [])
+        self.assertEqual(list(m.updates(1)), [Fraction(1, 9)])
 
     def test_partition(self):
         witness = Counter()

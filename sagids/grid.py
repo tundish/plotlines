@@ -44,7 +44,6 @@ class Grid:
             vector = cell.spot - self.spot
             return abs(vector[0]) == abs(vector[1])
 
-
     @dataclasses.dataclass
     class Marker:
         id: int
@@ -59,6 +58,23 @@ class Grid:
                 return [spot for spot in self.grid.cells if tuple(i // 2 for i in spot) == quadrant]
             except AttributeError:
                 return []
+
+        def updates(self, cardinal: int):
+            for n in range(cardinal):
+                num, den = n, cardinal - n
+                yield Fraction(
+                    (self.value.numerator + num) % 10,
+                    (self.value.denominator + num) % 10,
+                )
+
+        def options(self, cell: "Cell") -> dict[Fraction, "Marker"]:
+            for n in range(cell.value + 1):
+                num, den = n, cell.value - n
+                result = Fraction(
+                    (self.value.numerator + num) % 10,
+                    (self.value.denominator + num) % 10,
+                )
+            return {}
 
     @classmethod
     def build_markers(cls, k=4):
