@@ -49,6 +49,7 @@ import argparse
 from collections import Counter
 from collections import namedtuple
 import dataclasses
+import datetime
 from decimal import Decimal
 from fractions import Fraction
 import itertools
@@ -192,6 +193,7 @@ def game(grid, limit=sys.maxsize, goal = Fraction(3, 16)):
 
 
 def run():
+    ts = datetime.datetime.now(tz=datetime.timezone.utc)
     parser = argparse.ArgumentParser(usage=__doc__)
     parser.add_argument("-n", dest="rounds", type=int, default=1, help="Set the number of rounds to play [1]")
     args = parser.parse_args()
@@ -218,15 +220,16 @@ def run():
         turns.append(len(moves))
 
     record = dict(
+        turns=Counter(sorted(turns)),
+        ts=ts.isoformat(),
         rounds=args.rounds,
         min=min(turns),
         max=max(turns),
         mode=statistics.mode(turns),
         score=score,
-        turns=turns
     )
     logger.info(f"Moves: min {record['min']}, max {record['max']}, mode {record['mode']}")
-    print(json.dumps(record), "\n", file=sys.stdout)
+    print(json.dumps(record, indent=0), "\n", file=sys.stdout)
 
 
 if __name__ == "__main__":
