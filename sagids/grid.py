@@ -16,8 +16,36 @@
 # You should have received a copy of the
 # GNU General Public License along with SaGiDS.
 # If not, see <https://www.gnu.org/licenses/>.
+"""
+Three-sixteenths is a game for four players.
 
+It takes place on a board of sixteen squares.
+Each quadrant of the board is guarded by the marker of one player.
+The squares of each quadrant are labelled with the numbers 1, 3, 7, and 5
+going clockwise from the bottom left corner.
 
+The markers are knitting counters, which have two rotating registers labelled 0 to 9.
+The value of each counter is calculatred as a fraction, ie: the top digit diovided by the bottom.
+
+At the beginning of the game each player selects a unique value for his counter.
+The lower digit must be 9. The upper digit may be any value which evaluates a ninth, eg: 1. 2. 4. 5. 7 or 8.
+
+Play proceeds clockwise, sequentially. On each turn, a player moves his counter to a new square in his quadrant.
+He then adjusts the value of his counter by indexing either or both of the registers, in total as many times as
+indicated by the number of the square.
+
+The following rules apply to values of a counter:
+* The divisor may not finish on zero (ie: infinity is not allowed).
+* A value may be factored down, eg: 3/6 may be redialled as 1/2.
+
+Following a move and an update of the counter, a player may 'attack' another if their markers lie in a diagonal.
+An attack allows a player to multiply the value of his counter with the value of the counter he attacks.
+
+A player wins the round if the result of his attack equals 3/16.
+
+"""
+
+import argparse
 from collections import namedtuple
 import dataclasses
 from decimal import Decimal
@@ -161,8 +189,12 @@ def game(grid, limit=sys.maxsize, goal = Fraction(3, 16)):
 
 
 def run():
+    parser = argparse.ArgumentParser(usage=__doc__)
+    args = parser.parse_args()
+
     logging.basicConfig(level=logging.INFO)
     logger = logging.getLogger()
+    logger.info("Three-sixteenths by D E Haynes.")
 
     grid = Grid.build()
     grid.mark(*grid.partition())
