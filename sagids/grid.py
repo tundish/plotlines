@@ -46,14 +46,17 @@ A player wins the round if the result of his attack equals 3/16.
 """
 
 import argparse
+from collections import Counter
 from collections import namedtuple
 import dataclasses
 from decimal import Decimal
 from fractions import Fraction
 import itertools
+import json
 import logging
 import pprint
 import random
+import statistics
 import sys
 import turtle
 
@@ -190,22 +193,40 @@ def game(grid, limit=sys.maxsize, goal = Fraction(3, 16)):
 
 def run():
     parser = argparse.ArgumentParser(usage=__doc__)
+    parser.add_argument("-n", dest="rounds", type=int, default=1, help="Set the number of rounds to play [1]")
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.INFO)
     logger = logging.getLogger()
     logger.info("Three-sixteenths by D E Haynes.")
 
-    grid = Grid.build()
-    grid.mark(*grid.partition())
-    for marker in grid.markers.values():
-        logger.info(
-            f"Player {marker.id} first at {marker.cell.spot}[{marker.cell.value}]. "
-            f"Takes value {marker.value}."
-        )
+    score = Counter()
+    turns = []
+    for n in range(args.rounds):
+        grid = Grid.build()
+        grid.mark(*grid.partition())
+        for marker in grid.markers.values():
+            logger.info(
+                f"Player {marker.id} first at {marker.cell.spot}[{marker.cell.value}]. "
+                f"Takes value {marker.value}."
+            )
 
-    moves = game(grid, limit=100000)
-    logger.info(f"Game ends after {len(moves)} moves.")
+        moves = game(grid, limit=100000)
+        logger.info(f"Round ends after {len(moves)} moves.")
+
+        score[moves[-1].marker.id] += 1
+        turns.append(len(moves))
+
+    record = dict(
+        rounds=args.rounds,
+        min=min(turns),
+        max=max(turns),
+        mode=statistics.mode(turns),
+        score=score,
+        turns=turns
+    )
+    logger.info(f"Moves: min {record['min']}, max {record['max']}, mode {record['mode']}")
+    print(json.dumps(record), "\n", file=sys.stdout)
 
 
 if __name__ == "__main__":
