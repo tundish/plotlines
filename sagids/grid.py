@@ -33,8 +33,8 @@ Each player places his counter on a square within his quadrant. It must be place
 lie on a diagonal with any other.
 
 Play proceeds clockwise, sequentially. On each turn, a player moves his counter to a new square in his quadrant.
-He then adjusts the value of his counter by indexing either or both of the registers, in total as many times as
-indicated by the number of the square.
+He then adjusts the value of his counter by indexing either or both of the registers, by one digit at a time,
+in total as many times as indicated by the number of the square.
 
 The following rules apply to values of a counter:
 * The divisor may not finish on zero (ie: infinity is not allowed).
