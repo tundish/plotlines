@@ -1,5 +1,8 @@
+from turtle import Shape
 from turtle import Turtle
 
+shape = Shape("compound")
+shape.addcomponent(((0,0),(10,-5),(0,10),(-10,-5)), "white")
 t = Turtle()
 
 t.screen.title("Object-oriented turtle demo")
