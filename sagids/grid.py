@@ -25,7 +25,7 @@ The squares of each quadrant are labelled with the numbers 1, 3, 7, and 5
 going clockwise from the bottom left corner.
 
 The markers are knitting counters, which have two rotating registers labelled 0 to 9.
-The value of each counter is calculatred as a fraction, ie: the top digit diovided by the bottom.
+The value of each counter is calculatred as a fraction, ie: the top digit divided by the bottom.
 
 At the beginning of the game each player selects a unique value for his counter.
 The lower digit must be 9. The upper digit may be any value which evaluates a ninth, eg: 1. 2. 4. 5. 7 or 8.
