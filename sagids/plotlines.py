@@ -36,15 +36,19 @@ def setup_logger(level=logging.INFO):
         )
 
 
+def inline_list(text, sep=","):
+    return [i.strip() for i in text.split(sep)]
+
 def gen_exits():
-    yield "[[exits]]"
+    yield "[[nodes]]"
+    yield "[[links]]"
 
 
 def parser():
     rv = argparse.ArgumentParser(usage=__doc__, fromfile_prefix_chars="=")
     rv.add_argument("--debug", action="store_true", default=False, help="Display debug logs")
     rv.add_argument(
-        "--ending", action="append", help="Declare a named ending"
+        "--ending", type=inline_list, default=["A"], help="Declare named endings"
     )
     """
     parser.add_argument(
@@ -65,6 +69,7 @@ def main(args):
     logger = logging.getLogger("plotlines")
 
     logger.info(f"Start")
+    logger.info(f"{args.ending=}")
     for line in gen_exits():
         print(line)
     return 0
