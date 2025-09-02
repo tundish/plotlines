@@ -40,6 +40,24 @@ def gen_exits():
     yield "[[exits]]"
 
 
+def parser():
+    rv = argparse.ArgumentParser(usage=__doc__)
+    rv.add_argument("--debug", action="store_true", default=False, help="Display debug logs")
+    rv.add_argument(
+        "--ending", action="append", help="Declare a named ending"
+    )
+    """
+    parser.add_argument(
+        "--ending", type=int, default=3, help="Set the number of scenes [3]"
+    )
+    parser.add_argument(
+        "--ending", type=int, default=3, help="Set the number of paths [1]"
+    )
+    """
+    rv.convert_arg_line_to_args = lambda x: x.split()
+    return rv
+
+
 def main(args):
     level = logging.DEBUG if args.debug else logging.INFO
     # setup_logger(level=level)
@@ -54,20 +72,8 @@ def main(args):
 
 def run():
     ts = datetime.datetime.now(tz=datetime.timezone.utc)
-    parser = argparse.ArgumentParser(usage=__doc__)
-    parser.add_argument("--debug", action="store_true", default=False, help="Display debug logs")
-    parser.add_argument(
-        "--ending", action="append", help="Declare a named ending"
-    )
-    """
-    parser.add_argument(
-        "--ending", type=int, default=3, help="Set the number of scenes [3]"
-    )
-    parser.add_argument(
-        "--ending", type=int, default=3, help="Set the number of paths [1]"
-    )
-    """
-    args = parser.parse_args()
+    p = parser()
+    args = p.parse_args()
     rv = main(args)
     sys.exit(rv)
 
