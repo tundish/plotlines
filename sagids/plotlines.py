@@ -36,8 +36,13 @@ def setup_logger(level=logging.INFO):
         )
 
 
-def inline_list(text, sep=","):
-    return [i.strip() for i in text.split(sep)]
+class InlineValues:
+
+    def __init__(self, _type=str):
+        self.type = _type
+
+    def __call__(self, text, sep=","):
+        return [i.strip() for i in text.split(sep)]
 
 def gen_exits():
     yield "[[nodes]]"
@@ -48,7 +53,11 @@ def parser():
     rv = argparse.ArgumentParser(usage=__doc__, fromfile_prefix_chars="=")
     rv.add_argument("--debug", action="store_true", default=False, help="Display debug logs")
     rv.add_argument(
-        "--ending", type=inline_list, default=["A"], help="Declare named endings"
+        "--ending", type=InlineValues(), default=["A"], help="Declare named endings"
+    )
+    rv.add_argument(
+        "--loading", type=InlineValues(int), default=[10, 100],
+        help="Define limits for the number of nodes of the story graph"
     )
     """
     parser.add_argument(
@@ -69,7 +78,7 @@ def main(args):
     logger = logging.getLogger("plotlines")
 
     logger.info(f"Start")
-    logger.info(f"{args.ending=}")
+    logger.info(f"{args=}")
     for line in gen_exits():
         print(line)
     return 0
