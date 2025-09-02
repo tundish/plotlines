@@ -36,6 +36,10 @@ def setup_logger(level=logging.INFO):
         )
 
 
+def gen_exits():
+    yield "[[exits]]"
+
+
 def main(args):
     level = logging.DEBUG if args.debug else logging.INFO
     # setup_logger(level=level)
@@ -43,6 +47,8 @@ def main(args):
     logger = logging.getLogger("plotlines")
 
     logger.info(f"Start")
+    for line in gen_exits():
+        print(line)
     return 0
 
 

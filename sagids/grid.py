@@ -28,17 +28,20 @@ The markers are knitting counters, which have two rotating registers labelled 0 
 The value of each counter is calculatred as a fraction, ie: the top digit divided by the bottom.
 
 At the beginning of the game each player selects a unique value for his counter.
-The lower digit must be 9. The upper digit may be any value which evaluates a ninth, eg: 1. 2. 4. 5. 7 or 8.
+The lower digit must be 9. The upper digit may be any which preserves the value as a ninth, eg: 1, 2, 4, 5, 7 or 8.
+
+Each player places his counter on a square within his quadrant. It must be placed so that it does not
+lie on a diagonal with any other.
 
 Play proceeds clockwise, sequentially. On each turn, a player moves his counter to a new square in his quadrant.
-He then adjusts the value of his counter by indexing either or both of the registers, in total as many times as
-indicated by the number of the square.
+He then adjusts the value of his counter by indexing either or both of the registers, by one digit at a time,
+in total as many times as indicated by the number of the square.
 
 The following rules apply to values of a counter:
 * The divisor may not finish on zero (ie: infinity is not allowed).
 * A value may be factored down, eg: 3/6 may be redialled as 1/2.
 
-Following a move and an update of the counter, a player may 'attack' another if their markers lie in a diagonal.
+Following a move and an update of the counter, a player may 'attack' another if their markers lie on a diagonal.
 An attack allows a player to multiply the value of his counter with the value of the counter he attacks.
 
 A player wins the round if the result of his attack equals 3/16.
