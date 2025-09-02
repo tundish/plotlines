@@ -41,7 +41,7 @@ def gen_exits():
 
 
 def parser():
-    rv = argparse.ArgumentParser(usage=__doc__)
+    rv = argparse.ArgumentParser(usage=__doc__, fromfile_prefix_chars="=")
     rv.add_argument("--debug", action="store_true", default=False, help="Display debug logs")
     rv.add_argument(
         "--ending", action="append", help="Declare a named ending"
