@@ -59,6 +59,10 @@ def parser():
         "--loading", type=InlineValues(int), default=[10, 100],
         help="Define limits for the number of nodes of the story graph"
     )
+    rv.add_argument(
+        "--trails", type=int, default=None,
+        help="Define the nurm,ber of trails through the story graph"
+    )
     """
     parser.add_argument(
         "--ending", type=int, default=3, help="Set the number of scenes [3]"
@@ -77,6 +81,7 @@ def main(args):
     logging.basicConfig(level=logging.INFO)
     logger = logging.getLogger("plotlines")
 
+    args.trails = args.trails or len(args.ending)
     logger.info(f"Start")
     logger.info(f"{args=}")
     for line in gen_exits():
