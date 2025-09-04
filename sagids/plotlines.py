@@ -18,10 +18,20 @@
 # If not, see <https://www.gnu.org/licenses/>.
 
 import argparse
+from collections import namedtuple
+import dataclasses
 import datetime
 import logging
 import sys
-import turtle
+
+try:
+    from svg_turtle import SvgTurtle as Turtle
+except ImportError:
+    from turtle import Turtle
+from turtle import Shape
+
+
+Arc = namedtuple("Arc", ["into", "exit", "colour", "weight", "label", "contents"])
 
 
 def setup_logger(level=logging.INFO):
@@ -89,6 +99,9 @@ def main(args):
     args.trails = args.trails or len(args.ending)
     logger.info(f"Start")
     logger.info(f"{args=}")
+
+    t = Turtle()
+    print(f"{t.screen.getshapes()=}")
 
     graph = dict(gen_graph(**vars(args)))
     for line in gen_exits():
