@@ -21,6 +21,7 @@ import argparse
 import datetime
 import logging
 import sys
+import turtle
 
 
 def setup_logger(level=logging.INFO):
@@ -43,6 +44,10 @@ class InlineValues:
 
     def __call__(self, text, sep=","):
         return [i.strip() for i in text.split(sep)]
+
+def gen_graph(ending: list[str], loading: list[int], trails: int, **kwargs):
+    print(f"{kwargs=}")
+    yield None, None
 
 def gen_exits():
     yield "[[nodes]]"
@@ -84,6 +89,8 @@ def main(args):
     args.trails = args.trails or len(args.ending)
     logger.info(f"Start")
     logger.info(f"{args=}")
+
+    graph = dict(gen_graph(**vars(args)))
     for line in gen_exits():
         print(line)
     return 0
