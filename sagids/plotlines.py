@@ -18,11 +18,12 @@
 # If not, see <https://www.gnu.org/licenses/>.
 
 import argparse
-from collections import namedtuple
 import dataclasses
 import datetime
 import logging
 import sys
+import typing
+import uuid
 
 try:
     from svg_turtle import SvgTurtle as Turtle
@@ -31,7 +32,29 @@ except ImportError:
 from turtle import Shape
 
 
-Arc = namedtuple("Arc", ["into", "exit", "colour", "weight", "label", "contents"])
+@dataclasses.dataclass
+class Pin:
+    total: typing.ClassVar[int] = 0
+
+    label:      str = ""
+    number:     int = dataclasses.field(init=False)
+    contents:   list = dataclasses.field(default_factory=list)
+
+    def __post_init__(self):
+        self.number = self.__class__.total + 1
+        self.__class__.total = self.number
+
+
+@dataclasses.dataclass
+class Node(Pin):
+    shape: str = ""
+
+
+@dataclasses.dataclass
+class Edge(Pin):
+    exit: Node = None
+    into: Node = None
+    trail: str = ""
 
 
 def setup_logger(level=logging.INFO):
@@ -57,9 +80,10 @@ class InlineValues:
 
 def gen_graph(ending: list[str], loading: list[int], trails: int, **kwargs):
     print(f"{kwargs=}")
-    yield None, None
+    a = Edge()
+    yield a.number, a
 
-def gen_exits():
+def gen_exits(graph: dict):
     yield "[[nodes]]"
     yield "[[links]]"
 
@@ -75,8 +99,8 @@ def parser():
         help="Define limits for the number of nodes of the story graph"
     )
     rv.add_argument(
-        "--trails", type=int, default=None,
-        help="Define the nurm,ber of trails through the story graph"
+        "--trails", type=InlineValues(str), default=None,
+        help="Define the number of trails through the story graph"
     )
     """
     parser.add_argument(
@@ -100,12 +124,15 @@ def main(args):
     logger.info(f"Start")
     logger.info(f"{args=}")
 
+    graph = dict(gen_graph(**vars(args)))
+    print(f"{graph=}")
+
+    for line in gen_exits(graph):
+        print(line)
+
     t = Turtle()
     print(f"{t.screen.getshapes()=}")
-
-    graph = dict(gen_graph(**vars(args)))
-    for line in gen_exits():
-        print(line)
+    t.screen.mainloop()
     return 0
 
 
