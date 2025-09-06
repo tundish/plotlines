@@ -71,52 +71,15 @@ def setup_logger(level=logging.INFO):
         )
 
 
-class InlineValues:
-
-    def __init__(self, _type=str):
-        self.type = _type
-
-    def __call__(self, text, sep=","):
-        return [i.strip() for i in text.split(sep)]
-
 def gen_graph(ending: list[str], loading: list[int], trails: int, **kwargs):
     print(f"{kwargs=}")
     a = Edge()
     yield a.number, a
 
+
 def gen_edges(graph: dict):
     yield "[[nodes]]"
     yield "[[links]]"
-
-
-def parser():
-    rv = argparse.ArgumentParser(usage=__doc__, fromfile_prefix_chars="=")
-    rv.add_argument("--debug", action="store_true", default=False, help="Display debug logs")
-    rv.add_argument(
-        "--ending", type=InlineValues(), default=["A"], help="Declare named endings"
-    )
-    rv.add_argument(
-        "--loading", type=InlineValues(int), default=[10, 100],
-        help="Define limits for the number of nodes of the story graph"
-    )
-    rv.add_argument(
-        "--trails", type=InlineValues(str), default=None,
-        help="Define the number of trails through the story graph"
-    )
-    rv.add_argument(
-        "--format", choices=["plot", "svg", "text", "toml"], default="text",
-        help="Specify format of output [text]"
-    )
-    """
-    parser.add_argument(
-        "--ending", type=int, default=3, help="Set the number of scenes [3]"
-    )
-    parser.add_argument(
-        "--ending", type=int, default=3, help="Set the number of paths [1]"
-    )
-    """
-    rv.convert_arg_line_to_args = lambda x: x.split()
-    return rv
 
 
 def main(args):
@@ -147,6 +110,45 @@ def main(args):
         print(*gen_edges(graph), sep="\n", file=sys.stdout)
 
     return 0
+
+
+class InlineValues:
+
+    def __init__(self, _type=str):
+        self.type = _type
+
+    def __call__(self, text, sep=","):
+        return [i.strip() for i in text.split(sep)]
+
+
+def parser():
+    rv = argparse.ArgumentParser(usage=__doc__, fromfile_prefix_chars="=")
+    rv.add_argument("--debug", action="store_true", default=False, help="Display debug logs")
+    rv.add_argument(
+        "--ending", type=InlineValues(), default=["A"], help="Declare named endings"
+    )
+    rv.add_argument(
+        "--loading", type=InlineValues(int), default=[10, 100],
+        help="Define limits for the number of nodes of the story graph"
+    )
+    rv.add_argument(
+        "--trails", type=InlineValues(str), default=None,
+        help="Define the number of trails through the story graph"
+    )
+    rv.add_argument(
+        "--format", choices=["plot", "svg", "text", "toml"], default="text",
+        help="Specify format of output [text]"
+    )
+    """
+    parser.add_argument(
+        "--ending", type=int, default=3, help="Set the number of scenes [3]"
+    )
+    parser.add_argument(
+        "--ending", type=int, default=3, help="Set the number of paths [1]"
+    )
+    """
+    rv.convert_arg_line_to_args = lambda x: x.split()
+    return rv
 
 
 def run():
