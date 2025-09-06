@@ -45,7 +45,7 @@ class Pin:
     contents:   list = dataclasses.field(default_factory=list, compare=False)
 
     def __post_init__(self):
-        self.number = len(self.__class__.store[self.__class__]) + 1
+        self.number = max([j.number for i in self.__class__.store.values() for j in i], default=0) + 1
         self.__class__.store[self.__class__].add(self)
 
 
