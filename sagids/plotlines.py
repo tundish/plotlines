@@ -84,7 +84,7 @@ def gen_graph(ending: list[str], loading: list[int], trails: int, **kwargs):
     a = Edge()
     yield a.number, a
 
-def gen_exits(graph: dict):
+def gen_edges(graph: dict):
     yield "[[nodes]]"
     yield "[[links]]"
 
@@ -132,13 +132,19 @@ def main(args):
     graph = dict(gen_graph(**vars(args)))
     print(f"{graph=}")
 
-    for line in gen_exits(graph):
-        print(line)
-
+    stamps = []
     t = SvgTurtle()
+    stamps.append(t.stamp())
     print(f"{t.screen.getshapes()=}")
-    t.screen.mainloop()
-    t.save_as("plotlines.svg")
+
+    if args.format == "plot":
+        t.screen.mainloop()
+    elif args.format == "svg":
+        t.save_as("plotlines.svg")
+    elif args.format == "toml":
+        for line in gen_edges(graph):
+            print(line)
+
     return 0
 
 
