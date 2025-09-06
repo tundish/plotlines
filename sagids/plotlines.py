@@ -130,20 +130,21 @@ def main(args):
     logger.info(f"{args=}")
 
     graph = dict(gen_graph(**vars(args)))
-    print(f"{graph=}")
+    print(f"{graph=}", file=sys.stderr)
 
     stamps = []
     t = SvgTurtle()
     stamps.append(t.stamp())
-    print(f"{t.screen.getshapes()=}")
+    print(f"{t.screen.getshapes()=}", file=sys.stderr)
 
     if args.format == "plot":
         t.screen.mainloop()
     elif args.format == "svg":
-        t.save_as("plotlines.svg")
+        text = t.to_svg()
+        lines = text.replace("><", ">\n<").splitlines()
+        print(*lines, sep="\n", file=sys.stdout)
     elif args.format == "toml":
-        for line in gen_edges(graph):
-            print(line)
+        print(*gen_edges(graph), sep="\n", file=sys.stdout)
 
     return 0
 
