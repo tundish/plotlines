@@ -18,6 +18,7 @@
 # If not, see <https://www.gnu.org/licenses/>.
 
 import argparse
+from collections import defaultdict
 import dataclasses
 import datetime
 import logging
@@ -26,6 +27,7 @@ from turtle import Turtle
 from turtle import Shape
 import typing
 import uuid
+import weakref
 
 try:
     from svg_turtle import SvgTurtle
@@ -33,25 +35,26 @@ except ImportError:
     SvgTurtle = Turtle
 
 
-@dataclasses.dataclass
+@dataclasses.dataclass(unsafe_hash=True)
 class Pin:
-    total: typing.ClassVar[int] = 0
+    store: typing.ClassVar[set] = defaultdict(weakref.WeakSet)
 
     label:      str = ""
     number:     int = dataclasses.field(init=False)
-    contents:   list = dataclasses.field(default_factory=list)
+    shape:      str = ""
+    contents:   list = dataclasses.field(default_factory=list, compare=False)
 
     def __post_init__(self):
-        self.number = self.__class__.total + 1
-        self.__class__.total = self.number
+        self.number = len(self.__class__.store[self.__class__]) + 1
+        self.__class__.store[self.__class__].add(self)
 
 
-@dataclasses.dataclass
+@dataclasses.dataclass(unsafe_hash=True)
 class Node(Pin):
-    shape: str = ""
+    pass
 
 
-@dataclasses.dataclass
+@dataclasses.dataclass(unsafe_hash=True)
 class Edge(Pin):
     exit: Node = None
     into: Node = None
@@ -73,6 +76,9 @@ def setup_logger(level=logging.INFO):
 
 def gen_graph(ending: list[str], loading: list[int], trails: int, **kwargs):
     print(f"{kwargs=}")
+    while len(Pin.store[Node]) + len(Pin.store[Edge]) < max(loading):
+        node = Node()
+        yield node.number, node
     a = Edge()
     yield a.number, a
 
