@@ -22,14 +22,15 @@ import dataclasses
 import datetime
 import logging
 import sys
+from turtle import Turtle
+from turtle import Shape
 import typing
 import uuid
 
 try:
-    from svg_turtle import SvgTurtle as Turtle
+    from svg_turtle import SvgTurtle
 except ImportError:
-    from turtle import Turtle
-from turtle import Shape
+    SvgTurtle = Turtle
 
 
 @dataclasses.dataclass
@@ -102,6 +103,10 @@ def parser():
         "--trails", type=InlineValues(str), default=None,
         help="Define the number of trails through the story graph"
     )
+    rv.add_argument(
+        "--format", choices=["plot", "svg", "text", "toml"], default="text",
+        help="Specify format of output [text]"
+    )
     """
     parser.add_argument(
         "--ending", type=int, default=3, help="Set the number of scenes [3]"
@@ -130,9 +135,10 @@ def main(args):
     for line in gen_exits(graph):
         print(line)
 
-    t = Turtle()
+    t = SvgTurtle()
     print(f"{t.screen.getshapes()=}")
     t.screen.mainloop()
+    t.save_as("plotlines.svg")
     return 0
 
 
