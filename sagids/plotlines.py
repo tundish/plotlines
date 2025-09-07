@@ -24,6 +24,7 @@ import dataclasses
 import datetime
 import logging
 import pprint
+import string
 import sys
 from turtle import Turtle
 from turtle import Shape
@@ -85,6 +86,7 @@ def setup_logger(level=logging.INFO):
 
 
 def gen_graph(ending: list[str], loading: list[int], trails: int, **kwargs):
+    print(string.ascii_uppercase, file=sys.stderr)
     frame = deque([Node(label=name) for name in ending])
 
     while len(Pin.store[Node]) + len(Pin.store[Edge]) < max(loading):
@@ -140,7 +142,7 @@ def main(args):
             lines = text.replace("><", ">\n<").splitlines()
         print(*lines, sep="\n", file=sys.stdout)
     elif args.format == "text":
-        pprint.pprint(Pin.store[Edge])
+        pprint.pprint(list(Pin.store[Edge]))
     elif args.format == "toml":
         print(*gen_edges(graph), sep="\n", file=sys.stdout)
 
