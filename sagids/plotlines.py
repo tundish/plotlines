@@ -109,8 +109,13 @@ def main(args):
     if args.format == "plot":
         t.screen.mainloop()
     elif args.format == "svg":
-        text = t.to_svg()
-        lines = text.replace("><", ">\n<").splitlines()
+        try:
+            text = t.to_svg()
+        except AttributeError:
+            logger.warning("SVG Turtle is not installed")
+            lines = []
+        else:
+            lines = text.replace("><", ">\n<").splitlines()
         print(*lines, sep="\n", file=sys.stdout)
     elif args.format == "toml":
         print(*gen_edges(graph), sep="\n", file=sys.stdout)
