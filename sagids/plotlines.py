@@ -23,6 +23,7 @@ from collections import deque
 import dataclasses
 import datetime
 import logging
+import pprint
 import sys
 from turtle import Turtle
 from turtle import Shape
@@ -92,10 +93,13 @@ def gen_graph(ending: list[str], loading: list[int], trails: int, **kwargs):
             node = frame.popleft()
         except IndexError:
             break
-        yield node.number, node
+        else:
+            edge = Edge(exit=Node(), into=node)
+            frame.append(edge.exit)
+            yield edge.number, edge
     else:
         # Finish with start node
-        start = Node(label=start)
+        start = Node(label="start")
         for node in frame:
             edge = Edge(exit=start, into=node)
             yield edge.number, edge
@@ -135,6 +139,8 @@ def main(args):
         else:
             lines = text.replace("><", ">\n<").splitlines()
         print(*lines, sep="\n", file=sys.stdout)
+    elif args.format == "text":
+        pprint.pprint(Pin.store[Edge])
     elif args.format == "toml":
         print(*gen_edges(graph), sep="\n", file=sys.stdout)
 
