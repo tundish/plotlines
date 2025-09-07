@@ -52,7 +52,15 @@ class Pin:
 
 @dataclasses.dataclass(unsafe_hash=True)
 class Node(Pin):
-    pass
+
+    @property
+    def neighbours(self):
+        return []
+
+    @property
+    def density(self):
+        "Degree of node divided by number of neighbours"
+        return []
 
 
 @dataclasses.dataclass(unsafe_hash=True)
@@ -79,6 +87,7 @@ def gen_graph(ending: list[str], loading: list[int], trails: int, **kwargs):
     frame = deque([Node(label=name) for name in ending])
 
     while len(Pin.store[Node]) + len(Pin.store[Edge]) < max(loading):
+        # Connect each node to one or more trail edges
         try:
             node = frame.popleft()
         except IndexError:
