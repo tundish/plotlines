@@ -19,6 +19,7 @@
 
 import argparse
 from collections import defaultdict
+from collections import deque
 import dataclasses
 import datetime
 import logging
@@ -75,10 +76,18 @@ def setup_logger(level=logging.INFO):
 
 
 def gen_graph(ending: list[str], loading: list[int], trails: int, **kwargs):
-    print(f"{kwargs=}")
+    frame = deque([Node(label=name) for name in ending])
+
     while len(Pin.store[Node]) + len(Pin.store[Edge]) < max(loading):
-        node = Node()
+        try:
+            node = frame.popleft()
+        except IndexError:
+            break
         yield node.number, node
+    else:
+        # Finish with start node
+        pass
+
     a = Edge()
     yield a.number, a
 
