@@ -95,10 +95,10 @@ def gen_graph(ending: list[str], loading: list[int], trails: int, **kwargs):
         yield node.number, node
     else:
         # Finish with start node
-        pass
-
-    a = Edge()
-    yield a.number, a
+        start = Node(label=start)
+        for node in frame:
+            edge = Edge(exit=start, into=node)
+            yield edge.number, edge
 
 
 def gen_edges(graph: dict):
