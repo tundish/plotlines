@@ -21,6 +21,7 @@ import argparse
 from collections import defaultdict
 from collections import deque
 from collections import UserDict
+from collections.abc import Generator
 import dataclasses
 import datetime
 import logging
@@ -29,6 +30,7 @@ import string
 import sys
 import tkinter as tk
 import tkinter.font
+from turtle import RawTurtle
 from turtle import Turtle
 from turtle import Shape
 import typing
@@ -92,7 +94,7 @@ def setup_logger(level=logging.INFO):
         )
 
 
-def gen_graph(ending: list[str], loading: list[int], trails: int, **kwargs):
+def gen_graph(ending: list[str], loading: list[int], trails: int, **kwargs) -> Generator[int, Edge]:
     frame = deque([Node(label=name) for name in ending])
 
     while len(Pin.store[Node]) + len(Pin.store[Edge]) < max(loading):
@@ -113,7 +115,11 @@ def gen_graph(ending: list[str], loading: list[int], trails: int, **kwargs):
             yield edge.number, edge
 
 
-def to_toml(graph: dict):
+def draw_graph(t: RawTurtle) -> RawTurtle:
+    pass
+
+
+def toml_graph(graph: dict) -> Generator[str]:
     yield "[[nodes]]"
     yield "[[links]]"
 
