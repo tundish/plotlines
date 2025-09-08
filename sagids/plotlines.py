@@ -26,6 +26,8 @@ import logging
 import pprint
 import string
 import sys
+import tkinter as tk
+import tkinter.font
 from turtle import Turtle
 from turtle import Shape
 import typing
@@ -120,19 +122,21 @@ def main(args):
 
     args.trails = args.trails or len(args.ending)
     logger.info(f"Start")
-    logger.info(f"{args=}")
+    logger.debug(f"{args=}")
 
     graph = dict(gen_graph(**vars(args)))
     print(f"{graph=}", file=sys.stderr)
 
-    stamps = []
-    t = SvgTurtle()
-    stamps.append(t.stamp())
-    print(f"{t.screen.getshapes()=}", file=sys.stderr)
-
     if args.format == "plot":
+        t = Turtle()
+        stamps = []
+        stamps.append(t.stamp())
+        print(f"{t.screen.getshapes()=}", file=sys.stderr)
+
+        print(tk.font.families())
         t.screen.mainloop()
     elif args.format == "svg":
+        t = SvgTurtle()
         try:
             text = t.to_svg()
         except AttributeError:
