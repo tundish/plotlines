@@ -41,6 +41,10 @@ except ImportError:
     SvgTurtle = Turtle
 
 
+class RenderGraphGenerator:
+    pass
+
+
 @dataclasses.dataclass(unsafe_hash=True)
 class Pin:
     store: typing.ClassVar[set] = defaultdict(weakref.WeakSet)
@@ -89,7 +93,6 @@ def setup_logger(level=logging.INFO):
 
 
 def gen_graph(ending: list[str], loading: list[int], trails: int, **kwargs):
-    print(string.ascii_uppercase, file=sys.stderr)
     frame = deque([Node(label=name) for name in ending])
 
     while len(Pin.store[Node]) + len(Pin.store[Edge]) < max(loading):
@@ -131,12 +134,15 @@ def main(args):
         t = Turtle()
         stamps = []
         stamps.append(t.stamp())
+        print(string.ascii_uppercase, file=sys.stderr)
         print(f"{t.screen.getshapes()=}", file=sys.stderr)
+        print(f"{stamps=}", file=sys.stderr)
 
         print(tk.font.families())
         t.screen.mainloop()
     elif args.format == "svg":
         t = SvgTurtle()
+        # NB: No root window for tk.font.families()
         try:
             text = t.to_svg()
         except AttributeError:
@@ -180,14 +186,6 @@ def parser():
         "--format", choices=["plot", "svg", "text", "toml"], default="text",
         help="Specify format of output [text]"
     )
-    """
-    parser.add_argument(
-        "--ending", type=int, default=3, help="Set the number of scenes [3]"
-    )
-    parser.add_argument(
-        "--ending", type=int, default=3, help="Set the number of paths [1]"
-    )
-    """
     rv.convert_arg_line_to_args = lambda x: x.split()
     return rv
 
