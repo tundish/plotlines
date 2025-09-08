@@ -20,6 +20,7 @@
 import argparse
 from collections import defaultdict
 from collections import deque
+from collections import UserDict
 import dataclasses
 import datetime
 import logging
@@ -109,7 +110,7 @@ def gen_graph(ending: list[str], loading: list[int], trails: int, **kwargs):
             yield edge.number, edge
 
 
-def gen_edges(graph: dict):
+def to_toml(graph: dict):
     yield "[[nodes]]"
     yield "[[links]]"
 
@@ -117,7 +118,7 @@ def gen_edges(graph: dict):
 def main(args):
     level = logging.DEBUG if args.debug else logging.INFO
     # setup_logger(level=level)
-    logging.basicConfig(level=logging.INFO)
+    logging.basicConfig(level=level)
     logger = logging.getLogger("plotlines")
 
     args.trails = args.trails or len(args.ending)
@@ -125,7 +126,6 @@ def main(args):
     logger.debug(f"{args=}")
 
     graph = dict(gen_graph(**vars(args)))
-    print(f"{graph=}", file=sys.stderr)
 
     if args.format == "plot":
         t = Turtle()
@@ -146,34 +146,34 @@ def main(args):
             lines = text.replace("><", ">\n<").splitlines()
         print(*lines, sep="\n", file=sys.stdout)
     elif args.format == "text":
-        pprint.pprint(list(Pin.store[Edge]))
+        pprint.pprint(graph)
     elif args.format == "toml":
-        print(*gen_edges(graph), sep="\n", file=sys.stdout)
+        print(*to_toml(graph), sep="\n", file=sys.stdout)
 
     return 0
 
 
 class InlineValues:
 
-    def __init__(self, _type=str):
-        self.type = _type
+    def __init__(self, type_=str):
+        self.type = type_
 
     def __call__(self, text, sep=","):
-        return [i.strip() for i in text.split(sep)]
+        return [self.type(i.strip()) for i in text.split(sep)]
 
 
 def parser():
     rv = argparse.ArgumentParser(usage=__doc__, fromfile_prefix_chars="=")
     rv.add_argument("--debug", action="store_true", default=False, help="Display debug logs")
     rv.add_argument(
-        "--ending", type=InlineValues(), default=["A"], help="Declare named endings"
+        "--ending", type=InlineValues(str), default=["A"], help="Declare named endings"
     )
     rv.add_argument(
         "--loading", type=InlineValues(int), default=[10, 100],
         help="Define limits for the number of nodes of the story graph"
     )
     rv.add_argument(
-        "--trails", type=InlineValues(str), default=None,
+        "--trails", type=int, default=None,
         help="Define the number of trails through the story graph"
     )
     rv.add_argument(
