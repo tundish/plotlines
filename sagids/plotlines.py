@@ -124,7 +124,8 @@ def gen_graph(ending: list[str], loading: list[int], trails: int, **kwargs) -> G
 
 
 def draw_graph(t: RawTurtle, graph: dict) -> RawTurtle:
-    node = max((node.number, node) for node in Pin.store[Node])[1]
+    node = next(node for node in Pin.store[Node] if all(edge.exit is node for edge in node.ports.values()))
+    print(f"{node=}")
     for near in node.neighbours:
         print(f"{near=}")
 
