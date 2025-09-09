@@ -63,15 +63,23 @@ class Pin:
 
 @dataclasses.dataclass(unsafe_hash=True)
 class Node(Pin):
+    ports:  dict = dataclasses.field(default_factory=dict, compare=False)
 
     @property
     def neighbours(self):
-        return []
+        nodes = [edge.exit for edge in self.ports.values()] + [edge.into for edge in self.ports.values()]
+        return [i for i in nodes if i is not self]
 
     @property
     def density(self):
         "Degree of node divided by number of neighbours"
         return []
+
+    def connect(self, other, trail=None):
+        port = len(self.ports)
+        rv = Edge(exit=self, into=other, trail=trail)
+        self.ports[port] = rv
+        return rv
 
 
 @dataclasses.dataclass(unsafe_hash=True)
@@ -104,19 +112,21 @@ def gen_graph(ending: list[str], loading: list[int], trails: int, **kwargs) -> G
         except IndexError:
             break
         else:
-            edge = Edge(exit=Node(), into=node)
+            edge = Node().connect(node)
             frame.append(edge.exit)
             yield edge.number, edge
     else:
         # Finish with start node
         start = Node(label="start")
         for node in frame:
-            edge = Edge(exit=start, into=node)
+            edge = start.connect(node)
             yield edge.number, edge
 
 
-def draw_graph(t: RawTurtle) -> RawTurtle:
-    pass
+def draw_graph(t: RawTurtle, graph: dict) -> RawTurtle:
+    node = max((node.number, node) for node in Pin.store[Node])[1]
+    for near in node.neighbours:
+        print(f"{near=}")
 
 
 def toml_graph(graph: dict) -> Generator[str]:
@@ -145,6 +155,7 @@ def main(args):
         print(f"{stamps=}", file=sys.stderr)
 
         print(tk.font.families())
+        draw_graph(t, graph)
         t.screen.mainloop()
     elif args.format == "svg":
         t = SvgTurtle()
