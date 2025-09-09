@@ -112,7 +112,7 @@ def gen_graph(ending: list[str], loading: list[int], trails: int, **kwargs) -> G
         except IndexError:
             break
         else:
-            edge = Node().connect(node)
+            edge = node.connect(Node())
             frame.append(edge.exit)
             yield edge.number, edge
     else:
@@ -154,7 +154,7 @@ def main(args):
         print(f"{t.screen.getshapes()=}", file=sys.stderr)
         print(f"{stamps=}", file=sys.stderr)
 
-        print(tk.font.families())
+        logger.debug(tk.font.families())
         draw_graph(t, graph)
         t.screen.mainloop()
     elif args.format == "svg":
