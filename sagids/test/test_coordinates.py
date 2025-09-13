@@ -18,24 +18,10 @@
 # If not, see <https://www.gnu.org/licenses/>.
 
 
-import math
 import pickle
-import turtle
 import unittest
 
-
-class Coordinates(tuple):
-
-    def __new__(cls, *args, coerce=None):
-        if coerce:
-            args = [coerce(i) for i in args]
-        return tuple.__new__(cls, args)
-
-    def __abs__(self):
-        return math.hypot(*self)
-
-    def __getnewargs__(self):
-        return self
+from sagids.coordinates import Coordinates
 
 
 class CoordinatesTests(unittest.TestCase):
