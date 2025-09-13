@@ -53,3 +53,12 @@ class CoordinatesTests(unittest.TestCase):
         d = pickle.loads(b)
         self.assertIsInstance(d, Coordinates)
         self.assertEqual(d, c)
+
+    def test_subtract(self):
+        x = Coordinates(1.1, 2.2, 3.3)
+        y = Coordinates(0.5, 0.6, 0.7)
+        z = x - y
+        self.assertIsInstance(z, Coordinates)
+        for a, b in zip(z, (0.6, 1.6, 2.6)):
+            self.assertAlmostEqual(a, b)
+
