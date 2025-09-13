@@ -51,3 +51,7 @@ class Coordinates(tuple):
 
     def __truediv__(self, other):
         return self.__class__(*[i / other for i in self])
+
+    @property
+    def unity(self):
+        return self / abs(self)

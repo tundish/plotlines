@@ -18,6 +18,7 @@
 # If not, see <https://www.gnu.org/licenses/>.
 
 
+import math
 import pickle
 import unittest
 
@@ -93,4 +94,14 @@ class CoordinatesTests(unittest.TestCase):
         self.assertIsInstance(z, Coordinates)
         for a, b in zip(z, (1, 2, 3)):
             self.assertAlmostEqual(a, b)
+
+    def test_magnitude(self):
+        self.assertAlmostEqual(abs(Coordinates(1, 1)), math.sqrt(2))
+        self.assertAlmostEqual(abs(Coordinates(1, math.sqrt(3))), 2)
+        self.assertAlmostEqual(abs(Coordinates(3, 4)), 5)
+
+    def test_normalised(self):
+        self.assertAlmostEqual(abs(Coordinates(1, 1)), math.sqrt(2))
+        self.assertAlmostEqual(abs(Coordinates(1, math.sqrt(3)).unity), 1)
+        self.assertAlmostEqual(abs(Coordinates(3, 4).unity), 1)
 
