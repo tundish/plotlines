@@ -102,7 +102,7 @@ def setup_logger(level=logging.INFO):
         )
 
 
-def gen_graph(ending: list[str], loading: list[int], trails: int, **kwargs) -> Generator[int, Edge]:
+def build_graph(ending: list[str], loading: list[int], trails: int, **kwargs) -> Generator[int, Edge]:
     frame = deque([Node(label=name) for name in ending])
 
     while len(Pin.store[Node]) + len(Pin.store[Edge]) < max(loading):
@@ -121,6 +121,10 @@ def gen_graph(ending: list[str], loading: list[int], trails: int, **kwargs) -> G
         for node in frame:
             edge = start.connect(node)
             yield edge.number, edge
+
+
+def style_graph(graph: dict) -> dict:
+    return graph
 
 
 def draw_graph(t: RawTurtle, graph: dict) -> RawTurtle:
@@ -145,12 +149,14 @@ def main(args):
     logger.info(f"Start")
     logger.debug(f"{args=}")
 
-    graph = dict(gen_graph(**vars(args)))
+    graph = dict(build_graph(**vars(args)))
 
     if args.format == "plot":
         t = Turtle()
         stamps = []
         stamps.append(t.stamp())
+
+        graph = style_graph(graph)
         print(string.ascii_uppercase, file=sys.stderr)
         print(f"{t.screen.getshapes()=}", file=sys.stderr)
         print(f"{stamps=}", file=sys.stderr)
@@ -161,6 +167,7 @@ def main(args):
     elif args.format == "svg":
         t = SvgTurtle()
         # NB: No root window for tk.font.families()
+        graph = style_graph(graph)
         try:
             text = t.to_svg()
         except AttributeError:
@@ -172,7 +179,7 @@ def main(args):
     elif args.format == "text":
         pprint.pprint(graph)
     elif args.format == "toml":
-        print(*to_toml(graph), sep="\n", file=sys.stdout)
+        print(*toml_graph(graph), sep="\n", file=sys.stdout)
 
     return 0
 
