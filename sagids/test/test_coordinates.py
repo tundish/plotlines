@@ -161,3 +161,16 @@ class CoordinatesTests(unittest.TestCase):
             0
         )
 
+    def test_intercept(self):
+        # Drop a normal on to a line and measure distance
+        a = Coordinates(1, 3)
+        b = Coordinates(19, 12)
+        c = Coordinates(13, 4)
+
+        shadow = (c - b).unity.dot((a - b).unity) * abs(b - c)
+        self.assertAlmostEqual(shadow, 8.9, places=1)
+
+        d = (b - a) * shadow / abs(b - a)
+
+        self.assertIsInstance(d, Coordinates)
+        self.assertEqual(d, Coordinates(11, 8))
