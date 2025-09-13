@@ -18,10 +18,10 @@
 # If not, see <https://www.gnu.org/licenses/>.
 
 
-import turtle
 import unittest
 
 from sagids.basis import Bezier
+from sagids.coordinates import Coordinates
 
 
 class BernsteinTests(unittest.TestCase):
@@ -34,13 +34,15 @@ class BernsteinTests(unittest.TestCase):
 
     def test_n_2(self):
         points = [
-            turtle.Vec2D(0, 0),
-            turtle.Vec2D(3, 4),
-            turtle.Vec2D(5, 0),
+            Coordinates(0, 0),
+            Coordinates(3, 4),
+            Coordinates(5, 0),
         ]
         poly = Bezier(*points)
         self.assertEqual(poly.order, 2)
         self.assertEqual(poly(0), points[0])
         self.assertEqual(poly(1), points[2])
-        self.assertEqual(poly(0.5), (2.75, 2))
 
+        rv = poly(0.5)
+        self.assertIsInstance(rv, Coordinates)
+        self.assertEqual(rv, (2.75, 2))
