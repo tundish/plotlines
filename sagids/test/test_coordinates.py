@@ -70,3 +70,15 @@ class CoordinatesTests(unittest.TestCase):
         for a, b in zip(z, (1.6, 2.8, 4.0, 0.0)):
             self.assertAlmostEqual(a, b)
 
+    def test_multiply_by_int(self):
+        z = Coordinates(1.1, 2.2, 3.3) * 3
+        self.assertIsInstance(z, Coordinates)
+        for a, b in zip(z, (3.3, 6.6, 9.9)):
+            self.assertAlmostEqual(a, b)
+
+    def test_multiply_by_float(self):
+        z = 3.3 * Coordinates(1, 2, 3)
+        self.assertIsInstance(z, Coordinates)
+        for a, b in zip(z, (3.3, 6.6, 9.9)):
+            self.assertAlmostEqual(a, b)
+

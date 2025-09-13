@@ -40,3 +40,10 @@ class Coordinates(tuple):
     def __sub__(self, other):
         return self.__class__(*[a - b for a, b in zip(self, other)])
 
+    def __mul__(self, other):
+        return self.__class__(*[other * i for i in self])
+
+    def __rmul__(self, other):
+        """ Performs scalar multiplication on vector only"""
+        return self.__mul__(other)
+
