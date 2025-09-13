@@ -170,7 +170,7 @@ class CoordinatesTests(unittest.TestCase):
         shadow = (c - b).unity.dot((a - b).unity) * abs(b - c)
         self.assertAlmostEqual(shadow, 8.9, places=1)
 
-        d = (b - a) * shadow / abs(b - a)
+        d = b - (b - a) * shadow / abs(b - a)
 
         self.assertIsInstance(d, Coordinates)
         self.assertEqual(d, Coordinates(11, 8))
