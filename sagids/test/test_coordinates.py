@@ -82,3 +82,15 @@ class CoordinatesTests(unittest.TestCase):
         for a, b in zip(z, (3.3, 6.6, 9.9)):
             self.assertAlmostEqual(a, b)
 
+    def test_scalar_division(self):
+        z = Coordinates(3.3, 6.6, 9.9) / 3
+        self.assertIsInstance(z, Coordinates)
+        for a, b in zip(z, (1.1, 2.2, 3.3)):
+            self.assertAlmostEqual(a, b)
+
+    def test_floor_division(self):
+        z = Coordinates(3.3, 6.6, 9.9) // 3
+        self.assertIsInstance(z, Coordinates)
+        for a, b in zip(z, (1, 2, 3)):
+            self.assertAlmostEqual(a, b)
+

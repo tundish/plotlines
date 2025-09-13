@@ -44,6 +44,10 @@ class Coordinates(tuple):
         return self.__class__(*[other * i for i in self])
 
     def __rmul__(self, other):
-        """ Performs scalar multiplication on vector only"""
         return self.__mul__(other)
 
+    def __floordiv__(self, other):
+        return self.__class__(*[i // other for i in self])
+
+    def __truediv__(self, other):
+        return self.__class__(*[i / other for i in self])
