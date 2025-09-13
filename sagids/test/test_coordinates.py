@@ -62,3 +62,11 @@ class CoordinatesTests(unittest.TestCase):
         for a, b in zip(z, (0.6, 1.6, 2.6)):
             self.assertAlmostEqual(a, b)
 
+    def test_addition(self):
+        x = Coordinates(1.1, 2.2, 3.3)
+        y = Coordinates(0.5, 0.6, 0.7)
+        z = x + y
+        self.assertIsInstance(z, Coordinates)
+        for a, b in zip(z, (1.6, 2.8, 4.0, 0.0)):
+            self.assertAlmostEqual(a, b)
+

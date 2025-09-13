@@ -34,6 +34,9 @@ class Coordinates(tuple):
     def __getnewargs__(self):
         return self
 
+    def __add__(self, other):
+        return self.__class__(*[a + b for a, b in zip(self, other)])
+
     def __sub__(self, other):
         return self.__class__(*[a - b for a, b in zip(self, other)])
 
