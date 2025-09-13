@@ -105,3 +105,39 @@ class CoordinatesTests(unittest.TestCase):
         self.assertAlmostEqual(abs(Coordinates(1, math.sqrt(3)).unity), 1)
         self.assertAlmostEqual(abs(Coordinates(3, 4).unity), 1)
 
+    def test_gt(self):
+        self.assertTrue(Coordinates(1, 0, 0) > Coordinates(0, 0, 0))
+        self.assertTrue(Coordinates(0, 1, 0) > Coordinates(0, 0, 0))
+        self.assertTrue(Coordinates(0, 0, 1) > Coordinates(0, 0, 0))
+        self.assertTrue(Coordinates(0, 0, 0) > Coordinates(-1, 0, 0))
+        self.assertTrue(Coordinates(0, 0, 0) > Coordinates(0, -1, 0))
+        self.assertTrue(Coordinates(0, 0, 0) > Coordinates(0, 0, -1))
+
+    def test_lt(self):
+        self.assertTrue(Coordinates(0, 0, 0) < Coordinates(1, 0, 0))
+        self.assertTrue(Coordinates(0, 0, 0) < Coordinates(0, 1, 0))
+        self.assertTrue(Coordinates(0, 0, 0) < Coordinates(0, 0, 1))
+        self.assertTrue(Coordinates(-1, 0, 0) < Coordinates(0, 0, 0))
+        self.assertTrue(Coordinates(0, -1, 0) < Coordinates(0, 0, 0))
+        self.assertTrue(Coordinates(0, 0, -1) < Coordinates(0, 0, 0))
+
+    def test_max(self):
+        self.assertEqual(
+            max(Coordinates(1, 0, 0), Coordinates(0, 0, 0)),
+            Coordinates(1, 0, 0)
+        )
+        self.assertEqual(
+            max(Coordinates(0, -1, 0), Coordinates(0, 0, 0)),
+            Coordinates(0, 0, 0)
+        )
+
+    def test_min(self):
+        self.assertEqual(
+            min(Coordinates(0, 0, 0), Coordinates(1, 0, 0)),
+            Coordinates(0, 0, 0)
+        )
+        self.assertEqual(
+            min(Coordinates(0, -1, 0), Coordinates(0, 0, 0)),
+            Coordinates(0, -1, 0)
+        )
+
