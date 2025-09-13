@@ -141,3 +141,23 @@ class CoordinatesTests(unittest.TestCase):
             Coordinates(0, -1, 0)
         )
 
+    def test_dot_int(self):
+        self.assertEqual(
+            Coordinates(2, 3, 1).dot(Coordinates(0, 4, -1)),
+            11
+        )
+        self.assertEqual(
+            Coordinates(22, 2, 7).dot(Coordinates(12, -9, 11)),
+            323
+        )
+
+    def test_dot_float(self):
+        self.assertEqual(
+            Coordinates(2, 2, 2, 2).dot(Coordinates(4, 1, 2, 1.1)),
+            16.2
+        )
+        self.assertEqual(
+            Coordinates(169, 0, 43).dot(Coordinates(0, -375.3, 0)),
+            0
+        )
+
