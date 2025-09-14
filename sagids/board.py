@@ -47,7 +47,7 @@ class Item:
 @dataclasses.dataclass(unsafe_hash=True)
 class Link:
     joins:          set[Item] = dataclasses.field(default_factory=weakref.WeakSet, compare=False)
-    coordinates:    tuple = None
+    coordinates:    Coordinates = None
 
 
 @dataclasses.dataclass(unsafe_hash=True)
