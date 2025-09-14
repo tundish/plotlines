@@ -49,3 +49,8 @@ class BoardTests(unittest.TestCase):
         self.assertEqual(edge.ports[1].joins, {edge, nodes[1]})
         self.assertEqual(nodes[0].ports[0].joins, {edge, nodes[0]})
         self.assertEqual(nodes[1].ports[0].joins, {edge, nodes[1]})
+
+        self.assertIn(nodes[1], nodes[0].nearby)
+        self.assertNotIn(nodes[0], nodes[0].nearby)
+        self.assertIn(nodes[0], nodes[1].nearby)
+        self.assertNotIn(nodes[1], nodes[1].nearby)

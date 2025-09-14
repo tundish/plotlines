@@ -72,9 +72,9 @@ class Node(Pin):
         self.pos = Coordinates(*self.pos)
 
     @property
-    def neighbours(self):
-        nodes = [edge.exit for edge in self.ports.values()] + [edge.into for edge in self.ports.values()]
-        return [i for i in nodes if i is not self]
+    def nearby(self):
+        edges = [e for port in self.ports.values() for e in port.joins if isinstance(e, Edge)]
+        return [n for edge in edges for p in edge.ports for n in p.joins if isinstance(n, Node) and n is not self]
 
     @property
     def density(self):
