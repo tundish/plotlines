@@ -29,14 +29,23 @@ from sagids.coordinates import Coordinates
 
 class BoardTests(unittest.TestCase):
 
-    def test_edge(self):
+    def test_edge_init(self):
         edge = Edge((1, 3), (19, 12))
         self.assertEqual(len(edge.ports), 2)
         self.assertTrue(all(isinstance(p.pos, Coordinates) for p in edge.ports), edge.ports)
         self.assertEqual(edge.ports[0].pos, (1, 3))
         self.assertEqual(edge.ports[1].pos, (19, 12))
 
-    def test_node(self):
+    def test_node_init(self):
         node = Node((13, 14))
         self.assertIsInstance(node.pos, Coordinates)
         self.assertEqual(node.pos, (13, 14))
+
+    def test_node_connect(self):
+        nodes = [Node(), Node()]
+        edge = nodes[0].connect(nodes[1])
+        self.assertIsInstance(edge, Edge)
+        self.assertEqual(edge.ports[0].joins, {edge, nodes[0]})
+        self.assertEqual(edge.ports[1].joins, {edge, nodes[1]})
+        self.assertEqual(nodes[0].ports[0].joins, {edge, nodes[0]})
+        self.assertEqual(nodes[1].ports[0].joins, {edge, nodes[1]})

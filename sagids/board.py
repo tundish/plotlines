@@ -46,19 +46,18 @@ class Item:
 
 @dataclasses.dataclass(unsafe_hash=True)
 class Link:
-    pos:    Coordinates = None
     joins:  set[Item] = dataclasses.field(default_factory=weakref.WeakSet, compare=False, kw_only=True)
 
 
 @dataclasses.dataclass(unsafe_hash=True)
-class Pin(Item, Link):
-    label:      str = ""
-    shape:      str = ""
+class Pin(Item):
+    pos:        Coordinates = None
+    shape:      str = dataclasses.field(default="", kw_only=True)
 
 
 @dataclasses.dataclass(unsafe_hash=True)
-class Port(Link):
-    parent: Pin = None
+class Port(Pin, Link):
+    label:      str = ""
 
 
 @dataclasses.dataclass(unsafe_hash=True)
@@ -81,10 +80,13 @@ class Node(Pin):
         "Degree of node divided by number of neighbours"
         return []
 
-    def connect(self, other, trail=None):
-        port = len(self.ports)
-        rv = Edge(exit=self, into=other, trail=trail)
-        self.ports[port] = rv
+    def connect(self, other: Pin, edge=None):
+        rv = edge or Edge()
+        rv.ports[0].joins.add(self)
+        self.ports[len(self.ports)] = rv.ports[0]
+
+        rv.ports[1].joins.add(other)
+        other.ports[len(other.ports)] = rv.ports[1]
         return rv
 
 
@@ -98,12 +100,13 @@ class Edge(Item):
     def __post_init__(self, pos_0: tuple, pos_1: tuple, *args):
         super().__post_init__(*args)
         coords = [Coordinates(*c) for c in (pos_0, pos_1) if c is not None]
-        if not coords:
-            return
-        self.ports = [
-            Port(parent=self, pos=coords[0]),
-            Port(parent=self, pos=coords[-1]),
-        ]
+        if coords:
+            self.ports = [
+                Port(joins={self}, pos=coords[0]),
+                Port(joins={self}, pos=coords[-1]),
+            ]
+        else:
+            self.ports = [Port(joins={self}), Port(joins={self})]
 
 
 class Board:
