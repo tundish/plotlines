@@ -53,11 +53,12 @@ class Link:
 class Pin(Item):
     pos:        Coordinates = None
     shape:      str = dataclasses.field(default="", kw_only=True)
+    label:      str = dataclasses.field(default="", kw_only=True)
 
 
 @dataclasses.dataclass(unsafe_hash=True)
 class Port(Pin, Link):
-    label:      str = ""
+    pass
 
 
 @dataclasses.dataclass(unsafe_hash=True)
