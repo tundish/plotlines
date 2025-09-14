@@ -46,8 +46,8 @@ class Item:
 
 @dataclasses.dataclass(unsafe_hash=True)
 class Link:
-    joins:  set[Item] = dataclasses.field(default_factory=weakref.WeakSet, compare=False)
     pos:    Coordinates = None
+    joins:  set[Item] = dataclasses.field(default_factory=weakref.WeakSet, compare=False, kw_only=True)
 
 
 @dataclasses.dataclass(unsafe_hash=True)
@@ -64,6 +64,12 @@ class Port(Link):
 @dataclasses.dataclass(unsafe_hash=True)
 class Node(Pin):
     ports:  dict[int, Port] = dataclasses.field(default_factory=dict, compare=False)
+
+    def __post_init__(self, *args):
+        super().__post_init__(*args)
+        if not self.pos:
+            return
+        self.pos = Coordinates(*self.pos)
 
     @property
     def neighbours(self):
