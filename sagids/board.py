@@ -123,8 +123,8 @@ class Board:
             except IndexError:
                 break
             else:
-                edge = node.connect(Node())
-                frame.append(edge.exit)
+                frame.append(Node())
+                edge = node.connect(frame[-1])
                 yield edge.number, edge
         else:
             # Finish with start node

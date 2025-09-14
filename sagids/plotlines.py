@@ -55,9 +55,9 @@ def style_graph(graph: dict) -> dict:
 
 
 def draw_graph(t: RawTurtle, graph: dict) -> RawTurtle:
-    node = next(node for node in Pin.store[Node] if all(edge.exit is node for edge in node.ports.values()))
+    node = next(iter(Pin.store[Node]))
     print(f"{node=}")
-    for near in node.neighbours:
+    for near in node.nearby:
         print(f"{near=}")
 
 
