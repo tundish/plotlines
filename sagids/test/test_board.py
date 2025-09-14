@@ -31,7 +31,8 @@ class BoardTests(unittest.TestCase):
 
     def test_edge(self):
         edge = Edge((1, 3), (19, 12))
-        print(f"{edge=}")
         self.assertEqual(len(edge.ports), 2)
-        self.assertTrue(all(isinstance(p.coordinates, Coordinates) for p in edge.ports), edge.ports)
+        self.assertTrue(all(isinstance(p.pos, Coordinates) for p in edge.ports), edge.ports)
+        self.assertEqual(edge.ports[0].pos, (1, 3))
+        self.assertEqual(edge.ports[1].pos, (19, 12))
         node = Node()

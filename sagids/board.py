@@ -46,8 +46,8 @@ class Item:
 
 @dataclasses.dataclass(unsafe_hash=True)
 class Link:
-    joins:          set[Item] = dataclasses.field(default_factory=weakref.WeakSet, compare=False)
-    coordinates:    Coordinates = None
+    joins:  set[Item] = dataclasses.field(default_factory=weakref.WeakSet, compare=False)
+    pos:    Coordinates = None
 
 
 @dataclasses.dataclass(unsafe_hash=True)
@@ -84,19 +84,20 @@ class Node(Pin):
 
 @dataclasses.dataclass(unsafe_hash=True)
 class Edge(Item):
-    coord_0: dataclasses.InitVar[Coordinates | None] = None
-    coord_1: dataclasses.InitVar[Coordinates | None] = None
+    pos_0: dataclasses.InitVar[Coordinates | None] = None
+    pos_1: dataclasses.InitVar[Coordinates | None] = None
     trail: str = ""
     ports: list[Port] = dataclasses.field(default_factory=list, compare=False)
 
-    def __post_init__(self, coord_0: tuple, coord_1: tuple, *args):
+    def __post_init__(self, pos_0: tuple, pos_1: tuple, *args):
         super().__post_init__(*args)
-        coords = [Coordinates(*c) for c in (coord_0, coord_1) if c is not None]
-        try:
-            self.ports.append(Port(parent=self, coordinates=coords[0]))
-            self.ports.append(Port(parent=self, coordinates=coords[-1]))
-        except IndexError:
-            pass
+        coords = [Coordinates(*c) for c in (pos_0, pos_1) if c is not None]
+        if not coords:
+            return
+        self.ports = [
+            Port(parent=self, pos=coords[0]),
+            Port(parent=self, pos=coords[-1]),
+        ]
 
 
 class Board:
