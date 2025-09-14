@@ -21,8 +21,17 @@
 import unittest
 
 from sagids.board import Board
+from sagids.board import Edge
+from sagids.board import Node
+from sagids.board import Port
 from sagids.coordinates import Coordinates
 
 
 class BoardTests(unittest.TestCase):
-    pass
+
+    def test_edge(self):
+        edge = Edge((1, 3), (19, 12))
+        print(f"{edge=}")
+        self.assertEqual(len(edge.ports), 2)
+        self.assertTrue(all(isinstance(i, Coordinates) for i in edge.ports), edge.ports)
+        node = Node()

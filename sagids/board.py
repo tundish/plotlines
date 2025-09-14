@@ -29,24 +29,41 @@ import typing
 import uuid
 import weakref
 
+from sagids.coordinates import Coordinates
+
 
 @dataclasses.dataclass(unsafe_hash=True)
-class Pin:
+class Item:
     store: typing.ClassVar[set] = defaultdict(weakref.WeakSet)
 
-    label:      str = ""
     number:     int = dataclasses.field(init=False)
-    shape:      str = ""
-    contents:   list = dataclasses.field(default_factory=list, compare=False)
+    contents:   list = dataclasses.field(default_factory=list, compare=False, kw_only=True)
 
-    def __post_init__(self):
+    def __post_init__(self, *args):
         self.number = max([j.number for i in self.__class__.store.values() for j in i], default=0) + 1
         self.__class__.store[self.__class__].add(self)
 
 
 @dataclasses.dataclass(unsafe_hash=True)
+class Link:
+    joins:          set[Item] = dataclasses.field(default_factory=weakref.WeakSet, compare=False)
+    coordinates:    tuple = None
+
+
+@dataclasses.dataclass(unsafe_hash=True)
+class Pin(Item, Link):
+    label:      str = ""
+    shape:      str = ""
+
+
+@dataclasses.dataclass(unsafe_hash=True)
+class Port(Link):
+    parent: Pin = None
+
+
+@dataclasses.dataclass(unsafe_hash=True)
 class Node(Pin):
-    ports:  dict = dataclasses.field(default_factory=dict, compare=False)
+    ports:  dict[int, Port] = dataclasses.field(default_factory=dict, compare=False)
 
     @property
     def neighbours(self):
@@ -66,10 +83,20 @@ class Node(Pin):
 
 
 @dataclasses.dataclass(unsafe_hash=True)
-class Edge(Pin):
-    exit: Node = None
-    into: Node = None
+class Edge(Item):
+    coord_0: dataclasses.InitVar[Coordinates | None] = None
+    coord_1: dataclasses.InitVar[Coordinates | None] = None
     trail: str = ""
+    ports: list[Port] = dataclasses.field(default_factory=list, compare=False)
+
+    def __post_init__(self, coord_0: tuple, coord_1: tuple, *args):
+        super().__post_init__(*args)
+        coords = [Coordinates(*c) for c in (coord_0, coord_1) if c is not None]
+        try:
+            self.ports.append(Port(parent=self, coordinates=coords[0]))
+            self.ports.append(Port(parent=self, coordinates=coords[-1]))
+        except IndexError:
+            pass
 
 
 class Board:
