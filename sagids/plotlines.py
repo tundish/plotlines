@@ -18,11 +18,6 @@
 # If not, see <https://www.gnu.org/licenses/>.
 
 import argparse
-from collections import defaultdict
-from collections import deque
-from collections import UserDict
-from collections.abc import Generator
-import dataclasses
 import datetime
 import logging
 import pprint
@@ -33,60 +28,13 @@ import tkinter.font
 from turtle import RawTurtle
 from turtle import Turtle
 from turtle import Shape
-import typing
-import uuid
-import weakref
 
 try:
     from svg_turtle import SvgTurtle
 except ImportError:
     SvgTurtle = Turtle
 
-
-class RenderGraphGenerator:
-    pass
-
-
-@dataclasses.dataclass(unsafe_hash=True)
-class Pin:
-    store: typing.ClassVar[set] = defaultdict(weakref.WeakSet)
-
-    label:      str = ""
-    number:     int = dataclasses.field(init=False)
-    shape:      str = ""
-    contents:   list = dataclasses.field(default_factory=list, compare=False)
-
-    def __post_init__(self):
-        self.number = max([j.number for i in self.__class__.store.values() for j in i], default=0) + 1
-        self.__class__.store[self.__class__].add(self)
-
-
-@dataclasses.dataclass(unsafe_hash=True)
-class Node(Pin):
-    ports:  dict = dataclasses.field(default_factory=dict, compare=False)
-
-    @property
-    def neighbours(self):
-        nodes = [edge.exit for edge in self.ports.values()] + [edge.into for edge in self.ports.values()]
-        return [i for i in nodes if i is not self]
-
-    @property
-    def density(self):
-        "Degree of node divided by number of neighbours"
-        return []
-
-    def connect(self, other, trail=None):
-        port = len(self.ports)
-        rv = Edge(exit=self, into=other, trail=trail)
-        self.ports[port] = rv
-        return rv
-
-
-@dataclasses.dataclass(unsafe_hash=True)
-class Edge(Pin):
-    exit: Node = None
-    into: Node = None
-    trail: str = ""
+from sagids.board import Board
 
 
 def setup_logger(level=logging.INFO):
@@ -102,27 +50,6 @@ def setup_logger(level=logging.INFO):
         )
 
 
-def build_graph(ending: list[str], loading: list[int], trails: int, **kwargs) -> Generator[int, Edge]:
-    frame = deque([Node(label=name) for name in ending])
-
-    while len(Pin.store[Node]) + len(Pin.store[Edge]) < max(loading):
-        # Connect each node to one or more trail edges
-        try:
-            node = frame.popleft()
-        except IndexError:
-            break
-        else:
-            edge = node.connect(Node())
-            frame.append(edge.exit)
-            yield edge.number, edge
-    else:
-        # Finish with start node
-        start = Node(label="start")
-        for node in frame:
-            edge = start.connect(node)
-            yield edge.number, edge
-
-
 def style_graph(graph: dict) -> dict:
     return graph
 
@@ -132,11 +59,6 @@ def draw_graph(t: RawTurtle, graph: dict) -> RawTurtle:
     print(f"{node=}")
     for near in node.neighbours:
         print(f"{near=}")
-
-
-def toml_graph(graph: dict) -> Generator[str]:
-    yield "[[nodes]]"
-    yield "[[links]]"
 
 
 def main(args):
@@ -149,7 +71,7 @@ def main(args):
     logger.info(f"Start")
     logger.debug(f"{args=}")
 
-    graph = dict(build_graph(**vars(args)))
+    graph = dict(Board.build_graph(**vars(args)))
 
     if args.format == "plot":
         t = Turtle()
@@ -179,7 +101,7 @@ def main(args):
     elif args.format == "text":
         pprint.pprint(graph)
     elif args.format == "toml":
-        print(*toml_graph(graph), sep="\n", file=sys.stdout)
+        print(*Board.toml_graph(graph), sep="\n", file=sys.stdout)
 
     return 0
 
