@@ -99,7 +99,7 @@ def main(args):
             lines = text.replace("><", ">\n<").splitlines()
         print(*lines, sep="\n", file=sys.stdout)
     elif args.format == "text":
-        pprint.pprint(graph)
+        pprint.pprint(graph, depth=3)
     elif args.format == "toml":
         print(*Board.toml_graph(graph), sep="\n", file=sys.stdout)
 
