@@ -57,3 +57,17 @@ class BoardTests(unittest.TestCase):
         self.assertNotIn(nodes[0], nodes[0].nearby)
         self.assertIn(nodes[0], nodes[1].nearby)
         self.assertNotIn(nodes[1], nodes[1].nearby)
+
+    def test_node_edges(self):
+        nodes = [Node(), Node()]
+        edge = nodes[0].connect(nodes[1])
+
+        for node in nodes:
+            with self.subTest(node=node):
+                self.assertIsInstance(node.edges, list)
+                self.assertIn(edge, node.edges)
+                self.assertEqual(len(node.edges), 1)
+
+    def test_node_gaps(self):
+        nodes = [Node(), Node()]
+        self.fail(nodes)

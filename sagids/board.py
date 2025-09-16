@@ -81,6 +81,10 @@ class Node(Pin):
         "Degree of node divided by number of neighbours"
         return []
 
+    @property
+    def edges(self):
+        return [i for p in self.ports.values() for i in p.joins if isinstance(i, Edge)]
+
     def connect(self, other: Pin, edge=None):
         rv = edge or Edge()
         rv.ports[0].joins.add(self)
