@@ -17,13 +17,17 @@
 # GNU General Public License along with SaGiDS.
 # If not, see <https://www.gnu.org/licenses/>.
 
+from __future__ import annotations  # Until Python 3.14 is everywhere
+
 from collections import defaultdict
 from collections import deque
 from collections import UserDict
 from collections.abc import Generator
 import dataclasses
 import datetime
+import functools
 import logging
+from numbers import Number
 import string
 import typing
 import uuid
@@ -92,6 +96,13 @@ class Node(Pin):
 
         rv.ports[1].joins.add(other)
         other.ports[len(other.ports)] = rv.ports[1]
+        return rv
+
+    @functools.singledispatch
+    def spacing(self, other: Node, edge=None) -> dict[tuple[Pin, Pin], Number]:
+        mine = {i: i.pos for i in self.ports.values()} | {self: self.pos}
+        others = {i: i.pos for i in other.ports.values()} | {other: other.pos}
+        rv = {(mk, ok): abs(ov - mv) for (mk, mv), (ok, ov) in zip(mine.items(), others.items())}
         return rv
 
 

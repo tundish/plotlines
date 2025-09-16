@@ -68,14 +68,18 @@ class BoardTests(unittest.TestCase):
                 self.assertIn(edge, node.edges)
                 self.assertEqual(len(node.edges), 1)
 
-    def test_node_gaps_node_self(self):
+    def test_node_spacing_node_self(self):
         node = Node((1, 3))
 
-        gaps = node.gaps(node)
-        self.fail(gaps)
+        spacing = node.spacing(node)
+        self.assertEqual(len(spacing), 1)
+        space = min(spacing.values())
+        self.assertEqual(space, 0)
 
-    def test_node_gaps_node_other(self):
+    def test_node_spacing_node_other(self):
         nodes = [Node((1, 3)), Node((19, 12))]
 
-        gaps = nodes[0].gaps(nodes[1])
-        self.fail(gaps)
+        spacing = nodes[0].spacing(nodes[1])
+        self.assertEqual(len(spacing), 1)
+        space = min(spacing.values())
+        self.assertAlmostEqual(space, 20, places=0)
