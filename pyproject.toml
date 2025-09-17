@@ -1,7 +1,7 @@
 [project]
-name = "sagids"
+name = "plotlines"
 dynamic = ["version"]
-description = "Splines and Graphs in Discrete Space"
+description = "Create and display Story structure."
 readme = "README.md"
 authors = [
     {name = "D E Haynes"}
@@ -30,7 +30,7 @@ export = [
 [project.urls]
 
 [project.scripts]
-sagids = "sagids.main:run"
+sagids = "plotlines.main:run"
 
 [build-system]
 requires = ["setuptools>=75.0.0"]
@@ -38,8 +38,8 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
 packages = [
-    "sagids",
-    "sagids.test",
+    "plotlines",
+    "plotlines.test",
 ]
 
 [tool.setuptools.package-data]
