@@ -23,7 +23,6 @@ dependencies = [
 
 [project.optional-dependencies]
 export = [
-    "json2xml >= 5.0.5",
     "svg-turtle >= 1.0.0",
 ]
 
