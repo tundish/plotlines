@@ -29,7 +29,7 @@ export = [
 [project.urls]
 
 [project.scripts]
-sagids = "plotlines.main:run"
+plotlines = "plotlines.main:run"
 
 [build-system]
 requires = ["setuptools>=75.0.0"]
@@ -42,8 +42,8 @@ packages = [
 ]
 
 [tool.setuptools.package-data]
-sagids = [
+plotlines = [
 ]
 
 [tool.setuptools.dynamic]
-version = {attr = "sagids.__version__"}
+version = {attr = "plotlines.__version__"}
