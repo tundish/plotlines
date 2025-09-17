@@ -22,7 +22,7 @@ import math
 import pickle
 import unittest
 
-from sagids.coordinates import Coordinates
+from plotlines.coordinates import Coordinates
 
 
 class CoordinatesTests(unittest.TestCase):

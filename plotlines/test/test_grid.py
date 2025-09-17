@@ -25,7 +25,7 @@ import itertools
 from turtle import Vec2D as V
 import unittest
 
-from sagids.grid import Grid
+from plotlines.grid import Grid
 
 
 class GridTests(unittest.TestCase):

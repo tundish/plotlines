@@ -34,7 +34,7 @@ try:
 except ImportError:
     SvgTurtle = Turtle
 
-from sagids.board import Board
+from plotlines.board import Board
 
 
 def setup_logger(level=logging.INFO):

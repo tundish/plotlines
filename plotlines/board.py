@@ -33,7 +33,7 @@ import typing
 import uuid
 import weakref
 
-from sagids.coordinates import Coordinates
+from plotlines.coordinates import Coordinates
 
 
 @dataclasses.dataclass(unsafe_hash=True)

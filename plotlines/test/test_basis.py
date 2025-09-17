@@ -20,8 +20,8 @@
 
 import unittest
 
-from sagids.basis import Bezier
-from sagids.coordinates import Coordinates
+from plotlines.basis import Bezier
+from plotlines.coordinates import Coordinates
 
 
 class BernsteinTests(unittest.TestCase):

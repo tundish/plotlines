@@ -20,11 +20,11 @@
 
 import unittest
 
-from sagids.board import Board
-from sagids.board import Edge
-from sagids.board import Node
-from sagids.board import Port
-from sagids.coordinates import Coordinates
+from plotlines.board import Board
+from plotlines.board import Edge
+from plotlines.board import Node
+from plotlines.board import Port
+from plotlines.coordinates import Coordinates
 
 
 class BoardTests(unittest.TestCase):
