@@ -1,4 +1,4 @@
-Splines and Graphs in Discrete Space
-====================================
+Plotlines
+=========
 
-Some experiments to generate and visualize discrete spaces.
+Create and display Story structure.
