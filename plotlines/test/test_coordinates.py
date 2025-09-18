@@ -161,7 +161,7 @@ class CoordinatesTests(unittest.TestCase):
             0
         )
 
-    def test_intercept(self):
+    def test_intercept_steps(self):
         # Drop a normal on to a line and measure distance
         a = Coordinates(1, 3)
         b = Coordinates(19, 12)
@@ -174,3 +174,13 @@ class CoordinatesTests(unittest.TestCase):
 
         self.assertIsInstance(d, Coordinates)
         self.assertEqual(d, Coordinates(11, 8))
+
+    def test_intercept_steps(self):
+        # Drop a normal on to a line and measure distance
+        a = Coordinates(1, 3)
+        b = Coordinates(19, 12)
+        c = Coordinates(13, 4)
+
+        rv = Coordinates.intercept(a, b, c)
+        self.assertIsInstance(rv, Coordinates)
+        self.assertEqual(rv, Coordinates(11, 8))

@@ -83,3 +83,12 @@ class BoardTests(unittest.TestCase):
         self.assertEqual(len(spacing), 1)
         space = min(spacing.values())
         self.assertAlmostEqual(space, 20, places=0)
+
+    def test_node_spacing_edge(self):
+        edge = Edge((1, 3), (19, 12))
+        node = Node((13, 4))
+
+        spacing = node.spacing(edge)
+        self.assertEqual(len(spacing), 3, spacing)
+        space = min(spacing.values())
+        self.assertAlmostEqual(space, 4.2, places=1)

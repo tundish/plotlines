@@ -66,6 +66,25 @@ class Port(Pin, Link):
 
 
 @dataclasses.dataclass(unsafe_hash=True)
+class Edge(Item):
+    pos_0: dataclasses.InitVar[Coordinates | None] = None
+    pos_1: dataclasses.InitVar[Coordinates | None] = None
+    trail: str = ""
+    ports: list[Port] = dataclasses.field(default_factory=list, compare=False)
+
+    def __post_init__(self, pos_0: tuple, pos_1: tuple, *args):
+        super().__post_init__(*args)
+        coords = [Coordinates(*c) for c in (pos_0, pos_1) if c is not None]
+        if coords:
+            self.ports = [
+                Port(joins={self}, pos=coords[0]),
+                Port(joins={self}, pos=coords[-1]),
+            ]
+        else:
+            self.ports = [Port(joins={self}), Port(joins={self})]
+
+
+@dataclasses.dataclass(unsafe_hash=True)
 class Node(Pin):
     ports:  dict[int, Port] = dataclasses.field(default_factory=dict, compare=False)
 
@@ -98,31 +117,26 @@ class Node(Pin):
         other.ports[len(other.ports)] = rv.ports[1]
         return rv
 
-    @functools.singledispatch
-    def spacing(self, other: Node, edge=None) -> dict[tuple[Pin, Pin], Number]:
+    @functools.singledispatchmethod
+    def spacing(self, other: Node) -> dict[tuple[Pin, Pin], Number]:
         mine = {i: i.pos for i in self.ports.values()} | {self: self.pos}
         others = {i: i.pos for i in other.ports.values()} | {other: other.pos}
         rv = {(mk, ok): abs(ov - mv) for (mk, mv), (ok, ov) in zip(mine.items(), others.items())}
         return rv
 
-
-@dataclasses.dataclass(unsafe_hash=True)
-class Edge(Item):
-    pos_0: dataclasses.InitVar[Coordinates | None] = None
-    pos_1: dataclasses.InitVar[Coordinates | None] = None
-    trail: str = ""
-    ports: list[Port] = dataclasses.field(default_factory=list, compare=False)
-
-    def __post_init__(self, pos_0: tuple, pos_1: tuple, *args):
-        super().__post_init__(*args)
-        coords = [Coordinates(*c) for c in (pos_0, pos_1) if c is not None]
-        if coords:
-            self.ports = [
-                Port(joins={self}, pos=coords[0]),
-                Port(joins={self}, pos=coords[-1]),
-            ]
-        else:
-            self.ports = [Port(joins={self}), Port(joins={self})]
+    @spacing.register
+    def _(self, other: Edge) -> dict[tuple[Pin, Pin], Number]:
+        mine = {i: i.pos for i in self.ports.values()} | {self: self.pos}
+        others = {i: i.pos for i in other.ports}
+        others.update({
+            i: i.pos for i in (
+                Pin(Coordinates.intercept(other.ports[0].pos, other.ports[1].pos, pos))
+                for pos in mine.values()
+            )
+        })
+        print(f"{others=}")
+        rv = {(mk, ok): abs(ov - mv) for (mk, mv), (ok, ov) in zip(mine.items(), others.items())}
+        return rv
 
 
 class Board:

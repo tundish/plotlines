@@ -17,6 +17,7 @@
 # GNU General Public License along with Plotlines.
 # If not, see <https://www.gnu.org/licenses/>.
 
+from __future__ import annotations  # Until Python 3.14 is everywhere
 
 import math
 
@@ -54,6 +55,12 @@ class Coordinates(tuple):
 
     def __repr__(self):
         return "< {0} >".format(", ".join(f"{i}" for i in self))
+
+    @staticmethod
+    def intercept(origin: Component, transit: Component, point: Component) -> Component:
+        "Find the normal intercept from a point to a line between origin and transit"
+        shadow = (point - origin).unity.dot((transit - origin).unity) * abs(point - origin)
+        return shadow
 
     @property
     def unity(self):
