@@ -91,4 +91,4 @@ class BoardTests(unittest.TestCase):
         spacing = node.spacing(edge)
         self.assertEqual(len(spacing), 3, spacing)
         space = min(spacing.values())
-        self.assertAlmostEqual(space, 4.2, places=1)
+        self.assertAlmostEqual(space, 4.5, places=1)

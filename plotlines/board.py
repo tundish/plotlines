@@ -135,7 +135,6 @@ class Node(Pin):
                 for pos in mine.values()
             )
         })
-        print(f"{others=}")
         rv = {(mk, ok): abs(ov - mv) for (mk, mv), (ok, ov) in itertools.product(mine.items(), others.items())}
         return rv
 
