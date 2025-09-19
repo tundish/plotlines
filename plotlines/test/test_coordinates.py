@@ -183,4 +183,5 @@ class CoordinatesTests(unittest.TestCase):
 
         rv = Coordinates.intercept(a, b, c)
         self.assertIsInstance(rv, Coordinates)
-        self.assertEqual(rv, Coordinates(11, 8))
+        self.assertAlmostEqual(rv[0], 11)
+        self.assertAlmostEqual(rv[1], 8)
