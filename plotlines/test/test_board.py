@@ -98,7 +98,11 @@ class BoardTests(unittest.TestCase):
         self.assertAlmostEqual(space, 4.5, places=1)
 
     def test_draw_graph(self):
+        # FIXME: This commit breaks svg-turtle
+        # https://github.com/python/cpython/commit/e1baa778f602ede66831eb34b9ef17f21e4d4347
+        import turtle
         from svg_turtle import SvgTurtle
+        SvgTurtle._Screen = turtle.Screen
         class FixTurtle(SvgTurtle):
 
             def __init__(self, *args, canvas=None, **kwargs):
@@ -107,7 +111,7 @@ class BoardTests(unittest.TestCase):
         nodes = [Node((1, 3)), Node((19, 12)), Node((13, 4))]
         edges = [nodes[0].connect(nodes[1]), nodes[0].connect(nodes[2])]
 
-        t = SvgTurtle(canvas=tk.Canvas())
+        t = SvgTurtle()
         rv = Board.draw_graph(t, edges)
         text = t.to_svg()
         self.fail(text)
