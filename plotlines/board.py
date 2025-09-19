@@ -26,6 +26,7 @@ from collections.abc import Generator
 import dataclasses
 import datetime
 import functools
+import itertools
 import logging
 from numbers import Number
 import string
@@ -121,7 +122,7 @@ class Node(Pin):
     def spacing(self, other: Node) -> dict[tuple[Pin, Pin], Number]:
         mine = {i: i.pos for i in self.ports.values()} | {self: self.pos}
         others = {i: i.pos for i in other.ports.values()} | {other: other.pos}
-        rv = {(mk, ok): abs(ov - mv) for (mk, mv), (ok, ov) in zip(mine.items(), others.items())}
+        rv = {(mk, ok): abs(ov - mv) for (mk, mv), (ok, ov) in itertools.product(mine.items(), others.items())}
         return rv
 
     @spacing.register
@@ -135,7 +136,7 @@ class Node(Pin):
             )
         })
         print(f"{others=}")
-        rv = {(mk, ok): abs(ov - mv) for (mk, mv), (ok, ov) in zip(mine.items(), others.items())}
+        rv = {(mk, ok): abs(ov - mv) for (mk, mv), (ok, ov) in itertools.product(mine.items(), others.items())}
         return rv
 
 
