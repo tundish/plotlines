@@ -25,7 +25,6 @@ import string
 import sys
 import tkinter as tk
 import tkinter.font
-from turtle import RawTurtle
 from turtle import Turtle
 from turtle import Shape
 
@@ -54,13 +53,6 @@ def style_graph(graph: dict) -> dict:
     return graph
 
 
-def draw_graph(t: RawTurtle, graph: dict) -> RawTurtle:
-    node = next(iter(Pin.store[Node]))
-    print(f"{node=}")
-    for near in node.nearby:
-        print(f"{near=}")
-
-
 def main(args):
     level = logging.DEBUG if args.debug else logging.INFO
     # setup_logger(level=level)
@@ -84,7 +76,7 @@ def main(args):
         print(f"{stamps=}", file=sys.stderr)
 
         logger.debug(tk.font.families())
-        draw_graph(t, graph)
+        Board.draw_graph(t, graph)
         t.screen.mainloop()
     elif args.format == "svg":
         t = SvgTurtle()

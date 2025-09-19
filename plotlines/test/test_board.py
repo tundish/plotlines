@@ -1,5 +1,3 @@
-#! /usr/bin/env python3
-# encoding: UTF-8
 
 # This file is part of Plotlines.
 
@@ -18,7 +16,13 @@
 # If not, see <https://www.gnu.org/licenses/>.
 
 
+import tkinter as tk
 import unittest
+
+try:
+    from svg_turtle import SvgTurtle as Turtle
+except ImportError:
+    from turtle import Turtle
 
 from plotlines.board import Board
 from plotlines.board import Edge
@@ -92,3 +96,18 @@ class BoardTests(unittest.TestCase):
         self.assertEqual(len(spacing), 3, spacing)
         space = min(spacing.values())
         self.assertAlmostEqual(space, 4.5, places=1)
+
+    def test_draw_graph(self):
+        from svg_turtle import SvgTurtle
+        class FixTurtle(SvgTurtle):
+
+            def __init__(self, *args, canvas=None, **kwargs):
+                super().__init__(*args, **kwargs)
+
+        nodes = [Node((1, 3)), Node((19, 12)), Node((13, 4))]
+        edges = [nodes[0].connect(nodes[1]), nodes[0].connect(nodes[2])]
+
+        t = SvgTurtle(canvas=tk.Canvas())
+        rv = Board.draw_graph(t, edges)
+        text = t.to_svg()
+        self.fail(text)

@@ -30,6 +30,7 @@ import itertools
 import logging
 from numbers import Number
 import string
+import turtle
 import typing
 import uuid
 import weakref
@@ -166,6 +167,14 @@ class Board:
     @staticmethod
     def layout_graph(graph: dict) -> dict:
         return graph
+
+
+    @staticmethod
+    def draw_graph(t: RawTurtle, graph: dict) -> RawTurtle:
+        node = next(iter(Pin.store[Node]))
+        print(f"{node=}")
+        for near in node.nearby:
+            print(f"{near=}")
 
 
     @staticmethod
