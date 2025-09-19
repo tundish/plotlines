@@ -100,6 +100,8 @@ class BoardTests(unittest.TestCase):
     def test_draw_graph(self):
         # FIXME: This commit breaks svg-turtle
         # https://github.com/python/cpython/commit/e1baa778f602ede66831eb34b9ef17f21e4d4347
+        # type 'image' best avoided?
+        # A subclass of TurtleScreenBase's method _blankimage must return a subclass of TK.PhotoImage.
         import turtle
         from svg_turtle import SvgTurtle
         SvgTurtle._Screen = turtle.Screen
