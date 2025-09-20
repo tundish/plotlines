@@ -44,10 +44,6 @@ def setup_logger(level=logging.INFO):
         )
 
 
-def style_graph(graph: dict) -> dict:
-    return graph
-
-
 def main(args):
     level = logging.DEBUG if args.debug else logging.INFO
     # setup_logger(level=level)
@@ -65,7 +61,8 @@ def main(args):
         stamps = []
         stamps.append(t.stamp())
 
-        graph = style_graph(graph)
+        graph = Board.style_graph(graph)
+        graph = Board.layout_graph(graph)
         print(string.ascii_uppercase, file=sys.stderr)
         print(f"{t.screen.getshapes()=}", file=sys.stderr)
         print(f"{stamps=}", file=sys.stderr)

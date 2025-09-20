@@ -163,11 +163,13 @@ class Board:
                 edge = start.connect(node)
                 yield edge.number, edge
 
+    @staticmethod
+    def style_graph(graph: dict) -> dict:
+        return graph
 
     @staticmethod
     def layout_graph(graph: dict) -> dict:
         return graph
-
 
     @staticmethod
     def draw_graph(t: RawTurtle, graph: dict) -> RawTurtle:
@@ -175,7 +177,6 @@ class Board:
         print(f"{node=}")
         for near in node.nearby:
             print(f"{near=}")
-
 
     @staticmethod
     def toml_graph(graph: dict) -> Generator[str]:
