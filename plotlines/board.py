@@ -173,7 +173,15 @@ class Board:
 
     @staticmethod
     def draw_graph(t: RawTurtle, edges: list[Edges]) -> RawTurtle:
-        print(*list(edges), sep="\n")
+        screen = t.getscreen()
+        screen.screensize(6, 8)
+        print(vars(screen))
+        t.shape("blank")
+        for edge in edges:
+            t.up()
+            t.setpos(edge.ports[0].pos)
+            t.down()
+            t.setpos(edge.ports[1].pos)
 
     @staticmethod
     def toml_graph(graph: dict) -> Generator[str]:
