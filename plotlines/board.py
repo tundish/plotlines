@@ -30,6 +30,7 @@ import itertools
 import logging
 from numbers import Number
 import string
+import tkinter as tk
 import turtle
 import typing
 import uuid
@@ -174,7 +175,10 @@ class Board:
     @staticmethod
     def draw_graph(t: RawTurtle, edges: list[Edges]) -> RawTurtle:
         screen = t.getscreen()
-        screen.screensize(6, 8)
+        screen.setworldcoordinates(0, 0, 16, 12)
+        # canvas = screen.getcanvas()
+        # screen.screensize(6, 8)
+        # canvas.scale(tk.ALL, 0, 0, 50, 50)
         print(vars(screen))
         t.shape("blank")
         for edge in edges:
