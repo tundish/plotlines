@@ -74,7 +74,7 @@ def main(args):
         Board.draw_graph(t, graph)
         t.screen.mainloop()
     elif args.format == "svg":
-        # TODO: Generate TOML output for spiki.Renderer
+        # TODO: implement Renderer
         logger.warning("SVG output not yet implemented")
     elif args.format == "text":
         pprint.pprint(graph, depth=3)

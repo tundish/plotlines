@@ -22,9 +22,6 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-export = [
-    "spiki >= 0.13.0",
-]
 
 [project.urls]
 
