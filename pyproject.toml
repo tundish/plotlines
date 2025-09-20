@@ -23,7 +23,7 @@ dependencies = [
 
 [project.optional-dependencies]
 export = [
-    "svg-turtle >= 1.0.0",
+    "spiki >= 0.13.0",
 ]
 
 [project.urls]

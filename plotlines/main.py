@@ -28,11 +28,6 @@ import tkinter.font
 from turtle import Turtle
 from turtle import Shape
 
-try:
-    from svg_turtle import SvgTurtle
-except ImportError:
-    SvgTurtle = Turtle
-
 from plotlines.board import Board
 
 
@@ -79,17 +74,8 @@ def main(args):
         Board.draw_graph(t, graph)
         t.screen.mainloop()
     elif args.format == "svg":
-        t = SvgTurtle()
-        # NB: No root window for tk.font.families()
-        graph = style_graph(graph)
-        try:
-            text = t.to_svg()
-        except AttributeError:
-            logger.warning("SVG Turtle is not installed")
-            lines = []
-        else:
-            lines = text.replace("><", ">\n<").splitlines()
-        print(*lines, sep="\n", file=sys.stdout)
+        # TODO: Generate TOML output for spiki.Renderer
+        logger.warning("SVG output not yet implemented")
     elif args.format == "text":
         pprint.pprint(graph, depth=3)
     elif args.format == "toml":
