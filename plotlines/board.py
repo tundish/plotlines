@@ -172,11 +172,8 @@ class Board:
         return graph
 
     @staticmethod
-    def draw_graph(t: RawTurtle, graph: dict) -> RawTurtle:
-        node = next(iter(Pin.store[Node]))
-        print(f"{node=}")
-        for near in node.nearby:
-            print(f"{near=}")
+    def draw_graph(t: RawTurtle, edges: list[Edges]) -> RawTurtle:
+        print(*list(edges), sep="\n")
 
     @staticmethod
     def toml_graph(graph: dict) -> Generator[str]:

@@ -17,6 +17,7 @@
 
 
 import tkinter as tk
+import turtle
 import unittest
 
 from plotlines.board import Board
@@ -93,9 +94,14 @@ class BoardTests(unittest.TestCase):
         self.assertAlmostEqual(space, 4.5, places=1)
 
     def test_draw_graph(self):
-        nodes = [Node((1, 3)), Node((19, 12)), Node((13, 4))]
+        nodes = [Node((2, 2)), Node((7, 2)), Node((2, 12))]
         edges = [nodes[0].connect(nodes[1]), nodes[0].connect(nodes[2])]
+        edges[0].ports[0].pos = Coordinates(3, 2)
+        edges[0].ports[1].pos = Coordinates(7, 2)
+        edges[1].ports[0].pos = Coordinates(8, 2)
+        edges[1].ports[1].pos = Coordinates(12, 2)
 
-        # TODO: Rethink rendering.
-        rv = Board.draw_graph(None, edges)
+        t = turtle.Turtle()
+        rv = Board.draw_graph(t, edges)
+        t.screen.mainloop()
         self.fail(rv)
