@@ -102,6 +102,7 @@ class BoardTests(unittest.TestCase):
         edges[1].ports[1].pos = Coordinates(12, 2)
 
         t = turtle.Turtle()
+        rv = Board.layout_graph(t, nodes)
         rv = Board.draw_graph(t, edges)
         t.screen.mainloop()
         self.fail(rv)

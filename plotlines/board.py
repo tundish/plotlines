@@ -169,7 +169,10 @@ class Board:
         return graph
 
     @staticmethod
-    def layout_graph(graph: dict) -> dict:
+    def layout_graph(t: RawTurtle, graph: dict) -> dict:
+        shape = turtle.Shape("polygon", ((0, 0), (2, 0), (2, 2), (0, 2)))
+        t.screen.register_shape("s2x2", shape)
+        print(t.screen.getshapes())
         return graph
 
     @staticmethod
