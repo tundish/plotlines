@@ -169,7 +169,9 @@ class Board:
         return graph
 
     @staticmethod
-    def style_graph(t: RawTurtle, graph: dict) -> dict:
+    def style_graph(t: RawTurtle, items: list) -> dict:
+        x_vals = [p.pos[0] for node in items for p in ([node] + list(node.ports.values())) if isinstance(node, Node)]
+        print(f"{x_vals=}")
         shape = turtle.Shape("polygon", ((-1, -1), (1, -1), (1, 1), (-1, 1)))
         t.screen.register_shape("s2x2", shape)
         print(t.screen.getshapes())
@@ -184,7 +186,7 @@ class Board:
         # canvas.scale(tk.ALL, 0, 0, 50, 50)
         print(vars(screen))
         t.shape("blank")
-        for edge in edges:
+        for edge in [i for i in edges if isinstance(i, Edge)]:
             t.up()
             for node in edge.ports[0].joins:
                 t.shape("s2x2")
