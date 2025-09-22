@@ -25,6 +25,7 @@ from collections import UserDict
 from collections.abc import Generator
 import dataclasses
 import datetime
+from fractions import Fraction
 import functools
 import itertools
 import logging
@@ -144,6 +145,16 @@ class Node(Pin):
 class Board:
 
     @staticmethod
+    def extent(items: list) -> tuple[Coordinates]:
+        nodes = [i for i in items if isinstance(i, Node)]
+        x_vals = sorted([p.pos[0] for node in nodes for p in [node] + list(node.ports.values())])
+        y_vals = sorted([p.pos[1] for node in nodes for p in [node] + list(node.ports.values())])
+
+        min_pos = Coordinates(x_vals[0], y_vals[0])
+        max_pos = Coordinates(x_vals[-1], y_vals[-1])
+        return min_pos, max_pos
+
+    @staticmethod
     def build_graph(ending: list[str], loading: list[int], trails: int, **kwargs) -> Generator[int, Edge]:
         frame = deque([Node(label=name) for name in ending])
 
@@ -170,13 +181,11 @@ class Board:
 
     @staticmethod
     def style_graph(t: RawTurtle, items: list) -> dict:
-        nodes = [i for i in items if isinstance(i, Node)]
-        x_vals = sorted([p.pos[0] for node in nodes for p in [node] + list(node.ports.values())])
-        y_vals = sorted([p.pos[1] for node in nodes for p in [node] + list(node.ports.values())])
+        screen = t.getscreen()
+        print(f"{screen.screensize()=}")
 
-        min_pos = Coordinates(min(0, x_vals[0]), min(0, y_vals[0]))
-        max_pos = Coordinates(x_vals[-1], y_vals[-1])
-        print(f"{min_pos=} {max_pos=}")
+        min_pos, max_pos = Board.extent(items)
+        print(min_pos, max_pos)
 
         shape = turtle.Shape("polygon", ((-1, -1), (1, -1), (1, 1), (-1, 1)))
         t.screen.register_shape("s2x2", shape)
