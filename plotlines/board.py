@@ -170,12 +170,18 @@ class Board:
 
     @staticmethod
     def style_graph(t: RawTurtle, items: list) -> dict:
-        x_vals = [p.pos[0] for node in items for p in ([node] + list(node.ports.values())) if isinstance(node, Node)]
-        print(f"{x_vals=}")
+        nodes = [i for i in items if isinstance(i, Node)]
+        x_vals = sorted([p.pos[0] for node in nodes for p in [node] + list(node.ports.values())])
+        y_vals = sorted([p.pos[1] for node in nodes for p in [node] + list(node.ports.values())])
+
+        min_pos = Coordinates(min(0, x_vals[0]), min(0, y_vals[0]))
+        max_pos = Coordinates(x_vals[-1], y_vals[-1])
+        print(f"{min_pos=} {max_pos=}")
+
         shape = turtle.Shape("polygon", ((-1, -1), (1, -1), (1, 1), (-1, 1)))
         t.screen.register_shape("s2x2", shape)
         print(t.screen.getshapes())
-        return graph
+        return items
 
     @staticmethod
     def draw_graph(t: RawTurtle, edges: list[Edges]) -> RawTurtle:
