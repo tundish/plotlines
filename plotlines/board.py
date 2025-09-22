@@ -165,11 +165,11 @@ class Board:
                 yield edge.number, edge
 
     @staticmethod
-    def style_graph(graph: dict) -> dict:
+    def layout_graph(t: RawTurtle, graph: dict) -> dict:
         return graph
 
     @staticmethod
-    def layout_graph(t: RawTurtle, graph: dict) -> dict:
+    def style_graph(t: RawTurtle, graph: dict) -> dict:
         shape = turtle.Shape("polygon", ((-1, -1), (1, -1), (1, 1), (-1, 1)))
         t.screen.register_shape("s2x2", shape)
         print(t.screen.getshapes())

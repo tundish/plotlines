@@ -93,7 +93,7 @@ class BoardTests(unittest.TestCase):
         space = min(spacing.values())
         self.assertAlmostEqual(space, 4.5, places=1)
 
-    def test_draw_graph(self):
+    def test_style_graph(self):
         nodes = [Node((2, 2)), Node((7, 2)), Node((2, 12))]
         edges = [nodes[0].connect(nodes[1]), nodes[0].connect(nodes[2])]
         edges[0].ports[0].pos = Coordinates(3, 2)
@@ -102,7 +102,7 @@ class BoardTests(unittest.TestCase):
         edges[1].ports[1].pos = Coordinates(12, 2)
 
         t = turtle.Turtle()
-        rv = Board.layout_graph(t, nodes)
+        rv = Board.style_graph(t, nodes)
         rv = Board.draw_graph(t, edges)
         t.screen.mainloop()
         self.fail(rv)
