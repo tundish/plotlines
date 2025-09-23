@@ -187,6 +187,7 @@ class Board:
         min_pos, max_pos = Board.extent(items)
         print(min_pos, max_pos)
 
+        # TODO: Generate node shapes at scale of world coordinates
         shape = turtle.Shape("polygon", ((-1, -1), (1, -1), (1, 1), (-1, 1)))
         t.screen.register_shape("s2x2", shape)
         print(t.screen.getshapes())
