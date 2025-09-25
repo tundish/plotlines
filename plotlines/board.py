@@ -25,6 +25,7 @@ from collections import UserDict
 from collections.abc import Generator
 import dataclasses
 import datetime
+from decimal import Decimal
 from fractions import Fraction
 import functools
 import itertools
@@ -153,6 +154,19 @@ class Board:
         min_pos = Coordinates(x_vals[0], y_vals[0])
         max_pos = Coordinates(x_vals[-1], y_vals[-1])
         return min_pos, max_pos
+
+    @staticmethod
+    def frame(*points: tuple[Coordinates], margin: Decimal = Decimal("0.05")):
+        x_vals = sorted([point[0] for point in points])
+        y_vals = sorted([point[1] for point in points])
+
+        min_x = x_vals[0] - margin * (x_vals[-1] - x_vals[0])
+        max_x = x_vals[1] + margin * (x_vals[-1] - x_vals[0])
+        min_y = y_vals[0] - margin * (y_vals[-1] - y_vals[0])
+        max_y = y_vals[1] + margin * (y_vals[-1] - y_vals[0])
+        min_pos = Coordinates(min_x, min_y)
+        max_pos = Coordinates(max_x, max_y)
+        return (min_pos, max_pos)
 
     @staticmethod
     def build_graph(ending: list[str], loading: list[int], trails: int, **kwargs) -> Generator[int, Edge]:

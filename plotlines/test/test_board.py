@@ -16,6 +16,7 @@
 # If not, see <https://www.gnu.org/licenses/>.
 
 
+from decimal import Decimal
 import tkinter as tk
 import turtle
 import unittest
@@ -93,6 +94,12 @@ class BoardTests(unittest.TestCase):
         space = min(spacing.values())
         self.assertAlmostEqual(space, 4.5, places=1)
 
+    def test_frame(self):
+        points = (Coordinates(0, 0), Coordinates(10, 10))
+        check = (Coordinates(-0.5, -0.5), Coordinates(10.5, 10.5))
+        self.assertEqual(Board.frame(*points), check)
+
+    @unittest.skip("Dev")
     def test_style_graph(self):
         nodes = [Node((2, 2)), Node((7, 2)), Node((2, 12))]
         edges = [nodes[0].connect(nodes[1]), nodes[0].connect(nodes[2])]
