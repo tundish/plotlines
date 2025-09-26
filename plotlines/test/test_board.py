@@ -113,6 +113,6 @@ class BoardTests(unittest.TestCase):
 
         t = turtle.Turtle()
         rv = Board.style_graph(t, nodes + edges)
-        # rv = Board.draw_graph(t, nodes + edges)
-        # t.screen.mainloop()
+        rv = Board.draw_graph(t, nodes + edges)
+        t.screen.mainloop()
         self.fail(rv)

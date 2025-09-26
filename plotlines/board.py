@@ -205,10 +205,13 @@ class Board:
         frame = Board.frame(*Board.extent(items))
         print(f"{frame=}")
 
-        scales = ((frame[1][0] - frame[0][0]) / Decimal(size[0]), (frame[1][1] - frame[0][1]) / Decimal(size[1]))
-        print(f"{scales=}")
+        scale = Fraction(*min(
+            Decimal(size[0]) / (frame[1][0] - frame[0][0]),
+            Decimal(size[1]) / (frame[1][1] - frame[0][1])
+        ).quantize(Decimal(".01")).as_integer_ratio())
+        print(f"{scale=}")
 
-        shape = turtle.Shape("polygon", ((-1, -1), (1, -1), (1, 1), (-1, 1)))
+        shape = turtle.Shape("polygon", ((-scale, -scale), (scale, -scale), (scale, scale), (-scale, scale)))
         t.screen.register_shape("s2x2", shape)
         print(t.screen.getshapes())
         return items
