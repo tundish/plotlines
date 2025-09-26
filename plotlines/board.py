@@ -160,10 +160,13 @@ class Board:
         x_vals = sorted([point[0] for point in points])
         y_vals = sorted([point[1] for point in points])
 
-        min_x = x_vals[0] - margin * (x_vals[-1] - x_vals[0])
-        max_x = x_vals[1] + margin * (x_vals[-1] - x_vals[0])
-        min_y = y_vals[0] - margin * (y_vals[-1] - y_vals[0])
-        max_y = y_vals[1] + margin * (y_vals[-1] - y_vals[0])
+        span_x = x_vals[-1] - x_vals[0] or y_vals[-1] - y_vals[0]
+        span_y = y_vals[-1] - y_vals[0] or x_vals[-1] - x_vals[0]
+
+        min_x = x_vals[0] - margin * span_x
+        max_x = x_vals[1] + margin * span_x
+        min_y = y_vals[0] - margin * span_y
+        max_y = y_vals[1] + margin * span_y
         min_pos = Coordinates(min_x, min_y)
         max_pos = Coordinates(max_x, max_y)
         return (min_pos, max_pos)
@@ -196,10 +199,14 @@ class Board:
     @staticmethod
     def style_graph(t: RawTurtle, items: list) -> dict:
         screen = t.getscreen()
-        print(f"{screen.screensize()=}")
+        size = screen.screensize()
+        print(f"{size=}")
 
-        min_pos, max_pos = Board.extent(items)
-        print(min_pos, max_pos)
+        frame = Board.frame(*Board.extent(items))
+        print(f"{frame=}")
+
+        scales = ((frame[1][0] - frame[0][0]) / Decimal(size[0]), (frame[1][1] - frame[0][1]) / Decimal(size[1]))
+        print(f"{scales=}")
 
         shape = turtle.Shape("polygon", ((-1, -1), (1, -1), (1, 1), (-1, 1)))
         t.screen.register_shape("s2x2", shape)

@@ -99,9 +99,12 @@ class BoardTests(unittest.TestCase):
         check = (Coordinates(-0.5, -0.5), Coordinates(10.5, 10.5))
         self.assertEqual(Board.frame(*points), check)
 
-    @unittest.skip("Dev")
+        points = (Coordinates(0, 0), Coordinates(0, 10))
+        check = (Coordinates(-0.5, -0.5), Coordinates(0.5, 10.5))
+        self.assertEqual(Board.frame(*points), check)
+
     def test_style_graph(self):
-        nodes = [Node((2, 2)), Node((7, 2)), Node((2, 12))]
+        nodes = [Node((2, 2)), Node((7, 2)), Node((12, 2))]
         edges = [nodes[0].connect(nodes[1]), nodes[0].connect(nodes[2])]
         edges[0].ports[0].pos = Coordinates(3, 2)
         edges[0].ports[1].pos = Coordinates(7, 2)
@@ -110,6 +113,6 @@ class BoardTests(unittest.TestCase):
 
         t = turtle.Turtle()
         rv = Board.style_graph(t, nodes + edges)
-        rv = Board.draw_graph(t, nodes + edges)
-        t.screen.mainloop()
+        # rv = Board.draw_graph(t, nodes + edges)
+        # t.screen.mainloop()
         self.fail(rv)
