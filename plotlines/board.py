@@ -233,16 +233,17 @@ class Board:
         t.color((0, 0, 0), (255, 255, 255))
         for edge in [i for i in edges if isinstance(i, Edge)]:
             t.up()
-            for node in edge.ports[0].joins:
-                t.shape("s2x2")
-                try:
-                    t.setpos(node.pos)
-                except AttributeError:
-                    pass
-                else:
-                    t.stamp()
-                finally:
-                    t.shape("blank")
+            for port in edge.ports:
+                for node in port.joins:
+                    t.shape("s2x2")
+                    try:
+                        t.setpos(node.pos)
+                    except AttributeError:
+                        pass
+                    else:
+                        t.stamp()
+                    finally:
+                        t.shape("blank")
             t.setpos(edge.ports[0].pos)
             t.down()
             t.setpos(edge.ports[1].pos)
