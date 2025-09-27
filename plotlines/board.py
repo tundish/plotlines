@@ -145,6 +145,9 @@ class Node(Pin):
 
 class Board:
 
+    def __init__(self):
+        self.stamps = {}
+
     @staticmethod
     def extent(items: list) -> tuple[Coordinates]:
         nodes = [i for i in items if isinstance(i, Node)]
@@ -198,7 +201,9 @@ class Board:
 
     @staticmethod
     def style_graph(t: RawTurtle, items: list) -> dict:
+        print(f"{t.filling()=}")
         screen = t.getscreen()
+        screen.colormode(255)
         size = screen.screensize()
         print(f"{size=}")
 
@@ -225,6 +230,7 @@ class Board:
         # canvas.scale(tk.ALL, 0, 0, 50, 50)
         print(vars(screen))
         t.shape("blank")
+        t.color((0, 0, 0), (255, 255, 255))
         for edge in [i for i in edges if isinstance(i, Edge)]:
             t.up()
             for node in edge.ports[0].joins:
