@@ -145,8 +145,10 @@ class Node(Pin):
 
 class Board:
 
-    def __init__(self):
+    def __init__(self, t = None):
         self.stamps = {}
+        self.shapes = {}
+        self.turtle = t or turtle.RawTurtle()
 
     @staticmethod
     def extent(items: list) -> tuple[Coordinates]:
@@ -199,10 +201,9 @@ class Board:
     def layout_graph(t: RawTurtle, graph: dict) -> dict:
         return graph
 
-    @staticmethod
-    def style_graph(t: RawTurtle, items: list) -> dict:
-        print(f"{t.filling()=}")
-        screen = t.getscreen()
+    def style_graph(self, items: list) -> dict:
+        print(f"{self.turtle.filling()=}")
+        screen = self.turtle.getscreen()
         screen.colormode(255)
         size = screen.screensize()
         print(f"{size=}")
@@ -216,39 +217,55 @@ class Board:
         ).quantize(Decimal(".01")).as_integer_ratio())
         print(f"{scale=}")
 
-        shape = turtle.Shape("polygon", ((-scale, -scale), (scale, -scale), (scale, scale), (-scale, scale)))
-        t.screen.register_shape("s2x2", shape)
-        print(t.screen.getshapes())
+        key = self.build_shape(2, scale)
+        print(f"{key=}")
+        print(self.turtle.screen.getshapes())
         return items
 
-    @staticmethod
-    def draw_graph(t: RawTurtle, edges: list[Edges]) -> RawTurtle:
-        screen = t.getscreen()
+    def draw_graph(self, edges: list[Edges]) -> RawTurtle:
+        screen = self.turtle.getscreen()
         screen.setworldcoordinates(0, 0, 16, 12)
         # canvas = screen.getcanvas()
         # screen.screensize(6, 8)
         # canvas.scale(tk.ALL, 0, 0, 50, 50)
-        print(vars(screen))
-        t.shape("blank")
-        t.color((0, 0, 0), (255, 255, 255))
+        shape = next(iter(self.shapes.keys()))
+        self.turtle.shape("blank")
+        self.turtle.color((0, 0, 0), (255, 255, 255))
         for edge in [i for i in edges if isinstance(i, Edge)]:
-            t.up()
+            self.turtle.up()
             for port in edge.ports:
                 for node in port.joins:
-                    t.shape("s2x2")
+                    self.turtle.shape(shape)
                     try:
-                        t.setpos(node.pos)
+                        self.turtle.setpos(node.pos)
                     except AttributeError:
                         pass
                     else:
-                        t.stamp()
+                        self.stamps[self.turtle.stamp()] = shape
+                        self.turtle.write(self.turtle.pos())
                     finally:
-                        t.shape("blank")
-            t.setpos(edge.ports[0].pos)
-            t.down()
-            t.setpos(edge.ports[1].pos)
+                        self.turtle.shape("blank")
+            self.turtle.setpos(edge.ports[0].pos)
+            self.turtle.write(self.turtle.pos())
+            self.turtle.down()
+            self.turtle.setpos(edge.ports[1].pos)
+            self.turtle.write(self.turtle.pos())
 
     @staticmethod
     def toml_graph(graph: dict) -> Generator[str]:
         yield "[[nodes]]"
         yield "[[links]]"
+
+    def build_shape(self, size, scale=1) -> turtle.Shape:
+        unit = scale * size / 2
+        shape = turtle.Shape(
+            "polygon", (
+                (-unit, -unit),
+                (unit, -unit),
+                (unit, unit),
+                (-unit, unit))
+        )
+        key = f"sq{size}x{size}-{scale}"
+        self.shapes[key] = shape
+        self.turtle.screen.register_shape(key, shape)
+        return key

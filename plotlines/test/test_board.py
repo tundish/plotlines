@@ -107,12 +107,13 @@ class BoardTests(unittest.TestCase):
         nodes = [Node((2, 2)), Node((7, 2)), Node((12, 2))]
         edges = [nodes[0].connect(nodes[1]), nodes[0].connect(nodes[2])]
         edges[0].ports[0].pos = Coordinates(3, 2)
-        edges[0].ports[1].pos = Coordinates(7, 2)
+        edges[0].ports[1].pos = Coordinates(6, 2)
         edges[1].ports[0].pos = Coordinates(8, 2)
-        edges[1].ports[1].pos = Coordinates(12, 2)
+        edges[1].ports[1].pos = Coordinates(11, 2)
 
         t = turtle.Turtle()
-        rv = Board.style_graph(t, nodes + edges)
-        rv = Board.draw_graph(t, nodes + edges)
+        board = Board(t)
+        rv = board.style_graph(nodes + edges)
+        rv = board.draw_graph(nodes + edges)
         t.screen.mainloop()
         self.fail(rv)
