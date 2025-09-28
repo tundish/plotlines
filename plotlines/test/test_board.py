@@ -17,6 +17,7 @@
 
 
 from decimal import Decimal
+from fractions import Fraction
 import tkinter as tk
 import turtle
 import unittest
@@ -103,6 +104,13 @@ class BoardTests(unittest.TestCase):
         check = (Coordinates(-0.5, -0.5), Coordinates(0.5, 10.5))
         self.assertEqual(Board.frame(*points), check)
 
+    def test_scale_factor(self):
+        geom = (400, 300)
+        frame = (Coordinates(1.50, 1.50, coerce=Decimal), Coordinates(12.50, 2.50, coerce=Decimal))
+        scale = Board.scale_factor(geom, frame)
+        check = Fraction(909, 25) * 19 / 12
+        self.assertEqual(scale, check)
+
     def test_style_graph(self):
         nodes = [Node((2, 2)), Node((7, 2)), Node((12, 2))]
         edges = [nodes[0].connect(nodes[1]), nodes[0].connect(nodes[2])]
@@ -116,4 +124,7 @@ class BoardTests(unittest.TestCase):
         rv = board.style_graph(nodes + edges)
         rv = board.draw_graph(nodes + edges)
         t.screen.mainloop()
-        self.fail(rv)
+        print(vars(list(board.shapes.values())[0]))
+        self.assertEqual(len(board.shapes), 1)
+        self.assertEqual(len(board.stamps), len(nodes))
+        self.fail(board.stamps)

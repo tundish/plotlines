@@ -177,6 +177,13 @@ class Board:
         return (min_pos, max_pos)
 
     @staticmethod
+    def scale_factor(geom: tuple[Number], frame: tuple[Coordinates, Coordinates], quant: str = ".01"):
+        return Fraction(*min(
+            Decimal(geom[0]) / (frame[1][0] - frame[0][0]),
+            Decimal(geom[1]) / (frame[1][1] - frame[0][1])
+        ).quantize(Decimal(quant)).as_integer_ratio())
+
+    @staticmethod
     def build_graph(ending: list[str], loading: list[int], trails: int, **kwargs) -> Generator[int, Edge]:
         frame = deque([Node(label=name) for name in ending])
 
