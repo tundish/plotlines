@@ -148,7 +148,7 @@ class Board:
     def __init__(self, t = None):
         self.stamps = {}
         self.shapes = {}
-        self.turtle = t or turtle.RawTurtle()
+        self.turtle = t or turtle.RawTurtle(None)
 
     @staticmethod
     def extent(items: list) -> tuple[Coordinates]:
