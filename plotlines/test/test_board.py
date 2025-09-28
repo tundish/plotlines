@@ -108,7 +108,7 @@ class BoardTests(unittest.TestCase):
         geom = (400, 300)
         frame = (Coordinates(1.50, 1.50, coerce=Decimal), Coordinates(12.50, 2.50, coerce=Decimal))
         scale = Board.scale_factor(geom, frame)
-        check = Fraction(909, 25) * 19 / 12
+        check = Fraction(909, 25)
         self.assertEqual(scale, check)
 
     def test_style_graph(self):

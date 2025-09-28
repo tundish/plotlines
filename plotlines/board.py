@@ -212,26 +212,24 @@ class Board:
         print(f"{self.turtle.filling()=}")
         screen = self.turtle.getscreen()
         screen.colormode(255)
+
+        frame = Board.frame(*Board.extent(items))
+        screen.setworldcoordinates(*[float(i) for c in frame for i in c])
+        print(f"{frame=}")
+
         size = screen.screensize()
         print(f"{size=}")
 
-        frame = Board.frame(*Board.extent(items))
-        print(f"{frame=}")
-
-        scale = Fraction(*min(
-            Decimal(size[0]) / (frame[1][0] - frame[0][0]),
-            Decimal(size[1]) / (frame[1][1] - frame[0][1])
-        ).quantize(Decimal(".01")).as_integer_ratio())
+        scale = self.scale_factor(size, frame)
         print(f"{scale=}")
 
-        key = self.build_shape(2, scale)
+        key = self.build_shape(size=2, scale=scale)
         print(f"{key=}")
         print(self.turtle.screen.getshapes())
         return items
 
     def draw_graph(self, edges: list[Edges]) -> RawTurtle:
         screen = self.turtle.getscreen()
-        screen.setworldcoordinates(0, 0, 16, 12)
         # canvas = screen.getcanvas()
         # screen.screensize(6, 8)
         # canvas.scale(tk.ALL, 0, 0, 50, 50)
