@@ -36,6 +36,10 @@ class SVGTests(unittest.TestCase):
     class FakeTurtle(turtle.RawTurtle):
         pass
 
+    class FakeTurtleScreen(turtle.TurtleScreen):
+        def _incrementudc(self):
+            return
+
     def test_3_nodes(self):
         nodes = [Node((2, 2)), Node((7, 2)), Node((12, 2))]
         edges = [nodes[0].connect(nodes[1]), nodes[0].connect(nodes[2])]
@@ -45,9 +49,9 @@ class SVGTests(unittest.TestCase):
         edges[1].ports[1].pos = Coordinates(11, 2)
 
         canvas = tk.Canvas()
-        screen = turtle.TurtleScreen(canvas)
-        fake_turtle = self.FakeTurtle(screen)
-        board = Board(fake_turtle)
+        screen = self.FakeTurtleScreen(canvas)
+        t = self.FakeTurtle(screen)
+        board = Board(t)
         rv = board.style_graph(nodes + edges)
         rv = board.draw_graph(nodes + edges)
         print(vars(list(board.shapes.values())[0]))
