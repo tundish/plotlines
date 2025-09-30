@@ -209,37 +209,31 @@ class Board:
         return graph
 
     def style_graph(self, items: list) -> dict:
-        print(f"{self.turtle.filling()=}")
         screen = self.turtle.getscreen()
         screen.colormode(255)
 
         frame = Board.frame(*Board.extent(items))
         screen.setworldcoordinates(*[float(i) for c in frame for i in c])
-        print(f"{frame=}")
 
         size = screen.screensize()
-        print(f"{size=}")
 
         scale = self.scale_factor(size, frame)
-        print(f"{scale=}")
 
         key = self.build_shape(size=2, scale=scale)
-        print(f"{key=}")
-        print(self.turtle.screen.getshapes())
         return items
 
     def draw_graph(self, edges: list[Edges]) -> RawTurtle:
         screen = self.turtle.getscreen()
-        # canvas = screen.getcanvas()
-        # screen.screensize(6, 8)
-        # canvas.scale(tk.ALL, 0, 0, 50, 50)
         shape = next(iter(self.shapes.keys()))
         self.turtle.shape("blank")
         self.turtle.color((0, 0, 0), (255, 255, 255))
+        nodes = set()
         for edge in [i for i in edges if isinstance(i, Edge)]:
             self.turtle.up()
             for port in edge.ports:
                 for node in port.joins:
+                    if node in nodes:
+                        continue
                     self.turtle.shape(shape)
                     try:
                         self.turtle.setpos(node.pos)
@@ -248,6 +242,7 @@ class Board:
                     else:
                         self.stamps[self.turtle.stamp()] = shape
                         self.turtle.write(self.turtle.pos())
+                        nodes.add(node)
                     finally:
                         self.turtle.shape("blank")
             self.turtle.setpos(edge.ports[0].pos)

@@ -124,7 +124,5 @@ class BoardTests(unittest.TestCase):
         rv = board.style_graph(nodes + edges)
         rv = board.draw_graph(nodes + edges)
         t.screen.mainloop()
-        print(vars(list(board.shapes.values())[0]))
         self.assertEqual(len(board.shapes), 1, board.shapes)
         self.assertEqual(len(board.stamps), len(nodes), board.stamps)
-        self.fail(board.stamps)

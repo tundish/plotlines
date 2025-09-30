@@ -67,11 +67,8 @@ class SVGTests(unittest.TestCase):
         mock_screen = self.build_screen()
         with unittest.mock.patch.object(turtle.Turtle, "_screen", mock_screen):
             t = turtle.Turtle()
-            print(t.screen, type(t.screen))
             board = Board(t)
             rv = board.style_graph(nodes + edges)
             rv = board.draw_graph(nodes + edges)
-            print(vars(list(board.shapes.values())[0]))
             self.assertEqual(len(board.shapes), 1, board.shapes)
             self.assertEqual(len(board.stamps), len(nodes), board.stamps)
-            self.fail(board.stamps)
