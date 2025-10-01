@@ -206,10 +206,10 @@ class Board:
                 yield edge.number, edge
 
     @staticmethod
-    def layout_graph(t: RawTurtle, graph: dict) -> dict:
+    def layout_graph(t: RawTurtle, graph: dict, **kwargs) -> dict:
         return graph
 
-    def style_graph(self, items: list) -> dict:
+    def style_graph(self, items: list, **kwargs) -> dict:
         screen = self.turtle.getscreen()
         screen.colormode(255)
 
@@ -223,7 +223,7 @@ class Board:
         key = self.build_shape(size=2, scale=scale)
         return items
 
-    def draw_graph(self, edges: list[Edges]) -> RawTurtle:
+    def draw_graph(self, edges: list[Edges], debug=False) -> RawTurtle:
         screen = self.turtle.getscreen()
         shape = next(iter(self.shapes.keys()))
         self.turtle.shape("blank")
@@ -242,7 +242,8 @@ class Board:
                         pass
                     else:
                         self.stamps[self.turtle.stamp()] = shape
-                        self.turtle.write(self.turtle.pos())
+                        if debug:
+                            self.turtle.write(self.turtle.pos())
                         nodes.add(node)
                     finally:
                         self.turtle.shape("blank")

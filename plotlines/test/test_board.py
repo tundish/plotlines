@@ -122,7 +122,7 @@ class BoardTests(unittest.TestCase):
         t = turtle.Turtle()
         board = Board(t)
         rv = board.style_graph(nodes + edges)
-        rv = board.draw_graph(nodes + edges)
+        rv = board.draw_graph(nodes + edges, debug=True)
         t.screen.mainloop()
         self.assertEqual(len(board.shapes), 1, board.shapes)
         self.assertEqual(len(board.stamps), len(nodes), board.stamps)

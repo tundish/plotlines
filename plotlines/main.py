@@ -68,7 +68,7 @@ def main(args):
         print(f"{stamps=}", file=sys.stderr)
 
         logger.debug(tk.font.families())
-        Board.draw_graph(t, graph)
+        Board.draw_graph(t, graph, debug=args.debug)
         t.screen.mainloop()
     elif args.format == "svg":
         # TODO: implement Renderer
@@ -92,7 +92,7 @@ class InlineValues:
 
 def parser():
     rv = argparse.ArgumentParser(usage=__doc__, fromfile_prefix_chars="=")
-    rv.add_argument("--debug", action="store_true", default=False, help="Display debug logs")
+    rv.add_argument("--debug", action="store_true", default=False, help="Display debug information")
     rv.add_argument(
         "--ending", type=InlineValues(str), default=["A"], help="Declare named endings"
     )
