@@ -23,6 +23,7 @@ import functools
 import itertools
 import tkinter as tk
 import turtle
+from types import SimpleNamespace as NS
 import unittest.mock
 import xml.etree.ElementTree as ET
 
@@ -91,3 +92,7 @@ class SVGTests(unittest.TestCase):
             svg = board.to_svg()
             root = ET.fromstring(svg)
             print(f"{root=}")
+
+            ns = NS(svg="http://www.w3.org/2000/svg")
+            self.assertEqual(root.tag, ET.QName(ns.svg, "svg"))
+            self.assertEqual(root.attrib.get("width"), "20", root.attrib)
