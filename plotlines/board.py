@@ -32,6 +32,7 @@ import itertools
 import logging
 from numbers import Number
 import string
+import textwrap
 import tkinter as tk
 import turtle
 import typing
@@ -269,3 +270,9 @@ class Board:
         self.shapes[key] = shape
         self.turtle.screen.register_shape(key, shape)
         return key
+
+    def to_svg(self):
+        return textwrap.dedent(f"""
+        <svg height="220" width="500" xmlns="http://www.w3.org/2000/svg">
+        </svg>
+        """)

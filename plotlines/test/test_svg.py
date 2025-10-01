@@ -24,6 +24,7 @@ import itertools
 import tkinter as tk
 import turtle
 import unittest.mock
+import xml.etree.ElementTree as ET
 
 from plotlines.board import Board
 from plotlines.board import Edge
@@ -56,7 +57,7 @@ class SVGTests(unittest.TestCase):
         rv.screensize.return_value = size
         return rv
 
-    def test_3_nodes(self):
+    def test_3_nodes_draw(self):
         nodes = [Node((2, 2)), Node((7, 2)), Node((12, 2))]
         edges = [nodes[0].connect(nodes[1]), nodes[0].connect(nodes[2])]
         edges[0].ports[0].pos = Coordinates(3, 2)
@@ -72,3 +73,21 @@ class SVGTests(unittest.TestCase):
             rv = board.draw_graph(nodes + edges)
             self.assertEqual(len(board.shapes), 1, board.shapes)
             self.assertEqual(len(board.stamps), len(nodes), board.stamps)
+
+    def test_3_nodes_svg(self):
+        nodes = [Node((2, 2)), Node((7, 2)), Node((12, 2))]
+        edges = [nodes[0].connect(nodes[1]), nodes[0].connect(nodes[2])]
+        edges[0].ports[0].pos = Coordinates(3, 2)
+        edges[0].ports[1].pos = Coordinates(6, 2)
+        edges[1].ports[0].pos = Coordinates(8, 2)
+        edges[1].ports[1].pos = Coordinates(11, 2)
+
+        mock_screen = self.build_screen()
+        with unittest.mock.patch.object(turtle.Turtle, "_screen", mock_screen):
+            t = turtle.Turtle()
+            board = Board(t)
+            rv = board.style_graph(nodes + edges)
+            rv = board.draw_graph(nodes + edges)
+            svg = board.to_svg()
+            root = ET.fromstring(svg)
+            print(f"{root=}")
