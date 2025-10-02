@@ -112,12 +112,42 @@ class BoardTests(unittest.TestCase):
         self.assertEqual(scale, check)
 
     def test_style_graph(self):
-        nodes = [Node((2, 2)), Node((7, 2)), Node((12, 2))]
-        edges = [nodes[0].connect(nodes[1]), nodes[0].connect(nodes[2])]
-        edges[0].ports[0].pos = Coordinates(3, 2)
-        edges[0].ports[1].pos = Coordinates(6, 2)
-        edges[1].ports[0].pos = Coordinates(8, 2)
-        edges[1].ports[1].pos = Coordinates(11, 2)
+        nodes = [
+            Node((1, 8)),
+            Node((6, 3)),
+            Node((6, 6)),
+            Node((6, 9)),
+            Node((6, 12)),
+            Node((11, 4)),
+            Node((10, 8)),
+            Node((12.5, 11.5)),
+            Node((17, 1)),
+            Node((17, 4)),
+            Node((17, 7)),
+            Node((17, 10)),
+            Node((17, 13)),
+        ]
+        edges = [
+            nodes[0].connect(nodes[3]),
+            nodes[3].connect(nodes[2]),
+            nodes[2].connect(nodes[1]),
+            nodes[3].connect(nodes[4]),
+            nodes[1].connect(nodes[5]),
+            nodes[2].connect(nodes[5]),
+            nodes[3].connect(nodes[6]),
+            nodes[4].connect(nodes[7]),
+            nodes[5].connect(nodes[8]),
+            nodes[5].connect(nodes[9]),
+            nodes[5].connect(nodes[10]),
+            nodes[6].connect(nodes[10]),
+            nodes[7].connect(nodes[11]),
+            nodes[7].connect(nodes[12]),
+        ]
+        edges[0].ports[0].pos = Coordinates(2, 8)
+        edges[0].ports[1].pos = Coordinates(5, 9)
+
+        edges[1].ports[0].pos = Coordinates(6, 5)
+        edges[1].ports[1].pos = Coordinates(6, 4)
 
         t = turtle.Turtle()
         board = Board(t)

@@ -154,8 +154,8 @@ class Board:
     @staticmethod
     def extent(items: list) -> tuple[Coordinates]:
         nodes = [i for i in items if isinstance(i, Node)]
-        x_vals = sorted([p.pos[0] for node in nodes for p in [node] + list(node.ports.values())])
-        y_vals = sorted([p.pos[1] for node in nodes for p in [node] + list(node.ports.values())])
+        x_vals = sorted([p.pos[0] for node in nodes for p in [node] + list(node.ports.values()) if p.pos])
+        y_vals = sorted([p.pos[1] for node in nodes for p in [node] + list(node.ports.values()) if p.pos])
 
         min_pos = Coordinates(x_vals[0], y_vals[0])
         max_pos = Coordinates(x_vals[-1], y_vals[-1])
@@ -217,6 +217,8 @@ class Board:
         screen.setworldcoordinates(*[float(i) for c in frame for i in c])
 
         size = screen.screensize()
+        size = (max(size), max(size))
+        # screen.setup(*size)
 
         scale = self.scale_factor(size, frame)
 
@@ -247,6 +249,10 @@ class Board:
                         nodes.add(node)
                     finally:
                         self.turtle.shape("blank")
+
+            if not all(i.pos for i in edge.ports):
+                continue
+
             self.turtle.setpos(edge.ports[0].pos)
             self.turtle.write(self.turtle.pos())
             self.turtle.down()
