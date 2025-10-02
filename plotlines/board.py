@@ -162,7 +162,7 @@ class Board:
         return min_pos, max_pos
 
     @staticmethod
-    def frame(*points: tuple[Coordinates], margin: Decimal = Decimal("0.05")):
+    def frame(*points: tuple[Coordinates], margin: Decimal = Decimal("0.05"), clip=None):
         x_vals = sorted([point[0] for point in points])
         y_vals = sorted([point[1] for point in points])
 
@@ -175,7 +175,12 @@ class Board:
         max_y = y_vals[1] + margin * span_y
         min_pos = Coordinates(min_x, min_y)
         max_pos = Coordinates(max_x, max_y)
-        return (min_pos, max_pos)
+
+        rv = (min_pos, max_pos)
+        if clip:
+            return clip(rv)
+        else:
+            return rv
 
     @staticmethod
     def scale_factor(geom: tuple[Number], frame: tuple[Coordinates, Coordinates], quant: str = ".01"):
@@ -217,7 +222,6 @@ class Board:
         screen.setworldcoordinates(*[float(i) for c in frame for i in c])
 
         size = screen.screensize()
-        size = (max(size), max(size))
         # screen.setup(*size)
 
         scale = self.scale_factor(size, frame)
