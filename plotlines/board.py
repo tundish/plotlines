@@ -116,13 +116,20 @@ class Node(Pin):
     def edges(self):
         return [i for p in self.ports.values() for i in p.joins if isinstance(i, Edge)]
 
-    def connect(self, other: Pin, edge=None):
+    def connect(self, other: Pin, *pos, edge=None):
         rv = edge or Edge()
         rv.ports[0].joins.add(self)
         self.ports[len(self.ports)] = rv.ports[0]
 
         rv.ports[1].joins.add(other)
         other.ports[len(other.ports)] = rv.ports[1]
+
+        try:
+            rv.ports[0].pos = pos[0]
+            rv.ports[1].pos = pos[-1]
+        except IndexError:
+            pass
+
         return rv
 
     @functools.singledispatchmethod

@@ -26,7 +26,7 @@ from plotlines.board import Board
 from plotlines.board import Edge
 from plotlines.board import Node
 from plotlines.board import Port
-from plotlines.coordinates import Coordinates
+from plotlines.coordinates import Coordinates as C
 
 
 class BoardTests(unittest.TestCase):
@@ -34,13 +34,13 @@ class BoardTests(unittest.TestCase):
     def test_edge_init(self):
         edge = Edge((1, 3), (19, 12))
         self.assertEqual(len(edge.ports), 2)
-        self.assertTrue(all(isinstance(p.pos, Coordinates) for p in edge.ports), edge.ports)
+        self.assertTrue(all(isinstance(p.pos, C) for p in edge.ports), edge.ports)
         self.assertEqual(edge.ports[0].pos, (1, 3))
         self.assertEqual(edge.ports[1].pos, (19, 12))
 
     def test_node_init(self):
         node = Node((13, 14))
-        self.assertIsInstance(node.pos, Coordinates)
+        self.assertIsInstance(node.pos, C)
         self.assertEqual(node.pos, (13, 14))
 
     def test_node_connect(self):
@@ -96,17 +96,17 @@ class BoardTests(unittest.TestCase):
         self.assertAlmostEqual(space, 4.5, places=1)
 
     def test_frame(self):
-        points = (Coordinates(0, 0), Coordinates(10, 10))
-        check = (Coordinates(-0.5, -0.5), Coordinates(10.5, 10.5))
+        points = (C(0, 0), C(10, 10))
+        check = (C(-0.5, -0.5), C(10.5, 10.5))
         self.assertEqual(Board.frame(*points), check)
 
-        points = (Coordinates(0, 0), Coordinates(0, 10))
-        check = (Coordinates(-0.5, -0.5), Coordinates(0.5, 10.5))
+        points = (C(0, 0), C(0, 10))
+        check = (C(-0.5, -0.5), C(0.5, 10.5))
         self.assertEqual(Board.frame(*points), check)
 
     def test_scale_factor(self):
         geom = (400, 300)
-        frame = (Coordinates(1.50, 1.50, coerce=Decimal), Coordinates(12.50, 2.50, coerce=Decimal))
+        frame = (C(1.50, 1.50, coerce=Decimal), C(12.50, 2.50, coerce=Decimal))
         scale = Board.scale_factor(geom, frame)
         check = Fraction(909, 25)
         self.assertEqual(scale, check)
@@ -128,7 +128,7 @@ class BoardTests(unittest.TestCase):
             Node((17, 13)),
         ]
         edges = [
-            nodes[0].connect(nodes[3]),
+            nodes[0].connect(nodes[3], C(2, 8), C(5, 9)),
             nodes[3].connect(nodes[2]),
             nodes[2].connect(nodes[1]),
             nodes[3].connect(nodes[4]),
@@ -143,47 +143,44 @@ class BoardTests(unittest.TestCase):
             nodes[7].connect(nodes[11]),
             nodes[7].connect(nodes[12]),
         ]
-        edges[0].ports[0].pos = Coordinates(2, 8)
-        edges[0].ports[1].pos = Coordinates(5, 9)
+        edges[1].ports[0].pos = C(6, 5)
+        edges[1].ports[1].pos = C(6, 4)
 
-        edges[1].ports[0].pos = Coordinates(6, 5)
-        edges[1].ports[1].pos = Coordinates(6, 4)
+        edges[2].ports[0].pos = C(6, 8)
+        edges[2].ports[1].pos = C(6, 7)
 
-        edges[2].ports[0].pos = Coordinates(6, 8)
-        edges[2].ports[1].pos = Coordinates(6, 7)
+        edges[3].ports[0].pos = C(6, 10)
+        edges[3].ports[1].pos = C(6, 11)
 
-        edges[3].ports[0].pos = Coordinates(6, 10)
-        edges[3].ports[1].pos = Coordinates(6, 11)
+        edges[4].ports[0].pos = C(7, 3)
+        edges[4].ports[1].pos = C(9, 3)
 
-        edges[4].ports[0].pos = Coordinates(7, 3)
-        edges[4].ports[1].pos = Coordinates(9, 3)
+        edges[5].ports[0].pos = C(7, 6)
+        edges[5].ports[1].pos = C(9, 5)
 
-        edges[5].ports[0].pos = Coordinates(7, 6)
-        edges[5].ports[1].pos = Coordinates(9, 5)
+        edges[6].ports[0].pos = C(7, 9)
+        edges[6].ports[1].pos = C(9, 8)
 
-        edges[6].ports[0].pos = Coordinates(7, 9)
-        edges[6].ports[1].pos = Coordinates(9, 8)
+        edges[7].ports[0].pos = C(7, 12)
+        edges[7].ports[1].pos = C(11, 12)
 
-        edges[7].ports[0].pos = Coordinates(7, 12)
-        edges[7].ports[1].pos = Coordinates(11, 12)
+        edges[8].ports[0].pos = C(13, 3)
+        edges[8].ports[1].pos = C(16, 1)
 
-        edges[8].ports[0].pos = Coordinates(13, 3)
-        edges[8].ports[1].pos = Coordinates(16, 1)
+        edges[9].ports[0].pos = C(13, 4)
+        edges[9].ports[1].pos = C(16, 4)
 
-        edges[9].ports[0].pos = Coordinates(13, 4)
-        edges[9].ports[1].pos = Coordinates(16, 4)
+        edges[10].ports[0].pos = C(13, 5)
+        edges[10].ports[1].pos = C(16, 7)
 
-        edges[10].ports[0].pos = Coordinates(13, 5)
-        edges[10].ports[1].pos = Coordinates(16, 7)
+        edges[11].ports[0].pos = C(11, 8)
+        edges[11].ports[1].pos = C(16, 7)
 
-        edges[11].ports[0].pos = Coordinates(11, 8)
-        edges[11].ports[1].pos = Coordinates(16, 7)
+        edges[12].ports[0].pos = C(14, 11)
+        edges[12].ports[1].pos = C(16, 10)
 
-        edges[12].ports[0].pos = Coordinates(14, 11)
-        edges[12].ports[1].pos = Coordinates(16, 10)
-
-        edges[13].ports[0].pos = Coordinates(14, 12)
-        edges[13].ports[1].pos = Coordinates(16, 13)
+        edges[13].ports[0].pos = C(14, 12)
+        edges[13].ports[1].pos = C(16, 13)
 
         t = turtle.Turtle()
         board = Board(t)
