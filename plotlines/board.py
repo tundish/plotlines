@@ -219,7 +219,6 @@ class Board:
         screen.colormode(255)
 
         frame = Board.frame(*Board.extent(items), square=True)
-        print(f"{frame=}")
         screen.setworldcoordinates(*[float(i) for c in frame for i in c])
 
         size = screen.screensize()
