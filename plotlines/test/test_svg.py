@@ -89,10 +89,17 @@ class SVGTests(unittest.TestCase):
             board = Board(t)
             rv = board.style_graph(nodes + edges)
             rv = board.draw_graph(nodes + edges)
+
+            frame = board.frame(*board.extent(nodes + edges), square=True)
+            print(f"{frame=}")
+            size = t.screen.screensize()
+            print(f"{size=}")
+
             svg = board.to_svg()
             root = ET.fromstring(svg)
-            print(f"{root=}")
 
             ns = NS(svg="http://www.w3.org/2000/svg")
             self.assertEqual(root.tag, ET.QName(ns.svg, "svg"))
-            self.assertEqual(root.attrib.get("width"), "20", root.attrib)
+            self.assertEqual(root.attrib.get("width"), str(t.screen.screensize()[0]), root.attrib)
+            self.assertEqual(root.attrib.get("height"), str(t.screen.screensize()[1]), root.attrib)
+            self.assertIn("viewBox", root.attrib)

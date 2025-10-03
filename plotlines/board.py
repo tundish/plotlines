@@ -238,7 +238,7 @@ class Board:
         screen = self.turtle.getscreen()
         screen.colormode(255)
 
-        frame = Board.frame(*Board.extent(items), square=True)
+        frame = self.frame(*self.extent(items), square=True)
         screen.setworldcoordinates(*[float(i) for c in frame for i in c])
 
         size = screen.screensize()
