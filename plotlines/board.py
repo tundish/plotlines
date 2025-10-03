@@ -162,7 +162,7 @@ class Board:
         return min_pos, max_pos
 
     @staticmethod
-    def frame(*points: tuple[Coordinates], margin: Decimal = Decimal("0.05")):
+    def frame(*points: tuple[Coordinates], margin: Decimal = Decimal("0.05"), square=False):
         x_vals = sorted([point[0] for point in points])
         y_vals = sorted([point[1] for point in points])
 
@@ -174,7 +174,12 @@ class Board:
         min_y = y_vals[0] - margin * span_y
         max_y = y_vals[1] + margin * span_y
         min_pos = Coordinates(min_x, min_y)
-        max_pos = Coordinates(max_x, max_y)
+
+        if square:
+            max_val = max(max_x, max_y)
+            max_pos = Coordinates(max_val, max_val)
+        else:
+            max_pos = Coordinates(max_x, max_y)
         return (min_pos, max_pos)
 
     @staticmethod
@@ -213,13 +218,11 @@ class Board:
         screen = self.turtle.getscreen()
         screen.colormode(255)
 
-        frame = Board.frame(*Board.extent(items))
+        frame = Board.frame(*Board.extent(items), square=True)
+        print(f"{frame=}")
         screen.setworldcoordinates(*[float(i) for c in frame for i in c])
 
         size = screen.screensize()
-        size = (max(size), max(size))
-        # screen.setup(*size)
-
         scale = self.scale_factor(size, frame)
 
         key = self.build_shape(size=2, scale=scale)
