@@ -129,58 +129,20 @@ class BoardTests(unittest.TestCase):
         ]
         edges = [
             nodes[0].connect(nodes[3], C(2, 8), C(5, 9)),
-            nodes[3].connect(nodes[2]),
-            nodes[2].connect(nodes[1]),
-            nodes[3].connect(nodes[4]),
-            nodes[1].connect(nodes[5]),
-            nodes[2].connect(nodes[5]),
-            nodes[3].connect(nodes[6]),
-            nodes[4].connect(nodes[7]),
-            nodes[5].connect(nodes[8]),
-            nodes[5].connect(nodes[9]),
-            nodes[5].connect(nodes[10]),
-            nodes[6].connect(nodes[10]),
-            nodes[7].connect(nodes[11]),
-            nodes[7].connect(nodes[12]),
+            nodes[3].connect(nodes[2], C(6, 5), C(6, 4)),
+            nodes[2].connect(nodes[1], C(6, 8), C(6, 7)),
+            nodes[3].connect(nodes[4], C(6, 10), C(6, 11)),
+            nodes[1].connect(nodes[5], C(7, 3), C(9, 3)),
+            nodes[2].connect(nodes[5], C(7, 6), C(9, 5)),
+            nodes[3].connect(nodes[6], C(7, 9), C(9, 8)),
+            nodes[4].connect(nodes[7], C(7, 12), C(11, 12)),
+            nodes[5].connect(nodes[8], C(13, 3), C(16, 1)),
+            nodes[5].connect(nodes[9], C(13, 4), C(16, 4)),
+            nodes[5].connect(nodes[10], C(13, 5), C(16, 7)),
+            nodes[6].connect(nodes[10], C(11, 8), C(16, 7)),
+            nodes[7].connect(nodes[11], C(14, 11), C(16, 10)),
+            nodes[7].connect(nodes[12], C(14, 12), C(16, 13)),
         ]
-        edges[1].ports[0].pos = C(6, 5)
-        edges[1].ports[1].pos = C(6, 4)
-
-        edges[2].ports[0].pos = C(6, 8)
-        edges[2].ports[1].pos = C(6, 7)
-
-        edges[3].ports[0].pos = C(6, 10)
-        edges[3].ports[1].pos = C(6, 11)
-
-        edges[4].ports[0].pos = C(7, 3)
-        edges[4].ports[1].pos = C(9, 3)
-
-        edges[5].ports[0].pos = C(7, 6)
-        edges[5].ports[1].pos = C(9, 5)
-
-        edges[6].ports[0].pos = C(7, 9)
-        edges[6].ports[1].pos = C(9, 8)
-
-        edges[7].ports[0].pos = C(7, 12)
-        edges[7].ports[1].pos = C(11, 12)
-
-        edges[8].ports[0].pos = C(13, 3)
-        edges[8].ports[1].pos = C(16, 1)
-
-        edges[9].ports[0].pos = C(13, 4)
-        edges[9].ports[1].pos = C(16, 4)
-
-        edges[10].ports[0].pos = C(13, 5)
-        edges[10].ports[1].pos = C(16, 7)
-
-        edges[11].ports[0].pos = C(11, 8)
-        edges[11].ports[1].pos = C(16, 7)
-
-        edges[12].ports[0].pos = C(14, 11)
-        edges[12].ports[1].pos = C(16, 10)
-
-        edges[13].ports[0].pos = C(14, 12)
-        edges[13].ports[1].pos = C(16, 13)
 
         t = turtle.Turtle()
         board = Board(t)
