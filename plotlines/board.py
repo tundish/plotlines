@@ -173,12 +173,12 @@ class Board:
         max_x = x_vals[1] + margin * span_x
         min_y = y_vals[0] - margin * span_y
         max_y = y_vals[1] + margin * span_y
-        min_pos = Coordinates(min_x, min_y)
 
         if square:
-            max_val = max(max_x, max_y)
-            max_pos = Coordinates(max_val, max_val)
+            min_pos = Coordinates(min(min_x, min_y), min(min_x, min_y))
+            max_pos = Coordinates(max(max_x, max_y), max(max_x, max_y))
         else:
+            min_pos = Coordinates(min_x, min_y)
             max_pos = Coordinates(max_x, max_y)
         return (min_pos, max_pos)
 
