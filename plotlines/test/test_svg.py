@@ -95,6 +95,7 @@ class SVGTests(unittest.TestCase):
             size = t.screen.screensize()
             print(f"{size=}")
 
+            print(f"{board.shapes=}")
             svg = board.to_svg()
             root = ET.fromstring(svg)
 
@@ -103,3 +104,4 @@ class SVGTests(unittest.TestCase):
             self.assertEqual(root.attrib.get("width"), str(t.screen.screensize()[0]), root.attrib)
             self.assertEqual(root.attrib.get("height"), str(t.screen.screensize()[1]), root.attrib)
             self.assertIn("viewBox", root.attrib)
+            self.assertIn("preserveAspectRatio", root.attrib)
