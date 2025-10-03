@@ -118,9 +118,9 @@ class BoardTests(unittest.TestCase):
             Node((6, 6)),
             Node((6, 9)),
             Node((6, 12)),
-            Node((11, 4)),
+            Node((11, 4), area=16),
             Node((10, 8)),
-            Node((12.5, 11.5)),
+            Node((12.5, 11.5), area=9),
             Node((17, 1)),
             Node((17, 4)),
             Node((17, 7)),
@@ -188,7 +188,7 @@ class BoardTests(unittest.TestCase):
         t = turtle.Turtle()
         board = Board(t)
         rv = board.style_graph(nodes + edges)
-        rv = board.draw_graph(nodes + edges, debug=True)
+        rv = board.draw_graph(nodes + edges, debug=True, delay=0)
         t.screen.mainloop()
-        self.assertEqual(len(board.shapes), 1, board.shapes)
+        self.assertEqual(len(board.shapes), 3, board.shapes)
         self.assertEqual(len(board.stamps), len(nodes), board.stamps)

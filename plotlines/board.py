@@ -30,6 +30,7 @@ from fractions import Fraction
 import functools
 import itertools
 import logging
+import math
 from numbers import Number
 import string
 import textwrap
@@ -62,6 +63,7 @@ class Link:
 @dataclasses.dataclass(unsafe_hash=True)
 class Pin(Item):
     pos:        Coordinates = None
+    area:       int = dataclasses.field(default=4, kw_only=True)
     shape:      str = dataclasses.field(default="", kw_only=True)
     label:      str = dataclasses.field(default="", kw_only=True)
 
@@ -224,12 +226,17 @@ class Board:
         size = screen.screensize()
         scale = self.scale_factor(size, frame)
 
-        key = self.build_shape(size=2, scale=scale)
+        for item in items:
+            try:
+                size = math.sqrt(item.area)
+                item.shape = self.build_shape(size=size, scale=scale).key
+            except AttributeError:
+                pass
         return items
 
-    def draw_graph(self, edges: list[Edges], debug=False) -> RawTurtle:
+    def draw_graph(self, edges: list[Edges], debug=False, delay: int = 10) -> RawTurtle:
         screen = self.turtle.getscreen()
-        shape = next(iter(self.shapes.keys()))
+        screen.delay(delay)
         self.turtle.shape("blank")
         self.turtle.color((0, 0, 0), (255, 255, 255))
         nodes = set()
@@ -239,16 +246,17 @@ class Board:
                 for node in port.joins:
                     if node in nodes:
                         continue
-                    self.turtle.shape(shape)
+
                     try:
+                        self.turtle.shape(node.shape)
                         self.turtle.setpos(node.pos)
                     except AttributeError:
                         pass
                     else:
-                        self.stamps[self.turtle.stamp()] = shape
+                        self.stamps[self.turtle.stamp()] = node.shape
+                        nodes.add(node)
                         if debug:
                             self.turtle.write(self.turtle.pos())
-                        nodes.add(node)
                     finally:
                         self.turtle.shape("blank")
 
@@ -267,18 +275,22 @@ class Board:
         yield "[[links]]"
 
     def build_shape(self, size, scale=1) -> turtle.Shape:
-        unit = scale * size / 2
-        shape = turtle.Shape(
-            "polygon", (
-                (-unit, -unit),
-                (unit, -unit),
-                (unit, unit),
-                (-unit, unit))
-        )
-        key = f"sq{size}x{size}-{scale}"
-        self.shapes[key] = shape
-        self.turtle.screen.register_shape(key, shape)
-        return key
+        key = f"sq{size:.02f}x{size:.02f}-{scale}"
+        try:
+            return self.shapes[key]
+        except KeyError:
+            unit = scale * size / 2
+            shape = turtle.Shape(
+                "polygon", (
+                    (-unit, -unit),
+                    (unit, -unit),
+                    (unit, unit),
+                    (-unit, unit))
+            )
+            shape.key = key
+            self.shapes[key] = shape
+            self.turtle.screen.register_shape(key, shape)
+            return shape
 
     def to_svg(self):
         return textwrap.dedent(f"""
