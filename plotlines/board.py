@@ -43,11 +43,22 @@ import weakref
 from plotlines.coordinates import Coordinates
 
 
+RGB = functools.partial(Coordinates, coerce=int)
+
+
+@dataclasses.dataclass(unsafe_hash=True)
+class Style:
+    stroke:     RGB = dataclasses.field(default=RGB(0, 0, 0), kw_only=True)
+    fill:       RGB = dataclasses.field(default=RGB(255, 255, 255), kw_only=True)
+    weight:     int = dataclasses.field(default=1, kw_only=True)
+
+
 @dataclasses.dataclass(unsafe_hash=True)
 class Item:
     store: typing.ClassVar[set] = defaultdict(weakref.WeakSet)
 
     number:     int = dataclasses.field(init=False)
+    style:      Style = dataclasses.field(default_factory=Style, kw_only=True)
     contents:   list = dataclasses.field(default_factory=list, compare=False, kw_only=True)
 
     def __post_init__(self, *args):
