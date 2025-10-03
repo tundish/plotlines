@@ -149,6 +149,42 @@ class BoardTests(unittest.TestCase):
         edges[1].ports[0].pos = Coordinates(6, 5)
         edges[1].ports[1].pos = Coordinates(6, 4)
 
+        edges[2].ports[0].pos = Coordinates(6, 8)
+        edges[2].ports[1].pos = Coordinates(6, 7)
+
+        edges[3].ports[0].pos = Coordinates(6, 10)
+        edges[3].ports[1].pos = Coordinates(6, 11)
+
+        edges[4].ports[0].pos = Coordinates(7, 3)
+        edges[4].ports[1].pos = Coordinates(9, 3)
+
+        edges[5].ports[0].pos = Coordinates(7, 6)
+        edges[5].ports[1].pos = Coordinates(9, 5)
+
+        edges[6].ports[0].pos = Coordinates(7, 9)
+        edges[6].ports[1].pos = Coordinates(9, 8)
+
+        edges[7].ports[0].pos = Coordinates(7, 12)
+        edges[7].ports[1].pos = Coordinates(11, 12)
+
+        edges[8].ports[0].pos = Coordinates(13, 3)
+        edges[8].ports[1].pos = Coordinates(16, 1)
+
+        edges[9].ports[0].pos = Coordinates(13, 4)
+        edges[9].ports[1].pos = Coordinates(16, 4)
+
+        edges[10].ports[0].pos = Coordinates(13, 5)
+        edges[10].ports[1].pos = Coordinates(16, 7)
+
+        edges[11].ports[0].pos = Coordinates(11, 8)
+        edges[11].ports[1].pos = Coordinates(16, 7)
+
+        edges[12].ports[0].pos = Coordinates(14, 11)
+        edges[12].ports[1].pos = Coordinates(16, 10)
+
+        edges[13].ports[0].pos = Coordinates(14, 12)
+        edges[13].ports[1].pos = Coordinates(16, 13)
+
         t = turtle.Turtle()
         board = Board(t)
         rv = board.style_graph(nodes + edges)
