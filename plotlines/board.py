@@ -314,13 +314,13 @@ class Board:
     def to_svg(self, items: list[Item]):
         width, height = self.turtle.getscreen().screensize()
         defs = [
-            '<pattern id="{0}">\n<polygon points="{1}" />\n</pattern>'.format(
+            '<pattern id="{0}" >\n<polygon points="{1}" stroke="black" />\n</pattern>'.format(
                 id_, " ".join(f"{pos[0]},{pos[1]}" for pos in shape._data)
             )
             for id_, shape in self.shapes.items()
         ]
         polygons = [
-            f'<use xlink:href="#{item.shape}" transform="translate({item.pos[0]},{item.pos[-1]})" />'
+            f'<use href="#{item.shape}" transform="translate({item.pos[0]}, {item.pos[-1]})" />'
             for item in items
             if isinstance(item, Node)
         ]
