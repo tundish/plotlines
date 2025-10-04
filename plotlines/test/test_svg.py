@@ -96,8 +96,9 @@ class SVGTests(unittest.TestCase):
             svg = board.to_svg()
             root = ET.fromstring(svg)
 
-            ns = NS(svg="http://www.w3.org/2000/svg")
+            ns = NS(svg="http://www.w3.org/2000/svg", xlink="http://www.w3.org/1999/xlink")
             self.assertEqual(root.tag, ET.QName(ns.svg, "svg"))
+            self.assertEqual(root.attrib.get("xmlns:xlink"), "http://www.w3.org/1999/xlink", root.attrib)
             self.assertEqual(root.attrib.get("width"), str(t.screen.screensize()[0]), root.attrib)
             self.assertEqual(root.attrib.get("height"), str(t.screen.screensize()[1]), root.attrib)
             self.assertIn("viewBox", root.attrib)
