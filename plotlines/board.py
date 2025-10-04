@@ -319,21 +319,17 @@ class Board:
         scale = self.scale_factor(size, frame)
 
         defs = [
-            '<pattern id="{0}" >\n<polygon points="{1}" stroke="black" fill="white" />\n</pattern>'.format(
-                id_, " ".join(f"{pos[0]},{pos[1]}" for pos in shape._data)
-            )
-            for id_, shape in self.shapes.items()
-        ]
-        defs = [
             '<polygon id="{0}" points="{1}" />'.format(
                 id_, " ".join(f"{pos[0]},{pos[1]}" for pos in shape._data)
             )
             for id_, shape in self.shapes.items()
         ]
         shrink = scale.denominator / scale.numerator
-        print(f"{shrink=}")
         polygons = [
-            f'<use href="#{item.shape}" transform="translate({item.pos[0]}, {item.pos[-1]}) scale({shrink:.4f})" fill="blue" />'
+            (f'<use href="#{item.shape}" '
+             f'transform="translate({item.pos[0]}, {item.pos[-1]}) scale({shrink:.4f})" '
+             f'fill="none" stroke="black" '
+             '/>')
             for item in items
             if isinstance(item, Node)
         ]
