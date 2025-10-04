@@ -320,7 +320,7 @@ class Board:
             for id_, shape in self.shapes.items()
         ]
         polygons = [
-            '<use xlink:href="#{0}" />'.format(item.shape)
+            f'<use xlink:href="#{item.shape}" transform="translate({item.pos[0]},{item.pos[-1]})" />'
             for item in items
             if isinstance(item, Node)
         ]
