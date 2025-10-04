@@ -310,8 +310,18 @@ class Board:
             self.turtle.screen.register_shape(key, shape)
             return shape
 
-    def to_svg(self):
+    def to_svg(self, items: list[Item]):
+        width, height = self.turtle.getscreen().screensize()
+        polygons = [
+            '<polygon id="{0}" points="{1}" />'.format(
+                id_, " ".join(f"{pos[0]},{pos[1]}" for pos in shape._data)
+            )
+            for id_, shape in self.shapes.items()
+        ]
         return textwrap.dedent(f"""
-        <svg height="220" width="500" xmlns="http://www.w3.org/2000/svg">
+        <svg xmlns="http://www.w3.org/2000/svg"
+             xmlns:xlink="http://www.w3.org/1999/xlink"
+        width="{width}" height="{height}" >
+        {{0}}
         </svg>
-        """)
+        """).format("\n".join(polygons))

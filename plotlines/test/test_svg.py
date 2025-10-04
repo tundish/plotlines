@@ -85,7 +85,7 @@ class SVGTests(unittest.TestCase):
             t = turtle.Turtle()
             board = Board(t)
             rv = board.style_graph(nodes + edges)
-            rv = board.draw_graph(nodes + edges)
+            items = board.draw_graph(nodes + edges)
 
             frame = board.frame(*board.extent(nodes + edges), square=True)
             print(f"{frame=}")
@@ -93,14 +93,16 @@ class SVGTests(unittest.TestCase):
             print(f"{size=}")
 
             print(f"{board.shapes=}")
-            svg = board.to_svg()
+            svg = board.to_svg(items)
             root = ET.fromstring(svg)
 
             ns = NS(svg="http://www.w3.org/2000/svg", xlink="http://www.w3.org/1999/xlink")
             self.assertEqual(root.tag, ET.QName(ns.svg, "svg"))
-            self.assertEqual(root.attrib.get("xmlns:xlink"), "http://www.w3.org/1999/xlink", root.attrib)
+            self.assertIn('xmlns:xlink="http://www.w3.org/1999/xlink"', svg)
             self.assertEqual(root.attrib.get("width"), str(t.screen.screensize()[0]), root.attrib)
             self.assertEqual(root.attrib.get("height"), str(t.screen.screensize()[1]), root.attrib)
+
+            self.fail(svg)
             self.assertIn("viewBox", root.attrib)
             self.assertIn("preserveAspectRatio", root.attrib)
 
