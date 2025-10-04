@@ -103,3 +103,6 @@ class SVGTests(unittest.TestCase):
             self.assertEqual(root.attrib.get("height"), str(t.screen.screensize()[1]), root.attrib)
             self.assertIn("viewBox", root.attrib)
             self.assertIn("preserveAspectRatio", root.attrib)
+
+            title = root.find("title")
+            self.assertTrue(title)
