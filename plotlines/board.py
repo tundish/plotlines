@@ -252,13 +252,13 @@ class Board:
                 pass
         return items
 
-    def draw_graph(self, edges: list[Edges], debug=False, delay: int = 10) -> RawTurtle:
+    def draw_graph(self, items: list[Edge], debug=False, delay: int = 10) -> RawTurtle:
         screen = self.turtle.getscreen()
         screen.delay(delay)
         self.turtle.shape("blank")
         self.turtle.color((0, 0, 0), (255, 255, 255))
         nodes = set()
-        for edge in [i for i in edges if isinstance(i, Edge)]:
+        for edge in [i for i in items if isinstance(i, Edge)]:
             self.turtle.up()
             for port in edge.ports:
                 for node in port.joins:
@@ -286,6 +286,7 @@ class Board:
             self.turtle.down()
             self.turtle.setpos(edge.ports[1].pos)
             self.turtle.write(self.turtle.pos())
+        return items
 
     @staticmethod
     def toml_graph(graph: dict) -> Generator[str]:
@@ -312,16 +313,27 @@ class Board:
 
     def to_svg(self, items: list[Item]):
         width, height = self.turtle.getscreen().screensize()
-        polygons = [
-            '<polygon id="{0}" points="{1}" />'.format(
+        defs = [
+            '<pattern id="{0}">\n<polygon points="{1}" />\n</pattern>'.format(
                 id_, " ".join(f"{pos[0]},{pos[1]}" for pos in shape._data)
             )
             for id_, shape in self.shapes.items()
+        ]
+        polygons = [
+            '<use xlink:href="#{0}" />'.format(item.shape)
+            for item in items
+            if isinstance(item, Node)
         ]
         return textwrap.dedent(f"""
         <svg xmlns="http://www.w3.org/2000/svg"
              xmlns:xlink="http://www.w3.org/1999/xlink"
         width="{width}" height="{height}" >
+        <defs>
         {{0}}
+        </defs>
+        {{1}}
         </svg>
-        """).format("\n".join(polygons))
+        """).format(
+            "\n".join(defs),
+            "\n".join(polygons),
+        )
