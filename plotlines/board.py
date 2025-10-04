@@ -312,13 +312,19 @@ class Board:
             return shape
 
     def to_svg(self, items: list[Item]):
-        width, height = self.turtle.getscreen().screensize()
+        screen = self.turtle.getscreen()
+        width, height = screen.screensize()
+        frame = self.frame(*self.extent(items), square=True)
+        size = screen.screensize()
+        scale = self.scale_factor(size, frame)
+
         defs = [
             '<pattern id="{0}" >\n<polygon points="{1}" stroke="black" />\n</pattern>'.format(
                 id_, " ".join(f"{pos[0]},{pos[1]}" for pos in shape._data)
             )
             for id_, shape in self.shapes.items()
         ]
+        print(f"{frame=}")
         polygons = [
             f'<use href="#{item.shape}" transform="translate({item.pos[0]}, {item.pos[-1]})" />'
             for item in items
@@ -327,7 +333,9 @@ class Board:
         return textwrap.dedent(f"""
         <svg xmlns="http://www.w3.org/2000/svg"
              xmlns:xlink="http://www.w3.org/1999/xlink"
-        width="{width}" height="{height}" >
+        width="{width}" height="{height}"
+        viewBox="{frame[0][0]} {frame[0][1]} {frame[1][0]} {frame[1][1]}"
+        >
         <defs>
         {{0}}
         </defs>
