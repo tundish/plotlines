@@ -31,7 +31,7 @@ from plotlines.board import Board
 from plotlines.board import Edge
 from plotlines.board import Node
 from plotlines.board import Port
-from plotlines.coordinates import Coordinates
+from plotlines.coordinates import Coordinates as C
 
 
 class SVGTests(unittest.TestCase):
@@ -58,14 +58,17 @@ class SVGTests(unittest.TestCase):
         rv.screensize.return_value = size
         return rv
 
-    def test_3_nodes_draw(self):
+    @staticmethod
+    def build_3_nodes():
         nodes = [Node((2, 2)), Node((7, 2)), Node((12, 2))]
-        edges = [nodes[0].connect(nodes[1]), nodes[0].connect(nodes[2])]
-        edges[0].ports[0].pos = Coordinates(3, 2)
-        edges[0].ports[1].pos = Coordinates(6, 2)
-        edges[1].ports[0].pos = Coordinates(8, 2)
-        edges[1].ports[1].pos = Coordinates(11, 2)
+        edges = [
+            nodes[0].connect(nodes[1], C(3, 2), C(6, 2)),
+            nodes[0].connect(nodes[2], C(8, 2), C(11, 2)),
+        ]
+        return nodes, edges
 
+    def test_3_nodes_draw(self):
+        nodes, edges = self.build_3_nodes()
         mock_screen = self.build_screen()
         with unittest.mock.patch.object(turtle.Turtle, "_screen", mock_screen):
             t = turtle.Turtle()
@@ -76,13 +79,7 @@ class SVGTests(unittest.TestCase):
             self.assertEqual(len(board.stamps), len(nodes), board.stamps)
 
     def test_3_nodes_svg(self):
-        nodes = [Node((2, 2)), Node((7, 2)), Node((12, 2))]
-        edges = [nodes[0].connect(nodes[1]), nodes[0].connect(nodes[2])]
-        edges[0].ports[0].pos = Coordinates(3, 2)
-        edges[0].ports[1].pos = Coordinates(6, 2)
-        edges[1].ports[0].pos = Coordinates(8, 2)
-        edges[1].ports[1].pos = Coordinates(11, 2)
-
+        nodes, edges = self.build_3_nodes()
         mock_screen = self.build_screen()
         with unittest.mock.patch.object(turtle.Turtle, "_screen", mock_screen):
             t = turtle.Turtle()
