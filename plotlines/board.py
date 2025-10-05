@@ -28,6 +28,7 @@ import datetime
 from decimal import Decimal
 from fractions import Fraction
 import functools
+import html
 import itertools
 import logging
 import math
@@ -255,8 +256,13 @@ class Board:
 
     def draw_graph(self, items: list[Edge], debug=False, delay: int = 10) -> RawTurtle:
         screen = self.turtle.getscreen()
-        screen.title(self.title)
-        screen.delay(delay)
+        try:
+            screen.title(self.title)
+            screen.delay(delay)
+        except AttributeError:
+            # Test fixture
+            pass
+
         self.turtle.shape("blank")
         self.turtle.color((0, 0, 0), (255, 255, 255))
         nodes = set()
@@ -341,12 +347,14 @@ class Board:
         width="{width}" height="{height}"
         viewBox="{frame[0][0]} {frame[0][1]} {frame[1][0]} {frame[1][1]}"
         >
-        <defs>
         {{0}}
-        </defs>
+        <defs>
         {{1}}
+        </defs>
+        {{2}}
         </svg>
         """).format(
+            "<title>{0}</title>".format(html.escape(self.title)) if self.title else "",
             "\n".join(defs),
             "\n".join(polygons),
         )
