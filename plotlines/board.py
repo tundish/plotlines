@@ -166,10 +166,11 @@ class Node(Pin):
 
 class Board:
 
-    def __init__(self, t = None):
+    def __init__(self, t = None, title: str = ""):
         self.stamps = {}
         self.shapes = {}
         self.turtle = t or turtle.RawTurtle(None)
+        self.title = title
 
     @staticmethod
     def extent(items: list) -> tuple[Coordinates]:
@@ -254,6 +255,7 @@ class Board:
 
     def draw_graph(self, items: list[Edge], debug=False, delay: int = 10) -> RawTurtle:
         screen = self.turtle.getscreen()
+        screen.title(self.title)
         screen.delay(delay)
         self.turtle.shape("blank")
         self.turtle.color((0, 0, 0), (255, 255, 255))

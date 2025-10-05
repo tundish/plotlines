@@ -1,4 +1,3 @@
-
 # This file is part of Plotlines.
 
 # Plotlines is free software: You can redistribute it and/or modify it
@@ -145,7 +144,7 @@ class BoardTests(unittest.TestCase):
         ]
 
         t = turtle.Turtle()
-        board = Board(t)
+        board = Board(t, title="Multigraph")
         rv = board.style_graph(nodes + edges)
         rv = board.draw_graph(nodes + edges, debug=True, delay=0)
         t.screen.mainloop()
