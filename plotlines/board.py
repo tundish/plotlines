@@ -25,12 +25,15 @@ from collections import UserDict
 from collections.abc import Generator
 import dataclasses
 import datetime
+from decimal import Decimal
 from fractions import Fraction
 import functools
 import itertools
 import logging
+import math
 from numbers import Number
 import string
+import textwrap
 import tkinter as tk
 import turtle
 import typing
@@ -40,11 +43,22 @@ import weakref
 from plotlines.coordinates import Coordinates
 
 
+RGB = functools.partial(Coordinates, coerce=int)
+
+
+@dataclasses.dataclass(unsafe_hash=True)
+class Style:
+    stroke:     RGB = dataclasses.field(default=RGB(0, 0, 0), kw_only=True)
+    fill:       RGB = dataclasses.field(default=RGB(255, 255, 255), kw_only=True)
+    weight:     int = dataclasses.field(default=1, kw_only=True)
+
+
 @dataclasses.dataclass(unsafe_hash=True)
 class Item:
     store: typing.ClassVar[set] = defaultdict(weakref.WeakSet)
 
     number:     int = dataclasses.field(init=False)
+    style:      Style = dataclasses.field(default_factory=Style, kw_only=True)
     contents:   list = dataclasses.field(default_factory=list, compare=False, kw_only=True)
 
     def __post_init__(self, *args):
@@ -60,6 +74,7 @@ class Link:
 @dataclasses.dataclass(unsafe_hash=True)
 class Pin(Item):
     pos:        Coordinates = None
+    area:       int = dataclasses.field(default=4, kw_only=True)
     shape:      str = dataclasses.field(default="", kw_only=True)
     label:      str = dataclasses.field(default="", kw_only=True)
 
@@ -112,13 +127,20 @@ class Node(Pin):
     def edges(self):
         return [i for p in self.ports.values() for i in p.joins if isinstance(i, Edge)]
 
-    def connect(self, other: Pin, edge=None):
+    def connect(self, other: Pin, *pos, edge=None):
         rv = edge or Edge()
         rv.ports[0].joins.add(self)
         self.ports[len(self.ports)] = rv.ports[0]
 
         rv.ports[1].joins.add(other)
         other.ports[len(other.ports)] = rv.ports[1]
+
+        try:
+            rv.ports[0].pos = pos[0]
+            rv.ports[1].pos = pos[-1]
+        except IndexError:
+            pass
+
         return rv
 
     @functools.singledispatchmethod
@@ -144,15 +166,48 @@ class Node(Pin):
 
 class Board:
 
+    def __init__(self, t = None):
+        self.stamps = {}
+        self.shapes = {}
+        self.turtle = t or turtle.RawTurtle(None)
+
     @staticmethod
     def extent(items: list) -> tuple[Coordinates]:
         nodes = [i for i in items if isinstance(i, Node)]
-        x_vals = sorted([p.pos[0] for node in nodes for p in [node] + list(node.ports.values())])
-        y_vals = sorted([p.pos[1] for node in nodes for p in [node] + list(node.ports.values())])
+        x_vals = sorted([p.pos[0] for node in nodes for p in [node] + list(node.ports.values()) if p.pos])
+        y_vals = sorted([p.pos[1] for node in nodes for p in [node] + list(node.ports.values()) if p.pos])
 
         min_pos = Coordinates(x_vals[0], y_vals[0])
         max_pos = Coordinates(x_vals[-1], y_vals[-1])
         return min_pos, max_pos
+
+    @staticmethod
+    def frame(*points: tuple[Coordinates], margin: Decimal = Decimal("0.05"), square=False):
+        x_vals = sorted([point[0] for point in points])
+        y_vals = sorted([point[1] for point in points])
+
+        span_x = x_vals[-1] - x_vals[0] or y_vals[-1] - y_vals[0]
+        span_y = y_vals[-1] - y_vals[0] or x_vals[-1] - x_vals[0]
+
+        min_x = x_vals[0] - margin * span_x
+        max_x = x_vals[1] + margin * span_x
+        min_y = y_vals[0] - margin * span_y
+        max_y = y_vals[1] + margin * span_y
+
+        if square:
+            min_pos = Coordinates(min(min_x, min_y), min(min_x, min_y))
+            max_pos = Coordinates(max(max_x, max_y), max(max_x, max_y))
+        else:
+            min_pos = Coordinates(min_x, min_y)
+            max_pos = Coordinates(max_x, max_y)
+        return (min_pos, max_pos)
+
+    @staticmethod
+    def scale_factor(geom: tuple[Number], frame: tuple[Coordinates, Coordinates], quant: str = ".01"):
+        return Fraction(*min(
+            Decimal(geom[0]) / (frame[1][0] - frame[0][0]),
+            Decimal(geom[1]) / (frame[1][1] - frame[0][1])
+        ).quantize(Decimal(quant)).as_integer_ratio())
 
     @staticmethod
     def build_graph(ending: list[str], loading: list[int], trails: int, **kwargs) -> Generator[int, Edge]:
@@ -176,49 +231,120 @@ class Board:
                 yield edge.number, edge
 
     @staticmethod
-    def layout_graph(t: RawTurtle, graph: dict) -> dict:
+    def layout_graph(t: RawTurtle, graph: dict, **kwargs) -> dict:
         return graph
 
-    @staticmethod
-    def style_graph(t: RawTurtle, items: list) -> dict:
-        screen = t.getscreen()
-        print(f"{screen.screensize()=}")
+    def style_graph(self, items: list, **kwargs) -> dict:
+        screen = self.turtle.getscreen()
+        screen.colormode(255)
 
-        min_pos, max_pos = Board.extent(items)
-        print(min_pos, max_pos)
+        frame = self.frame(*self.extent(items), square=True)
+        screen.setworldcoordinates(*[float(i) for c in frame for i in c])
 
-        # TODO: Generate node shapes at scale of world coordinates
-        shape = turtle.Shape("polygon", ((-1, -1), (1, -1), (1, 1), (-1, 1)))
-        t.screen.register_shape("s2x2", shape)
-        print(t.screen.getshapes())
+        size = screen.screensize()
+        scale = self.scale_factor(size, frame)
+
+        for item in items:
+            try:
+                size = math.sqrt(item.area)
+                item.shape = self.build_shape(size=size, scale=scale).key
+            except AttributeError:
+                pass
         return items
 
-    @staticmethod
-    def draw_graph(t: RawTurtle, edges: list[Edges]) -> RawTurtle:
-        screen = t.getscreen()
-        screen.setworldcoordinates(0, 0, 16, 12)
-        # canvas = screen.getcanvas()
-        # screen.screensize(6, 8)
-        # canvas.scale(tk.ALL, 0, 0, 50, 50)
-        print(vars(screen))
-        t.shape("blank")
-        for edge in [i for i in edges if isinstance(i, Edge)]:
-            t.up()
-            for node in edge.ports[0].joins:
-                t.shape("s2x2")
-                try:
-                    t.setpos(node.pos)
-                except AttributeError:
-                    pass
-                else:
-                    t.stamp()
-                finally:
-                    t.shape("blank")
-            t.setpos(edge.ports[0].pos)
-            t.down()
-            t.setpos(edge.ports[1].pos)
+    def draw_graph(self, items: list[Edge], debug=False, delay: int = 10) -> RawTurtle:
+        screen = self.turtle.getscreen()
+        screen.delay(delay)
+        self.turtle.shape("blank")
+        self.turtle.color((0, 0, 0), (255, 255, 255))
+        nodes = set()
+        for edge in [i for i in items if isinstance(i, Edge)]:
+            self.turtle.up()
+            for port in edge.ports:
+                for node in port.joins:
+                    if node in nodes:
+                        continue
+
+                    try:
+                        self.turtle.shape(node.shape)
+                        self.turtle.setpos(node.pos)
+                    except AttributeError:
+                        pass
+                    else:
+                        self.stamps[self.turtle.stamp()] = node.shape
+                        nodes.add(node)
+                        if debug:
+                            self.turtle.write(self.turtle.pos())
+                    finally:
+                        self.turtle.shape("blank")
+
+            if not all(i.pos for i in edge.ports):
+                continue
+
+            self.turtle.setpos(edge.ports[0].pos)
+            self.turtle.write(self.turtle.pos())
+            self.turtle.down()
+            self.turtle.setpos(edge.ports[1].pos)
+            self.turtle.write(self.turtle.pos())
+        return items
 
     @staticmethod
     def toml_graph(graph: dict) -> Generator[str]:
         yield "[[nodes]]"
         yield "[[links]]"
+
+    def build_shape(self, size, scale=1) -> turtle.Shape:
+        key = f"sq{size:.02f}x{size:.02f}-{scale}"
+        try:
+            return self.shapes[key]
+        except KeyError:
+            unit = scale * size / 2
+            shape = turtle.Shape(
+                "polygon", (
+                    (-unit, -unit),
+                    (unit, -unit),
+                    (unit, unit),
+                    (-unit, unit))
+            )
+            shape.key = key
+            self.shapes[key] = shape
+            self.turtle.screen.register_shape(key, shape)
+            return shape
+
+    def to_svg(self, items: list[Item]):
+        screen = self.turtle.getscreen()
+        width, height = screen.screensize()
+        frame = self.frame(*self.extent(items), square=True)
+        size = screen.screensize()
+        scale = self.scale_factor(size, frame)
+
+        defs = [
+            '<polygon id="{0}" points="{1}" />'.format(
+                id_, " ".join(f"{pos[0]},{pos[1]}" for pos in shape._data)
+            )
+            for id_, shape in self.shapes.items()
+        ]
+        shrink = scale.denominator / scale.numerator
+        polygons = [
+            (f'<use href="#{item.shape}" '
+             f'transform="translate({item.pos[0]}, {item.pos[-1]}) scale({shrink:.4f})" '
+             f'fill="none" stroke="black" '
+             '/>')
+            for item in items
+            if isinstance(item, Node)
+        ]
+        return textwrap.dedent(f"""
+        <svg xmlns="http://www.w3.org/2000/svg"
+             xmlns:xlink="http://www.w3.org/1999/xlink"
+        width="{width}" height="{height}"
+        viewBox="{frame[0][0]} {frame[0][1]} {frame[1][0]} {frame[1][1]}"
+        >
+        <defs>
+        {{0}}
+        </defs>
+        {{1}}
+        </svg>
+        """).format(
+            "\n".join(defs),
+            "\n".join(polygons),
+        )
