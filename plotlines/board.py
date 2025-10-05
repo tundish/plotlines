@@ -346,6 +346,7 @@ class Board:
              xmlns:xlink="http://www.w3.org/1999/xlink"
         width="{width}" height="{height}"
         viewBox="{frame[0][0]} {frame[0][1]} {frame[1][0]} {frame[1][1]}"
+        preserveAspectRatio="xMidYMid slice"
         >
         {{0}}
         <defs>

@@ -88,11 +88,8 @@ class SVGTests(unittest.TestCase):
             items = board.draw_graph(nodes + edges)
 
             frame = board.frame(*board.extent(nodes + edges), square=True)
-            print(f"{frame=}")
             size = t.screen.screensize()
-            print(f"{size=}")
 
-            print(f"{board.shapes=}")
             svg = board.to_svg(items)
             root = ET.fromstring(svg)
 
