@@ -296,10 +296,12 @@ class Board:
             self.turtle.write(self.turtle.pos())
         return items
 
-    @staticmethod
-    def toml_graph(graph: dict) -> Generator[str]:
-        yield "[[nodes]]"
-        yield "[[links]]"
+    def save(self) -> Generator[str]:
+        yield "[board]"
+        yield "[board.shapes]"
+        yield from (f'"{key}" = {[list(pos) for pos in val._data]}' for key, val in self.shapes.items())
+        yield "[[board.nodes]]"
+        yield "[[board.edges]]"
 
     def build_shape(self, size, scale=1) -> turtle.Shape:
         key = f"sq{size:.02f}x{size:.02f}-{scale}"

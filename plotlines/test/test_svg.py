@@ -22,6 +22,7 @@ from fractions import Fraction
 import functools
 import itertools
 import tkinter as tk
+import tomllib
 import turtle
 from types import SimpleNamespace as NS
 import unittest.mock
@@ -104,4 +105,18 @@ class SVGTests(unittest.TestCase):
 
             title = root.find(f"svg:title", vars(ns))
             self.assertTrue(title.text)
-            print(svg)
+
+    def test_3_nodes_svg(self):
+        nodes, edges = self.build_3_nodes()
+        mock_screen = self.build_screen()
+        with unittest.mock.patch.object(turtle.Turtle, "_screen", mock_screen):
+            t = turtle.Turtle()
+            board = Board(t, title="3 Node test")
+            rv = board.style_graph(nodes + edges)
+            items = board.draw_graph(nodes + edges)
+
+            text = "\n".join(board.save())
+            print(text)
+
+            data = tomllib.loads(text)
+            print(data)
