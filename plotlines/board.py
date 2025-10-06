@@ -164,6 +164,10 @@ class Node(Pin):
         rv = {(mk, ok): abs(ov - mv) for (mk, mv), (ok, ov) in itertools.product(mine.items(), others.items())}
         return rv
 
+    def __toml__(self):
+        return
+        yield
+
 
 class Board:
 
@@ -303,7 +307,7 @@ class Board:
         for item in items:
             if isinstance(item, Node):
                 yield "[[board.nodes]]"
-                yield from (f'{key} = {val}' for key, val in vars(item).items())
+                yield from item.__toml__()
         yield "[[board.edges]]"
 
     def build_shape(self, size, scale=1) -> turtle.Shape:
