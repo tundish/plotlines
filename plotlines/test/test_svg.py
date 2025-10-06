@@ -115,7 +115,7 @@ class SVGTests(unittest.TestCase):
             rv = board.style_graph(nodes + edges)
             items = board.draw_graph(nodes + edges)
 
-            text = "\n".join(board.save())
+            text = "\n".join(board.export(nodes + edges))
             print(text)
 
             data = tomllib.loads(text)

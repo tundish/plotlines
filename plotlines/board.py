@@ -296,11 +296,14 @@ class Board:
             self.turtle.write(self.turtle.pos())
         return items
 
-    def save(self) -> Generator[str]:
+    def export(self, items) -> Generator[str]:
         yield "[board]"
         yield "[board.shapes]"
         yield from (f'"{key}" = {[list(pos) for pos in val._data]}' for key, val in self.shapes.items())
-        yield "[[board.nodes]]"
+        for item in items:
+            if isinstance(item, Node):
+                yield "[[board.nodes]]"
+                yield from (f'{key} = {val}' for key, val in vars(item).items())
         yield "[[board.edges]]"
 
     def build_shape(self, size, scale=1) -> turtle.Shape:
