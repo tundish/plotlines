@@ -104,3 +104,4 @@ class SVGTests(unittest.TestCase):
 
             title = root.find(f"svg:title", vars(ns))
             self.assertTrue(title.text)
+            print(svg)

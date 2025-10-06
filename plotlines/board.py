@@ -341,6 +341,12 @@ class Board:
             for item in items
             if isinstance(item, Node)
         ]
+        lines = [
+            (f'<line x1="{item.ports[0].pos[0]}" y1="{item.ports[0].pos[1]}" '
+            f'x2="{item.ports[1].pos[0]}" y2="{item.ports[1].pos[1]}" />')
+            for item in items
+            if isinstance(item, Edge)
+        ]
         return textwrap.dedent(f"""
         <svg xmlns="http://www.w3.org/2000/svg"
              xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -353,9 +359,11 @@ class Board:
         {{1}}
         </defs>
         {{2}}
+        {{3}}
         </svg>
         """).format(
             "<title>{0}</title>".format(html.escape(self.title)) if self.title else "",
             "\n".join(defs),
             "\n".join(polygons),
+            "\n".join(lines),
         )
