@@ -103,6 +103,10 @@ class Edge(Item):
         else:
             self.ports = [Port(joins={self}), Port(joins={self})]
 
+    def __toml__(self):
+        return
+        yield
+
 
 @dataclasses.dataclass(unsafe_hash=True)
 class Node(Pin):
@@ -308,7 +312,10 @@ class Board:
             if isinstance(item, Node):
                 yield "[[board.nodes]]"
                 yield from item.__toml__()
-        yield "[[board.edges]]"
+        for item in items:
+            if isinstance(item, Edge):
+                yield "[[board.edges]]"
+                yield from item.__toml__()
 
     def build_shape(self, size, scale=1) -> turtle.Shape:
         key = f"sq{size:.02f}x{size:.02f}-{scale}"
