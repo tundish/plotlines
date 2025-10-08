@@ -17,7 +17,9 @@
 
 from decimal import Decimal
 from fractions import Fraction
+import textwrap
 import tkinter as tk
+import tomllib
 import turtle
 import unittest
 
@@ -26,6 +28,35 @@ from plotlines.board import Edge
 from plotlines.board import Node
 from plotlines.board import Port
 from plotlines.coordinates import Coordinates as C
+
+
+class EdgeTests(unittest.TestCase):
+
+    def test_init_from_toml(self):
+        toml = textwrap.dedent("""
+        trail = "main"
+
+        [style]
+        stroke = [127, 127, 127]
+        fill = [32, 32, 32]
+        weight = ""
+
+        [[ports]]
+        pos = [0, 1]
+
+        [[ports.joins]]
+
+        [[ports]]
+        pos = [2, 3]
+
+        [[ports.joins]]
+
+        [[contents]]
+        """)
+        data = tomllib.loads(toml)
+        edge = Edge(**data)
+        print(f"{edge=}")
+        self.assertTrue(edge)
 
 
 class BoardTests(unittest.TestCase):
