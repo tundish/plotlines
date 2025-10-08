@@ -58,12 +58,11 @@ class Style:
 class Item:
     store: typing.ClassVar[set] = defaultdict(weakref.WeakSet)
 
-    number:     int = dataclasses.field(init=False)
+    uid:        uuid.UUID = dataclasses.field(default_factory=uuid.uuid4, kw_only=True)
     style:      Style = dataclasses.field(default_factory=Style, kw_only=True)
     contents:   list = dataclasses.field(default_factory=list, compare=False, kw_only=True)
 
     def __post_init__(self, *args):
-        self.number = max([j.number for i in self.__class__.store.values() for j in i], default=0) + 1
         self.__class__.store[self.__class__].add(self)
 
 
@@ -232,13 +231,13 @@ class Board:
             else:
                 frame.append(Node())
                 edge = node.connect(frame[-1])
-                yield edge.number, edge
+                yield edge.uid, edge
         else:
             # Finish with start node
             start = Node(label="start")
             for node in frame:
                 edge = start.connect(node)
-                yield edge.number, edge
+                yield edge.uid, edge
 
     @staticmethod
     def layout_graph(t: RawTurtle, graph: dict, **kwargs) -> dict:
