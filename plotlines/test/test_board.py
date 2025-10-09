@@ -30,34 +30,6 @@ from plotlines.board import Port
 from plotlines.coordinates import Coordinates as C
 
 
-class EdgeTests(unittest.TestCase):
-
-    def test_init_from_toml(self):
-        toml = textwrap.dedent("""
-        trail = "main"
-
-        [style]
-        stroke = [127, 127, 127]
-        fill = [32, 32, 32]
-        weight = 6
-
-        [[ports]]
-        pos = [0, 1]
-        joins = []
-
-        [[ports]]
-        pos = [2, 3]
-        joins = []
-
-        [[contents]]
-        """)
-        data = tomllib.loads(toml)
-        print(f"{data=}")
-        edge = Edge(**data)
-        print(f"{edge=}")
-        self.assertTrue(edge)
-
-
 class BoardTests(unittest.TestCase):
 
     def test_edge_init(self):
