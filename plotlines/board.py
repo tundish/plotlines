@@ -56,14 +56,14 @@ class Style:
 
 @dataclasses.dataclass(unsafe_hash=True)
 class Item:
-    store: typing.ClassVar[set] = defaultdict(weakref.WeakSet)
+    store: typing.ClassVar[dict] = defaultdict(weakref.WeakValueDictionary)
 
     uid:        uuid.UUID = dataclasses.field(default_factory=uuid.uuid4, kw_only=True)
     style:      Style = dataclasses.field(default_factory=Style, kw_only=True)
     contents:   list = dataclasses.field(default_factory=list, compare=False, kw_only=True)
 
     def __post_init__(self, *args):
-        self.__class__.store[self.__class__].add(self)
+        self.__class__.store[self.uid] = self
 
 
 @dataclasses.dataclass(unsafe_hash=True)
@@ -96,11 +96,11 @@ class Edge(Item):
         coords = [Coordinates(*c) for c in (pos_0, pos_1) if c is not None]
         if coords:
             self.ports = [
-                Port(joins={self}, pos=coords[0]),
-                Port(joins={self}, pos=coords[-1]),
+                Port(joins={self.uid}, pos=coords[0]),
+                Port(joins={self.uid}, pos=coords[-1]),
             ]
         else:
-            self.ports = [Port(joins={self}), Port(joins={self})]
+            self.ports = [Port(joins={self.uid}), Port(joins={self.uid})]
 
     def __toml__(self):
         return
