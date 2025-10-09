@@ -63,7 +63,12 @@ class Item:
     contents:   list = dataclasses.field(default_factory=list, compare=False, kw_only=True)
 
     def __post_init__(self, *args):
-        # TODO enforce uid is UUID
+        try:
+            self.uid = uuid.UUID(self.uid)
+        except AttributeError:
+            # Already a UUID
+            pass
+
         self.__class__.store[self.uid] = self
 
 
