@@ -119,8 +119,18 @@ class Node(Pin):
 
     @property
     def nearby(self):
-        edges = [e for port in self.ports.values() for e in port.joins if isinstance(e, Edge)]
-        return [n for edge in edges for p in edge.ports for n in p.joins if isinstance(n, Node) and n is not self]
+        edges = [
+            e for port in self.ports.values()
+            for uid in port.joins
+            if isinstance(e := self.store.get(uid), Edge)
+        ]
+        return [
+            n
+            for edge in edges
+            for p in edge.ports
+            for uid in p.joins
+            if isinstance(n := self.store.get(uid), Node) and uid != self.uid
+        ]
 
     @property
     def density(self):
@@ -129,14 +139,14 @@ class Node(Pin):
 
     @property
     def edges(self):
-        return [i for p in self.ports.values() for i in p.joins if isinstance(i, Edge)]
+        return [e for p in self.ports.values() for uid in p.joins if isinstance(e := self.store.get(uid), Edge)]
 
     def connect(self, other: Pin, *pos, edge=None):
         rv = edge or Edge()
-        rv.ports[0].joins.add(self)
+        rv.ports[0].joins.add(self.uid)
         self.ports[len(self.ports)] = rv.ports[0]
 
-        rv.ports[1].joins.add(other)
+        rv.ports[1].joins.add(other.uid)
         other.ports[len(other.ports)] = rv.ports[1]
 
         try:
@@ -276,18 +286,21 @@ class Board:
         for edge in [i for i in items if isinstance(i, Edge)]:
             self.turtle.up()
             for port in edge.ports:
-                for node in port.joins:
-                    if node in nodes:
+                for node_uid in port.joins:
+                    if node_uid in nodes:
                         continue
 
                     try:
+                        node = edge.store[node_uid]
                         self.turtle.shape(node.shape)
                         self.turtle.setpos(node.pos)
                     except AttributeError:
                         pass
+                    except KeyError as error:
+                        raise
                     else:
                         self.stamps[self.turtle.stamp()] = node.shape
-                        nodes.add(node)
+                        nodes.add(node_uid)
                         if debug:
                             self.turtle.write(self.turtle.pos())
                     finally:

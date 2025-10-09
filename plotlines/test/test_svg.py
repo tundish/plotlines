@@ -21,6 +21,7 @@ from decimal import Decimal
 from fractions import Fraction
 import functools
 import itertools
+import textwrap
 import tkinter as tk
 import tomllib
 import turtle
@@ -33,6 +34,34 @@ from plotlines.board import Edge
 from plotlines.board import Node
 from plotlines.board import Port
 from plotlines.coordinates import Coordinates as C
+
+
+class EdgeTests(unittest.TestCase):
+
+    def test_init_from_toml(self):
+        toml = textwrap.dedent("""
+        trail = "main"
+
+        [style]
+        stroke = [127, 127, 127]
+        fill = [32, 32, 32]
+        weight = 6
+
+        [[ports]]
+        pos = [0, 1]
+        joins = []
+
+        [[ports]]
+        pos = [2, 3]
+        joins = []
+
+        [[contents]]
+        """)
+        data = tomllib.loads(toml)
+        print(f"{data=}")
+        edge = Edge(**data)
+        print(f"{edge=}")
+        self.assertTrue(edge)
 
 
 class SVGTests(unittest.TestCase):
@@ -106,7 +135,7 @@ class SVGTests(unittest.TestCase):
             title = root.find(f"svg:title", vars(ns))
             self.assertTrue(title.text)
 
-    def test_3_nodes_svg(self):
+    def test_3_nodes_toml(self):
         nodes, edges = self.build_3_nodes()
         mock_screen = self.build_screen()
         with unittest.mock.patch.object(turtle.Turtle, "_screen", mock_screen):
@@ -116,7 +145,4 @@ class SVGTests(unittest.TestCase):
             items = board.draw_graph(nodes + edges)
 
             text = "\n".join(board.export(nodes + edges))
-            print(text)
-
             data = tomllib.loads(text)
-            print(data)
