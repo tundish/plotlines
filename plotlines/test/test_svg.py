@@ -27,6 +27,7 @@ import tomllib
 import turtle
 from types import SimpleNamespace as NS
 import unittest.mock
+import uuid
 import xml.etree.ElementTree as ET
 
 from plotlines.board import Board
@@ -40,6 +41,7 @@ class EdgeTests(unittest.TestCase):
 
     def test_init_from_toml(self):
         toml = textwrap.dedent("""
+        uid = "e7ed29c8-f718-488c-9b3b-adf1f881f6a2"
         trail = "main"
 
         [style]
@@ -62,6 +64,7 @@ class EdgeTests(unittest.TestCase):
         edge = Edge(**data)
         print(f"{edge=}")
         self.assertTrue(edge)
+        self.assertIsInstance(edge.uid, uuid.UUID)
 
 
 class SVGTests(unittest.TestCase):
