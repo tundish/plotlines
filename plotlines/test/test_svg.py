@@ -39,7 +39,12 @@ from plotlines.coordinates import Coordinates as C
 
 class EdgeTests(unittest.TestCase):
 
-    def test_init_from_toml(self):
+    def test_uid_int(self):
+        edge = Edge(uid=1)
+        self.assertTrue(edge)
+        self.assertEqual(edge.uid, 1)
+
+    def test_init_from_toml_full(self):
         toml = textwrap.dedent("""
         uid = "e7ed29c8-f718-488c-9b3b-adf1f881f6a2"
         trail = "main"
@@ -51,7 +56,7 @@ class EdgeTests(unittest.TestCase):
 
         [[ports]]
         pos = [0, 1]
-        joins = []
+        joins = [77096613620228011470678743578062052921,]
 
         [[ports]]
         pos = [2, 3]
@@ -62,9 +67,15 @@ class EdgeTests(unittest.TestCase):
         data = tomllib.loads(toml)
         print(f"{data=}")
         edge = Edge(**data)
-        print(f"{edge=}")
         self.assertTrue(edge)
         self.assertIsInstance(edge.uid, uuid.UUID)
+        self.assertIsInstance(edge.ports[0].joins, set)
+        self.assertIsInstance(edge.ports[0].pos, C)
+        self.assertIsInstance(edge.ports[1].joins, set)
+        self.assertIsInstance(edge.ports[1].pos, C)
+
+        self.assertEqual(len(edge.ports[0].joins), 1, edge.ports[0].joins)
+        self.assertEqual(len(edge.ports[1].joins), 4, edge.ports[1].joins)
 
 
 class SVGTests(unittest.TestCase):
