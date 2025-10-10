@@ -50,8 +50,8 @@ class BoardTests(unittest.TestCase):
         self.assertIsInstance(edge, Edge)
         self.assertEqual(edge.ports[0].joins, {edge.uid, nodes[0].uid})
         self.assertEqual(edge.ports[1].joins, {edge.uid, nodes[1].uid})
-        self.assertEqual(nodes[0].ports[0].joins, {edge.uid, nodes[0].uid})
-        self.assertEqual(nodes[1].ports[0].joins, {edge.uid, nodes[1].uid})
+        self.assertEqual(nodes[0].ports["00"].joins, {edge.uid, nodes[0].uid})
+        self.assertEqual(nodes[1].ports["00"].joins, {edge.uid, nodes[1].uid})
 
     def test_node_nearby(self):
         Node.store.clear()

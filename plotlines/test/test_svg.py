@@ -89,6 +89,7 @@ class NodeTests(unittest.TestCase):
         node = Node(uid=1)
         self.assertTrue(node)
         self.assertEqual(node.uid, 1)
+        self.assertEqual(node.handle(), "00")
 
     def test_init_from_toml_full(self):
         toml = textwrap.dedent("""
@@ -111,9 +112,22 @@ class NodeTests(unittest.TestCase):
         [[contents]]
         """)
         data = tomllib.loads(toml)
-        print(f"{data=}")
         node = Node.build(**data)
         self.assertTrue(node)
+
+        self.assertIsInstance(node.uid, uuid.UUID)
+        self.assertIsInstance(node.ports["E"].joins, set)
+        self.assertIsInstance(node.ports["E"].pos, C)
+        self.assertIsInstance(node.ports["W"].joins, set)
+        self.assertIsInstance(node.ports["W"].pos, C)
+
+        self.assertEqual(len(node.ports["E"].joins), 1, node.ports[0].joins)
+        self.assertEqual(len(node.ports["W"].joins), 3, node.ports[1].joins)
+        self.assertIn(uuid.UUID(int=list(data["ports"]["W"]["joins"])[0]), node.ports["W"].joins)
+        self.assertNotIn(list(data["ports"]["W"]["joins"])[0], node.ports[1].joins)
+        self.assertIn("EDGE_1", node.ports["W"].joins)
+
+        self.assertIsInstance(edge.style, Style)
 
 
 class SVGTests(unittest.TestCase):

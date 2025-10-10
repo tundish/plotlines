@@ -184,16 +184,16 @@ class Node(Pin):
     def edges(self):
         return [e for p in self.ports.values() for uid in p.joins if isinstance(e := self.store.get(uid), Edge)]
 
-    def handle(self, fmt="{0.02d}"):
+    def handle(self, fmt="{0:02d}"):
         return next(n for n in (fmt.format(n) for n in itertools.count(len(self.ports))) if n not in self.ports)
 
     def connect(self, other: Pin, *pos, edge=None, port=None):
         rv = edge or Edge()
         rv.ports[0].joins.add(self.uid)
-        self.ports[len(self.ports)] = rv.ports[0]
+        self.ports[self.handle()] = rv.ports[0]
 
         rv.ports[1].joins.add(other.uid)
-        other.ports[len(other.ports)] = rv.ports[1]
+        other.ports[other.handle()] = rv.ports[1]
 
         try:
             rv.ports[0].pos = pos[0]
