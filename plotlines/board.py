@@ -226,6 +226,12 @@ class Node(Pin):
 
     def toml(self):
         yield f'uid = "{self.uid}"'
+        yield f'pos = {list(self.pos)}'
+        for handle, port in self.ports.items():
+            yield f"[ports.{handle}]"
+            yield f'uid     = "{port.uid}"'
+            yield f'pos     = {list(port.pos)}'
+            yield f'joins   = {[str(i) for i in port.joins]}'
 
 
 class Board:

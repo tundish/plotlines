@@ -180,17 +180,18 @@ class SVGTests(unittest.TestCase):
         nodes, edges = self.build_3_nodes()
         for node in nodes:
             toml = "\n".join(node.toml())
-            data = tomllib.loads(toml)
-            check = Node.build(**data)
+            try:
+                data = tomllib.loads(toml)
+                check = Node.build(**data)
+            except Exception:
+                self.fail("\n" + toml)
 
             self.assertEqual(node.uid, check.uid)
-            for field in dataclasses.fields(Pin):
+            for field in dataclasses.fields(Node):
                 with self.subTest(field=field):
-                    self.assertEqual(getattr(node, field.name), getattr(check, field.name))
-            self.assertEqual(node, check)
+                    self.assertEqual(getattr(node, field.name), getattr(check, field.name), "\n" + toml)
 
-            # text = "\n".join(board.export(nodes + edges))
-            # data = tomllib.loads(text)
+            self.assertEqual(node, check)
 
     def test_3_nodes_svg(self):
         nodes, edges = self.build_3_nodes()
