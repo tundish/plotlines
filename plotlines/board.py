@@ -136,7 +136,7 @@ class Edge(Item):
         else:
             self.ports = [Port(joins={self.uid}), Port(joins={self.uid})]
 
-    def __toml__(self):
+    def toml(self):
         return
         yield
 
@@ -224,9 +224,8 @@ class Node(Pin):
         rv = {(mk, ok): abs(ov - mv) for (mk, mv), (ok, ov) in itertools.product(mine.items(), others.items())}
         return rv
 
-    def __toml__(self):
-        return
-        yield
+    def toml(self):
+        yield f'uid = "{self.uid}"'
 
 
 class Board:
@@ -370,11 +369,11 @@ class Board:
         for item in items:
             if isinstance(item, Node):
                 yield "[[board.nodes]]"
-                yield from item.__toml__()
+                yield from item.toml()
         for item in items:
             if isinstance(item, Edge):
                 yield "[[board.edges]]"
-                yield from item.__toml__()
+                yield from item.toml()
 
     def build_shape(self, size, scale=1) -> turtle.Shape:
         key = f"sq{size:.02f}x{size:.02f}-{scale}"

@@ -17,6 +17,7 @@
 # GNU General Public License along with Plotlines.
 # If not, see <https://www.gnu.org/licenses/>.
 
+import dataclasses
 from decimal import Decimal
 from fractions import Fraction
 import functools
@@ -33,6 +34,7 @@ import xml.etree.ElementTree as ET
 from plotlines.board import Board
 from plotlines.board import Edge
 from plotlines.board import Node
+from plotlines.board import Pin
 from plotlines.board import Port
 from plotlines.board import Style
 from plotlines.coordinates import Coordinates as C
@@ -174,6 +176,22 @@ class SVGTests(unittest.TestCase):
             self.assertEqual(len(board.shapes), 1, board.shapes)
             self.assertEqual(len(board.stamps), len(nodes), board.stamps)
 
+    def test_3_nodes_toml(self):
+        nodes, edges = self.build_3_nodes()
+        for node in nodes:
+            toml = "\n".join(node.toml())
+            data = tomllib.loads(toml)
+            check = Node.build(**data)
+
+            self.assertEqual(node.uid, check.uid)
+            for field in dataclasses.fields(Pin):
+                with self.subTest(field=field):
+                    self.assertEqual(getattr(node, field.name), getattr(check, field.name))
+            self.assertEqual(node, check)
+
+            # text = "\n".join(board.export(nodes + edges))
+            # data = tomllib.loads(text)
+
     def test_3_nodes_svg(self):
         nodes, edges = self.build_3_nodes()
         mock_screen = self.build_screen()
@@ -200,15 +218,3 @@ class SVGTests(unittest.TestCase):
 
             title = root.find(f"svg:title", vars(ns))
             self.assertTrue(title.text)
-
-    def test_3_nodes_toml(self):
-        nodes, edges = self.build_3_nodes()
-        mock_screen = self.build_screen()
-        with unittest.mock.patch.object(turtle.Turtle, "_screen", mock_screen):
-            t = turtle.Turtle()
-            board = Board(t, title="3 Node test")
-            rv = board.style_graph(nodes + edges)
-            items = board.draw_graph(nodes + edges)
-
-            text = "\n".join(board.export(nodes + edges))
-            data = tomllib.loads(text)
