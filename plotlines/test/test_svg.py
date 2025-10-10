@@ -34,6 +34,7 @@ from plotlines.board import Board
 from plotlines.board import Edge
 from plotlines.board import Node
 from plotlines.board import Port
+from plotlines.board import Style
 from plotlines.coordinates import Coordinates as C
 
 
@@ -79,6 +80,8 @@ class EdgeTests(unittest.TestCase):
         self.assertIn(uuid.UUID(int=list(data["ports"][1]["joins"])[0]), edge.ports[1].joins)
         self.assertNotIn(list(data["ports"][1]["joins"])[0], edge.ports[1].joins)
         self.assertIn("NAME", edge.ports[1].joins)
+
+        self.assertIsInstance(edge.style, Style)
 
 
 class SVGTests(unittest.TestCase):

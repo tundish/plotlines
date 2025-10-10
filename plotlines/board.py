@@ -69,6 +69,12 @@ class Item:
             # Already a UUID
             pass
 
+        try:
+            self.style = Style(**self.style)
+        except TypeError:
+            # Already a Style
+            pass
+
         self.__class__.store[self.uid] = self
 
 
