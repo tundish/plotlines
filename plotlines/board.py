@@ -161,6 +161,9 @@ class Node(Pin):
         for port in self.ports.values():
             port.pos = Coordinates(*port.pos)
 
+        self.style.stroke = RGB(*self.style.stroke)
+        self.style.fill = RGB(*self.style.fill)
+
     @property
     def nearby(self):
         edges = [
@@ -227,6 +230,10 @@ class Node(Pin):
     def toml(self):
         yield f'uid = "{self.uid}"'
         yield f'pos = {list(self.pos)}'
+        yield "[style]"
+        yield f'stroke  = {list(self.style.stroke)}'
+        yield f'fill    = {list(self.style.fill)}'
+        yield f'weight  = {self.style.weight}'
         for handle, port in self.ports.items():
             yield f"[ports.{handle}]"
             yield f'uid     = "{port.uid}"'

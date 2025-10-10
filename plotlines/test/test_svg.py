@@ -36,6 +36,7 @@ from plotlines.board import Edge
 from plotlines.board import Node
 from plotlines.board import Pin
 from plotlines.board import Port
+from plotlines.board import RGB
 from plotlines.board import Style
 from plotlines.coordinates import Coordinates as C
 
@@ -158,7 +159,11 @@ class SVGTests(unittest.TestCase):
 
     @staticmethod
     def build_3_nodes():
-        nodes = [Node((2, 2)), Node((7, 2)), Node((12, 2))]
+        nodes = [
+            Node((2, 2)),
+            Node((7, 2), style=Style(stroke=RGB(127, 127, 127), fill=RGB(32, 32, 32), weight=10)),
+            Node((12, 2))
+        ]
         edges = [
             nodes[0].connect(nodes[1], C(3, 2), C(6, 2)),
             nodes[0].connect(nodes[2], C(8, 2), C(11, 2)),
