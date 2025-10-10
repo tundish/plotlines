@@ -387,7 +387,7 @@ class Board:
             self.turtle.write(self.turtle.pos())
         return items
 
-    def export(self, items) -> Generator[str]:
+    def toml(self, items) -> Generator[str]:
         yield "[board]"
         yield "[board.shapes]"
         yield from (f'"{key}" = {[list(pos) for pos in val._data]}' for key, val in self.shapes.items())
@@ -418,7 +418,7 @@ class Board:
             self.turtle.screen.register_shape(key, shape)
             return shape
 
-    def to_svg(self, items: list[Item]):
+    def svg(self, items: list[Item]):
         screen = self.turtle.getscreen()
         width, height = screen.screensize()
         frame = self.frame(*self.extent(items), square=True)

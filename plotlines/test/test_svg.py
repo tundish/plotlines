@@ -230,7 +230,7 @@ class SVGTests(unittest.TestCase):
             frame = board.frame(*board.extent(nodes + edges), square=True)
             size = t.screen.screensize()
 
-            svg = board.to_svg(items)
+            svg = board.svg(items)
             root = ET.fromstring(svg)
 
             ns = NS(svg="http://www.w3.org/2000/svg", xlink="http://www.w3.org/1999/xlink")
