@@ -62,6 +62,16 @@ class Item:
     style:      Style = dataclasses.field(default_factory=Style, kw_only=True)
     contents:   list = dataclasses.field(default_factory=list, compare=False, kw_only=True)
 
+    @staticmethod
+    def key(val):
+        try:
+            if isinstance(val, int):
+                return uuid.UUID(int=val)
+            else:
+                return uuid.UUID(val)
+        except ValueError:
+            return val
+
     def __post_init__(self, *args):
         try:
             self.uid = uuid.UUID(self.uid)
@@ -112,10 +122,7 @@ class Edge(Item):
         for n, port in enumerate(ports):
             for val in port.get("joins", []):
                 rv.ports[n].joins.discard(val)
-                try:
-                    rv.ports[n].joins.add(uuid.UUID(int=val) if isinstance(val, int) else uuid.UUID(val))
-                except ValueError:
-                    rv.ports[n].joins.add(val)
+                rv.ports[n].joins.add(cls.key(val))
         return rv
 
     def __post_init__(self, pos_0: tuple, pos_1: tuple, *args):
@@ -140,9 +147,11 @@ class Node(Pin):
 
     @classmethod
     def build(cls, **kwargs):
-        ports = kwargs.pop("ports", [])
-        args = [port.get("pos") for port in ports]
-        rv = cls(*args, **kwargs)
+        ports = {
+            k: Port(joins={cls.key(i) for i in v.pop("joins", [])}, **v)
+            for k, v in kwargs.pop("ports", {}).items()
+        }
+        rv = cls(ports=ports, **kwargs)
         return rv
 
     def __post_init__(self, *args):
@@ -175,7 +184,10 @@ class Node(Pin):
     def edges(self):
         return [e for p in self.ports.values() for uid in p.joins if isinstance(e := self.store.get(uid), Edge)]
 
-    def connect(self, other: Pin, *pos, edge=None):
+    def handle(self, fmt="{0.02d}"):
+        return next(n for n in (fmt.format(n) for n in itertools.count(len(self.ports))) if n not in self.ports)
+
+    def connect(self, other: Pin, *pos, edge=None, port=None):
         rv = edge or Edge()
         rv.ports[0].joins.add(self.uid)
         self.ports[len(self.ports)] = rv.ports[0]

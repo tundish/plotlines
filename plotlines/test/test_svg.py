@@ -66,7 +66,6 @@ class EdgeTests(unittest.TestCase):
         [[contents]]
         """)
         data = tomllib.loads(toml)
-        print(f"{data=}")
         edge = Edge.build(**data)
         self.assertTrue(edge)
         self.assertIsInstance(edge.uid, uuid.UUID)
@@ -101,11 +100,11 @@ class NodeTests(unittest.TestCase):
         fill = [32, 32, 32]
         weight = 6
 
-        [ports.1]
+        [ports.E]
         pos = [0, 1]
         joins = []
 
-        [ports.2]
+        [ports.W]
         pos = [0, -1]
         joins = [77096613620228011470678743578062052921, "EDGE_1"]
 
