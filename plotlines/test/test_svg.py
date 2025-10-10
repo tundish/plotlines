@@ -194,7 +194,10 @@ class SVGTests(unittest.TestCase):
             self.assertEqual(node.uid, check.uid)
             for field in dataclasses.fields(Node):
                 with self.subTest(field=field):
-                    self.assertEqual(getattr(node, field.name), getattr(check, field.name), "\n" + toml)
+                    try:
+                        self.assertEqual(sorted(getattr(node, field.name)), sorted(getattr(check, field.name)), "\n" + toml)
+                    except TypeError:
+                        self.assertEqual(getattr(node, field.name), getattr(check, field.name), "\n" + toml)
 
             self.assertEqual(node, check)
 

@@ -69,7 +69,7 @@ class Item:
                 return uuid.UUID(int=val)
             else:
                 return uuid.UUID(val)
-        except ValueError:
+        except (AttributeError, ValueError):
             return val
 
     def __post_init__(self, *args):
@@ -120,6 +120,7 @@ class Edge(Item):
         rv = cls(*args, **kwargs)
 
         for n, port in enumerate(ports):
+            rv.ports[n].uid = cls.key(port.get("uid", rv.ports[n].uid))
             for val in port.get("joins", []):
                 rv.ports[n].joins.discard(val)
                 rv.ports[n].joins.add(cls.key(val))
@@ -136,9 +137,20 @@ class Edge(Item):
         else:
             self.ports = [Port(joins={self.uid}), Port(joins={self.uid})]
 
+        self.style.stroke = RGB(*self.style.stroke)
+        self.style.fill = RGB(*self.style.fill)
+
     def toml(self):
-        return
-        yield
+        yield f'uid     = "{self.uid}"'
+        yield "[style]"
+        yield f'stroke  = {list(self.style.stroke)}'
+        yield f'fill    = {list(self.style.fill)}'
+        yield f'weight  = {self.style.weight}'
+        for port in self.ports:
+            yield f"[[ports]]"
+            yield f'uid     = "{port.uid}"'
+            yield f'pos     = {list(port.pos)}'
+            yield f'joins   = {[str(i) for i in port.joins]}'
 
 
 @dataclasses.dataclass(unsafe_hash=True)
@@ -228,8 +240,8 @@ class Node(Pin):
         return rv
 
     def toml(self):
-        yield f'uid = "{self.uid}"'
-        yield f'pos = {list(self.pos)}'
+        yield f'uid     = "{self.uid}"'
+        yield f'pos     = {list(self.pos)}'
         yield "[style]"
         yield f'stroke  = {list(self.style.stroke)}'
         yield f'fill    = {list(self.style.fill)}'
