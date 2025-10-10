@@ -193,6 +193,23 @@ class SVGTests(unittest.TestCase):
 
             self.assertEqual(node, check)
 
+    def test_2_edges_toml(self):
+        nodes, edges = self.build_3_nodes()
+        for edge in edges:
+            toml = "\n".join(edge.toml())
+            try:
+                data = tomllib.loads(toml)
+                check = Edge.build(**data)
+            except Exception:
+                self.fail("\n" + toml)
+
+            self.assertEqual(edge.uid, check.uid)
+            for field in dataclasses.fields(Edge):
+                with self.subTest(field=field):
+                    self.assertEqual(getattr(edge, field.name), getattr(check, field.name), "\n" + toml)
+
+            self.assertEqual(edge, check)
+
     def test_3_nodes_svg(self):
         nodes, edges = self.build_3_nodes()
         mock_screen = self.build_screen()
