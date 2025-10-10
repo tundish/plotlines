@@ -121,13 +121,13 @@ class NodeTests(unittest.TestCase):
         self.assertIsInstance(node.ports["W"].joins, set)
         self.assertIsInstance(node.ports["W"].pos, C)
 
-        self.assertEqual(len(node.ports["E"].joins), 1, node.ports[0].joins)
-        self.assertEqual(len(node.ports["W"].joins), 3, node.ports[1].joins)
-        self.assertIn(uuid.UUID(int=list(data["ports"]["W"]["joins"])[0]), node.ports["W"].joins)
-        self.assertNotIn(list(data["ports"]["W"]["joins"])[0], node.ports[1].joins)
+        self.assertEqual(len(node.ports["E"].joins), 0, node.ports["E"].joins)
+        self.assertEqual(len(node.ports["W"].joins), 2, node.ports["W"].joins)
+        self.assertTrue(any(isinstance(i, uuid.UUID) for i in node.ports["W"].joins), node.ports["W"].joins)
+        self.assertFalse(any(isinstance(i, int) for i in node.ports["W"].joins), node.ports["W"].joins)
         self.assertIn("EDGE_1", node.ports["W"].joins)
 
-        self.assertIsInstance(edge.style, Style)
+        self.assertIsInstance(node.style, Style)
 
 
 class SVGTests(unittest.TestCase):

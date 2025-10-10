@@ -156,9 +156,10 @@ class Node(Pin):
 
     def __post_init__(self, *args):
         super().__post_init__(*args)
-        if not self.pos:
-            return
-        self.pos = Coordinates(*self.pos)
+        if self.pos:
+            self.pos = Coordinates(*self.pos)
+        for port in self.ports.values():
+            port.pos = Coordinates(*port.pos)
 
     @property
     def nearby(self):
@@ -187,7 +188,7 @@ class Node(Pin):
     def handle(self, fmt="{0:02d}"):
         return next(n for n in (fmt.format(n) for n in itertools.count(len(self.ports))) if n not in self.ports)
 
-    def connect(self, other: Pin, *pos, edge=None, port=None):
+    def connect(self, other: Pin, *pos, edge=None):
         rv = edge or Edge()
         rv.ports[0].joins.add(self.uid)
         self.ports[self.handle()] = rv.ports[0]
