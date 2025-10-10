@@ -108,7 +108,6 @@ class Edge(Item):
         ports = kwargs.pop("ports", [])
         args = [port.get("pos") for port in ports]
         rv = cls(*args, **kwargs)
-        print(f"{rv.ports=}")
 
         for n, port in enumerate(ports):
             for val in port.get("joins", []):
@@ -138,6 +137,13 @@ class Edge(Item):
 @dataclasses.dataclass(unsafe_hash=True)
 class Node(Pin):
     ports:  dict[int, Port] = dataclasses.field(default_factory=dict, compare=False)
+
+    @classmethod
+    def build(cls, **kwargs):
+        ports = kwargs.pop("ports", [])
+        args = [port.get("pos") for port in ports]
+        rv = cls(*args, **kwargs)
+        return rv
 
     def __post_init__(self, *args):
         super().__post_init__(*args)

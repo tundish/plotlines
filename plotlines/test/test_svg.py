@@ -61,7 +61,7 @@ class EdgeTests(unittest.TestCase):
 
         [[ports]]
         pos = [2, 3]
-        joins = [77096613620228011470678743578062052921, "NAME"]
+        joins = [77096613620228011470678743578062052921, "NODE_1"]
 
         [[contents]]
         """)
@@ -79,9 +79,42 @@ class EdgeTests(unittest.TestCase):
         self.assertEqual(len(edge.ports[1].joins), 3, edge.ports[1].joins)
         self.assertIn(uuid.UUID(int=list(data["ports"][1]["joins"])[0]), edge.ports[1].joins)
         self.assertNotIn(list(data["ports"][1]["joins"])[0], edge.ports[1].joins)
-        self.assertIn("NAME", edge.ports[1].joins)
+        self.assertIn("NODE_1", edge.ports[1].joins)
 
         self.assertIsInstance(edge.style, Style)
+
+
+class NodeTests(unittest.TestCase):
+
+    def test_uid_int(self):
+        node = Node(uid=1)
+        self.assertTrue(node)
+        self.assertEqual(node.uid, 1)
+
+    def test_init_from_toml_full(self):
+        toml = textwrap.dedent("""
+        uid = "e7ed29c8-f718-488c-9b3b-adf1f881f6a2"
+        pos = [0, 0]
+
+        [style]
+        stroke = [127, 127, 127]
+        fill = [32, 32, 32]
+        weight = 6
+
+        [ports.1]
+        pos = [0, 1]
+        joins = []
+
+        [ports.2]
+        pos = [0, -1]
+        joins = [77096613620228011470678743578062052921, "EDGE_1"]
+
+        [[contents]]
+        """)
+        data = tomllib.loads(toml)
+        print(f"{data=}")
+        node = Node.build(**data)
+        self.assertTrue(node)
 
 
 class SVGTests(unittest.TestCase):
