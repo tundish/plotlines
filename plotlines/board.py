@@ -255,11 +255,16 @@ class Node(Pin):
 
 class Board:
 
+    @classmethod
+    def build(cls, data: dict) -> Board:
+        pass
+
     def __init__(self, t = None, title: str = ""):
         self.stamps = {}
         self.shapes = {}
         self.turtle = t or turtle.RawTurtle(None)
         self.title = title
+        self.items = []
 
     @staticmethod
     def extent(items: list) -> tuple[Coordinates]:
@@ -387,15 +392,15 @@ class Board:
             self.turtle.write(self.turtle.pos())
         return items
 
-    def toml(self, items) -> Generator[str]:
+    def toml(self) -> Generator[str]:
         yield "[board]"
         yield "[board.shapes]"
         yield from (f'"{key}" = {[list(pos) for pos in val._data]}' for key, val in self.shapes.items())
-        for item in items:
+        for item in self.items:
             if isinstance(item, Node):
                 yield "[[board.nodes]]"
                 yield from item.toml()
-        for item in items:
+        for item in self.items:
             if isinstance(item, Edge):
                 yield "[[board.edges]]"
                 yield from item.toml()
