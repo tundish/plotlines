@@ -97,6 +97,22 @@ class Edge(Item):
     trail: str = ""
     ports: list[Port] = dataclasses.field(default_factory=list, compare=False)
 
+    @classmethod
+    def build(cls, **kwargs):
+        ports = kwargs.pop("ports", [])
+        args = [port.get("pos") for port in ports]
+        rv = cls(*args, **kwargs)
+        print(f"{rv.ports=}")
+
+        for n, port in enumerate(ports):
+            for val in port.get("joins", []):
+                rv.ports[n].joins.discard(val)
+                try:
+                    rv.ports[n].joins.add(uuid.UUID(int=val) if isinstance(val, int) else uuid.UUID(val))
+                except ValueError:
+                    rv.ports[n].joins.add(val)
+        return rv
+
     def __post_init__(self, pos_0: tuple, pos_1: tuple, *args):
         super().__post_init__(*args)
         coords = [Coordinates(*c) for c in (pos_0, pos_1) if c is not None]
