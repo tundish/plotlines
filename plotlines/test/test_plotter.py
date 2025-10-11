@@ -64,10 +64,13 @@ class PlotterTests(unittest.TestCase):
             board = Board()
             t = turtle.Turtle()
             plotter = Plotter(board, t)
+
             rv = plotter.style_graph(nodes + edges)
+            self.assertTrue(all(i.shape == "sq2.00x2.00-2727/100" for i in nodes))
+
             rv = plotter.draw_graph(nodes + edges)
             self.assertEqual(len(board.shapes), 1, board.shapes)
-            self.assertEqual(len(board.stamps), len(nodes), board.stamps)
+            self.assertEqual(len(plotter.stamps), len(nodes), plotter.stamps)
 
     def test_style_graph(self):
         nodes = [
@@ -102,10 +105,11 @@ class PlotterTests(unittest.TestCase):
             nodes[7].connect(nodes[12], C(14, 12), C(16, 13)),
         ]
 
+        board = Board(title="Multigraph")
         t = turtle.Turtle()
-        board = Board(t, title="Multigraph")
-        rv = Plotter.style_graph(nodes + edges)
-        rv = Plotter.draw_graph(nodes + edges, debug=True, delay=0)
+        plotter = Plotter(board, t)
+        rv = plotter.style_graph(nodes + edges)
+        rv = plotter.draw_graph(nodes + edges, debug=True, delay=0)
         t.screen.mainloop()
         self.assertEqual(len(board.shapes), 3, board.shapes)
-        self.assertEqual(len(board.stamps), len(nodes), board.stamps)
+        self.assertEqual(len(plotter.stamps), len(nodes), plotter.stamps)

@@ -40,7 +40,7 @@ class Plotter:
     def build_shape(self, size, scale=1) -> turtle.Shape:
         key = f"sq{size:.02f}x{size:.02f}-{scale}"
         try:
-            return self.shapes[key]
+            return self.board.shapes[key]
         except KeyError:
             unit = scale * size / 2
             shape = turtle.Shape(
@@ -51,7 +51,7 @@ class Plotter:
                     (-unit, unit))
             )
             shape.key = key
-            self.shapes[key] = shape
+            self.board.shapes[key] = shape
             self.turtle.screen.register_shape(key, shape)
             return shape
 
@@ -95,13 +95,13 @@ class Plotter:
                 size = math.sqrt(item.area)
                 item.shape = self.build_shape(size=size, scale=scale).key
             except AttributeError:
-                pass
+                assert isinstance(item, Edge)
         return items
 
     def draw_graph(self, items: list[Edge], debug=False, delay: int = 10) -> RawTurtle:
         screen = self.turtle.getscreen()
         try:
-            screen.title(self.title)
+            screen.title(self.board.title)
             screen.delay(delay)
         except AttributeError:
             # Test fixture
