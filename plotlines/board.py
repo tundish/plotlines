@@ -20,20 +20,15 @@
 from __future__ import annotations  # Until Python 3.14 is everywhere
 
 from collections import defaultdict
-from collections import deque
-from collections import UserDict
 from collections.abc import Generator
 import dataclasses
-import datetime
 from decimal import Decimal
 from fractions import Fraction
 import functools
 import html
 import itertools
 import logging
-import math
 from numbers import Number
-import string
 import textwrap
 import tkinter as tk
 import turtle
@@ -42,7 +37,6 @@ import uuid
 import weakref
 
 from plotlines.coordinates import Coordinates
-
 
 RGB = functools.partial(Coordinates, coerce=int)
 
@@ -304,107 +298,6 @@ class Board:
             Decimal(geom[1]) / (frame[1][1] - frame[0][1])
         ).quantize(Decimal(quant)).as_integer_ratio())
 
-    @staticmethod
-    def build_graph(ending: list[str], loading: list[int], trails: int, **kwargs) -> Generator[int, Edge]:
-        frame = deque([Node(label=name) for name in ending])
-
-        while len(Pin.store[Node]) + len(Pin.store[Edge]) < max(loading):
-            # Connect each node to one or more trail edges
-            try:
-                node = frame.popleft()
-            except IndexError:
-                break
-            else:
-                frame.append(Node())
-                edge = node.connect(frame[-1])
-                yield edge.uid, edge
-        else:
-            # Finish with start node
-            start = Node(label="start")
-            for node in frame:
-                edge = start.connect(node)
-                yield edge.uid, edge
-
-    @staticmethod
-    def layout_graph(t: RawTurtle, graph: dict, **kwargs) -> dict:
-        return graph
-
-    def style_graph(self, items: list, **kwargs) -> dict:
-        screen = self.turtle.getscreen()
-        screen.colormode(255)
-
-        frame = self.frame(*self.extent(items), square=True)
-        screen.setworldcoordinates(*[float(i) for c in frame for i in c])
-
-        size = screen.screensize()
-        scale = self.scale_factor(size, frame)
-
-        for item in items:
-            try:
-                size = math.sqrt(item.area)
-                item.shape = self.build_shape(size=size, scale=scale).key
-            except AttributeError:
-                pass
-        return items
-
-    def draw_graph(self, items: list[Edge], debug=False, delay: int = 10) -> RawTurtle:
-        screen = self.turtle.getscreen()
-        try:
-            screen.title(self.title)
-            screen.delay(delay)
-        except AttributeError:
-            # Test fixture
-            pass
-
-        self.turtle.shape("blank")
-        self.turtle.color((0, 0, 0), (255, 255, 255))
-        nodes = set()
-        for edge in [i for i in items if isinstance(i, Edge)]:
-            self.turtle.up()
-            for port in edge.ports:
-                for node_uid in port.joins:
-                    if node_uid in nodes:
-                        continue
-
-                    try:
-                        node = edge.store[node_uid]
-                        self.turtle.shape(node.shape)
-                        self.turtle.setpos(node.pos)
-                    except AttributeError:
-                        pass
-                    except KeyError as error:
-                        raise
-                    else:
-                        self.stamps[self.turtle.stamp()] = node.shape
-                        nodes.add(node_uid)
-                        if debug:
-                            self.turtle.write(self.turtle.pos())
-                    finally:
-                        self.turtle.shape("blank")
-
-            if not all(i.pos for i in edge.ports):
-                continue
-
-            self.turtle.setpos(edge.ports[0].pos)
-            self.turtle.write(self.turtle.pos())
-            self.turtle.down()
-            self.turtle.setpos(edge.ports[1].pos)
-            self.turtle.write(self.turtle.pos())
-        return items
-
-    def toml(self) -> Generator[str]:
-        yield "[board]"
-        yield "[board.shapes]"
-        yield from (f'"{key}" = {[list(pos) for pos in val._data]}' for key, val in self.shapes.items())
-        for item in self.items:
-            if isinstance(item, Node):
-                yield "[[board.nodes]]"
-                yield from item.toml()
-        for item in self.items:
-            if isinstance(item, Edge):
-                yield "[[board.edges]]"
-                yield from item.toml()
-
     def build_shape(self, size, scale=1) -> turtle.Shape:
         key = f"sq{size:.02f}x{size:.02f}-{scale}"
         try:
@@ -422,6 +315,19 @@ class Board:
             self.shapes[key] = shape
             self.turtle.screen.register_shape(key, shape)
             return shape
+
+    def toml(self) -> Generator[str]:
+        yield "[board]"
+        yield "[board.shapes]"
+        yield from (f'"{key}" = {[list(pos) for pos in val._data]}' for key, val in self.shapes.items())
+        for item in self.items:
+            if isinstance(item, Node):
+                yield "[[board.nodes]]"
+                yield from item.toml()
+        for item in self.items:
+            if isinstance(item, Edge):
+                yield "[[board.edges]]"
+                yield from item.toml()
 
     def svg(self, items: list[Item]):
         screen = self.turtle.getscreen()
