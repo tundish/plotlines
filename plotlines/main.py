@@ -56,7 +56,7 @@ def main(args):
 
     if args.format == "plot":
         plotter = Plotter(Board(), t=turtle.Turtle())
-        items = plotter.build_graph(**vars(args))
+        items = plotter.board.items = list(plotter.build_graph(**vars(args)))
 
         items = plotter.style_graph(items)
         items = plotter.layout_graph(items)
@@ -65,7 +65,7 @@ def main(args):
         print(f"{stamps=}", file=sys.stderr)
 
         logger.debug(tk.font.families())
-        Board.draw_graph(t, graph, debug=args.debug)
+        items = plotter.draw_graph(items, debug=args.debug)
         t.screen.mainloop()
     elif args.format == "svg":
         # TODO: implement Renderer

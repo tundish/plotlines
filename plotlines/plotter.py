@@ -19,6 +19,7 @@
 
 from __future__ import annotations  # Until Python 3.14 is everywhere
 
+from collections import Counter
 from collections import deque
 import importlib.resources
 import logging
@@ -68,25 +69,31 @@ class Plotter:
         return words
 
     @staticmethod
-    def build_graph(ending: list[str], loading: list[int], trails: int, **kwargs) -> Generator[int, Edge]:
+    def build_graph(ending: list[str], loading: list[int], trails: int, **kwargs) -> Generator[Node | Edge]:
         frame = deque([Node(label=name) for name in ending])
 
-        while len(Pin.store[Node]) + len(Pin.store[Edge]) < max(loading):
+        tally = Counter()
+        while tally[Node] + tally[Edge] < max(loading):
             # Connect each node to one or more trail edges
             try:
                 node = frame.popleft()
+                yield node
             except IndexError:
                 break
             else:
-                frame.append(Node())
+                node = Node()
+                tally[Node] += 1
+                frame.append(node)
                 edge = node.connect(frame[-1])
-                yield edge.uid, edge
+                tally[Edge] += 1
+                yield edge
         else:
             # Finish with start node
             start = Node(label="start")
             for node in frame:
                 edge = start.connect(node)
-                yield edge.uid, edge
+                tally[Edge] += 1
+                yield edge
 
     @staticmethod
     def layout_graph(t: RawTurtle, graph: dict, **kwargs) -> dict:
