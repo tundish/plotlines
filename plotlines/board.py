@@ -307,7 +307,7 @@ class Board:
                 yield "[[board.edges]]"
                 yield from item.toml()
 
-    def svg(self, width=None, height=None):
+    def svg(self, width=None, height=None) -> Generator[str]:
         frame = self.frame(*self.extent(self.items), square=True)
         size = (width, height)
         scale = self.scale_factor(size, frame)
@@ -333,23 +333,18 @@ class Board:
             for item in self.items
             if isinstance(item, Edge)
         ]
-        return textwrap.dedent(f"""
+        yield textwrap.dedent(f"""
         <svg xmlns="http://www.w3.org/2000/svg"
              xmlns:xlink="http://www.w3.org/1999/xlink"
         width="{width}" height="{height}"
         viewBox="{frame[0][0]} {frame[0][1]} {frame[1][0]} {frame[1][1]}"
         preserveAspectRatio="xMidYMid slice"
         >
-        {{0}}
-        <defs>
-        {{1}}
-        </defs>
-        {{2}}
-        {{3}}
-        </svg>
-        """).format(
-            "<title>{0}</title>".format(html.escape(self.title)) if self.title else "",
-            "\n".join(defs),
-            "\n".join(polygons),
-            "\n".join(lines),
-        )
+        """)
+        yield "<title>{0}</title>".format(html.escape(self.title)) if self.title else ""
+        yield "<defs>"
+        yield from defs
+        yield "</defs>"
+        yield from polygons
+        yield from lines
+        yield "</svg>"

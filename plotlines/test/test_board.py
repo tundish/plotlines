@@ -270,9 +270,7 @@ class BoardTests(unittest.TestCase):
         nodes, edges = self.build_3_nodes()
 
         board = Board(title="Test", items=nodes + edges)
-        # svg = "\n".join(board.svg(*screen_size))
-        svg = board.svg(*screen_size)
-        print(f"{svg=}")
+        svg = "\n".join(board.svg(*screen_size))
         root = ET.fromstring(svg)
 
         ns = NS(svg="http://www.w3.org/2000/svg", xlink="http://www.w3.org/1999/xlink")

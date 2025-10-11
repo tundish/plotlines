@@ -28,6 +28,7 @@ import turtle
 from plotlines.board import Board
 from plotlines.board import Edge
 from plotlines.board import Node
+from plotlines.board import Pin
 
 
 class Plotter:

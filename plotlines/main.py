@@ -25,10 +25,10 @@ import string
 import sys
 import tkinter as tk
 import tkinter.font
-from turtle import Turtle
-from turtle import Shape
+import turtle
 
 from plotlines.board import Board
+from plotlines.plotter import Plotter
 
 
 def setup_logger(level=logging.INFO):
@@ -54,15 +54,12 @@ def main(args):
     logger.info(f"Start")
     logger.debug(f"{args=}")
 
-    graph = dict(Board.build_graph(**vars(args)))
-
     if args.format == "plot":
-        t = Turtle()
-        stamps = []
-        stamps.append(t.stamp())
+        plotter = Plotter(Board(), t=turtle.Turtle())
+        items = plotter.build_graph(**vars(args))
 
-        graph = Board.style_graph(graph)
-        graph = Board.layout_graph(graph)
+        items = plotter.style_graph(items)
+        items = plotter.layout_graph(items)
         print(string.ascii_uppercase, file=sys.stderr)
         print(f"{t.screen.getshapes()=}", file=sys.stderr)
         print(f"{stamps=}", file=sys.stderr)
@@ -105,7 +102,7 @@ def parser():
         help="Define the number of trails through the story graph"
     )
     rv.add_argument(
-        "--format", choices=["plot", "svg", "text", "toml"], default="text",
+        "--format", choices=["plot", "svg", "text", "toml"], default="plot",
         help="Specify format of output [text]"
     )
     rv.convert_arg_line_to_args = lambda x: x.split()
