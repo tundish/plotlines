@@ -20,6 +20,7 @@
 from __future__ import annotations  # Until Python 3.14 is everywhere
 
 from collections import deque
+import importlib.resources
 import logging
 import math
 import tkinter as tk
@@ -36,7 +37,11 @@ class Plotter:
     def __init__(self, b: Board, t = None):
         self.board = b
         self.turtle = t or turtle.RawTurtle(None)
-        self.stamps = {}
+        self.stamps = dict()
+        try:
+            self.words = self.build_words()
+        except Exception:
+            self.words = dict()
 
     def build_shape(self, size, scale=1) -> turtle.Shape:
         key = f"sq{size:.02f}x{size:.02f}-{scale}"
@@ -55,6 +60,12 @@ class Plotter:
             self.board.shapes[key] = shape
             self.turtle.screen.register_shape(key, shape)
             return shape
+
+    @staticmethod
+    def build_words() -> dict[int, list[str]]:
+        text = importlib.resources.read_text("plotlines", "assets/words.txt")
+        words = text.splitlines()
+        return words
 
     @staticmethod
     def build_graph(ending: list[str], loading: list[int], trails: int, **kwargs) -> Generator[int, Edge]:
