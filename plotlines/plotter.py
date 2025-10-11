@@ -25,8 +25,35 @@ import math
 import tkinter as tk
 import turtle
 
+from plotlines.board import Board
+from plotlines.board import Edge
+from plotlines.board import Node
 
-class Plot:
+
+class Plotter:
+
+    def __init__(self, b: Board, t = None):
+        self.board = b
+        self.turtle = t or turtle.RawTurtle(None)
+        self.stamps = {}
+
+    def build_shape(self, size, scale=1) -> turtle.Shape:
+        key = f"sq{size:.02f}x{size:.02f}-{scale}"
+        try:
+            return self.shapes[key]
+        except KeyError:
+            unit = scale * size / 2
+            shape = turtle.Shape(
+                "polygon", (
+                    (-unit, -unit),
+                    (unit, -unit),
+                    (unit, unit),
+                    (-unit, unit))
+            )
+            shape.key = key
+            self.shapes[key] = shape
+            self.turtle.screen.register_shape(key, shape)
+            return shape
 
     @staticmethod
     def build_graph(ending: list[str], loading: list[int], trails: int, **kwargs) -> Generator[int, Edge]:
@@ -57,11 +84,11 @@ class Plot:
         screen = self.turtle.getscreen()
         screen.colormode(255)
 
-        frame = self.frame(*self.extent(items), square=True)
+        frame = self.board.frame(*self.board.extent(items), square=True)
         screen.setworldcoordinates(*[float(i) for c in frame for i in c])
 
         size = screen.screensize()
-        scale = self.scale_factor(size, frame)
+        scale = self.board.scale_factor(size, frame)
 
         for item in items:
             try:

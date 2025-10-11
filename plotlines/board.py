@@ -30,8 +30,6 @@ import itertools
 import logging
 from numbers import Number
 import textwrap
-import tkinter as tk
-import turtle
 import typing
 import uuid
 import weakref
@@ -253,12 +251,10 @@ class Board:
     def build(cls, data: dict) -> Board:
         pass
 
-    def __init__(self, t = None, title: str = ""):
-        self.stamps = {}
-        self.shapes = {}
-        self.turtle = t or turtle.RawTurtle(None)
+    def __init__(self, title: str = "", items: list = None):
         self.title = title
-        self.items = []
+        self.shapes = dict()
+        self.items = items or list()
 
     @staticmethod
     def extent(items: list) -> tuple[Coordinates]:
@@ -298,24 +294,6 @@ class Board:
             Decimal(geom[1]) / (frame[1][1] - frame[0][1])
         ).quantize(Decimal(quant)).as_integer_ratio())
 
-    def build_shape(self, size, scale=1) -> turtle.Shape:
-        key = f"sq{size:.02f}x{size:.02f}-{scale}"
-        try:
-            return self.shapes[key]
-        except KeyError:
-            unit = scale * size / 2
-            shape = turtle.Shape(
-                "polygon", (
-                    (-unit, -unit),
-                    (unit, -unit),
-                    (unit, unit),
-                    (-unit, unit))
-            )
-            shape.key = key
-            self.shapes[key] = shape
-            self.turtle.screen.register_shape(key, shape)
-            return shape
-
     def toml(self) -> Generator[str]:
         yield "[board]"
         yield "[board.shapes]"
@@ -329,11 +307,9 @@ class Board:
                 yield "[[board.edges]]"
                 yield from item.toml()
 
-    def svg(self, items: list[Item]):
-        screen = self.turtle.getscreen()
-        width, height = screen.screensize()
-        frame = self.frame(*self.extent(items), square=True)
-        size = screen.screensize()
+    def svg(self, width=None, height=None):
+        frame = self.frame(*self.extent(self.items), square=True)
+        size = (width, height)
         scale = self.scale_factor(size, frame)
 
         defs = [
@@ -348,13 +324,13 @@ class Board:
              f'transform="translate({item.pos[0]}, {item.pos[-1]}) scale({shrink:.4f})" '
              f'fill="none" stroke="black" '
              '/>')
-            for item in items
+            for item in self.items
             if isinstance(item, Node)
         ]
         lines = [
             (f'<line x1="{item.ports[0].pos[0]}" y1="{item.ports[0].pos[1]}" '
             f'x2="{item.ports[1].pos[0]}" y2="{item.ports[1].pos[1]}" />')
-            for item in items
+            for item in self.items
             if isinstance(item, Edge)
         ]
         return textwrap.dedent(f"""
