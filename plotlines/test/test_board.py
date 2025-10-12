@@ -228,6 +228,18 @@ class BoardTests(unittest.TestCase):
         check = Fraction(909, 25)
         self.assertEqual(scale, check)
 
+    def test_3_nodes_initial(self):
+        nodes, edges = self.build_3_nodes()
+        board = Board(items=nodes + edges)
+        self.assertEqual(len(board.initial), 1)
+        self.assertIs(board.initial(nodes[0]))
+
+    def test_3_nodes_terminal(self):
+        nodes, edges = self.build_3_nodes()
+        board = Board(items=nodes + edges)
+        self.assertEqual(len(board.initial), 1)
+        self.assertIs(board.terminal(nodes[-1]))
+
     def test_3_nodes_toml(self):
         nodes, edges = self.build_3_nodes()
         for node in nodes:

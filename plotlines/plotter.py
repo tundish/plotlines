@@ -96,10 +96,6 @@ class Plotter:
                 tally[Edge] += 1
                 yield edge
 
-    @staticmethod
-    def layout_graph(items: list, **kwargs) -> dict:
-        return items
-
     def style_graph(self, items: list, **kwargs) -> dict:
         screen = self.turtle.getscreen()
         screen.colormode(255)
@@ -120,6 +116,16 @@ class Plotter:
                 item.shape = self.build_shape(size=size, scale=scale).key
             except AttributeError:
                 assert isinstance(item, Edge)
+        return size, frame, scale
+
+    @staticmethod
+    def layout_graph(items: list, size, frame, scale, **kwargs) -> dict:
+        print(f"{size=}", f"{frame=}", f"{scale=}")
+        # Allocate pos to each node
+        # Find terminal nodes
+
+        # Allocate pos to each port
+        # Allocate label to each node and edge
         return items
 
     def draw_graph(self, items: list[Edge], debug=False, delay: int = 10) -> RawTurtle:

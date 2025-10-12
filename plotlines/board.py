@@ -294,6 +294,14 @@ class Board:
             Decimal(geom[1]) / (frame[1][1] - frame[0][1])
         ).quantize(Decimal(quant)).as_integer_ratio())
 
+    @property
+    def initial(self) -> list[Node]:
+        return []
+
+    @property
+    def terminal(self) -> list[Node]:
+        return []
+
     def toml(self) -> Generator[str]:
         yield "[board]"
         yield "[board.shapes]"

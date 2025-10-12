@@ -58,8 +58,8 @@ def main(args):
         plotter = Plotter(Board(), t=turtle.Turtle())
         items = plotter.board.items = list(plotter.build_graph(**vars(args)))
 
-        items = plotter.style_graph(items)
-        items = plotter.layout_graph(items)
+        size, frame, scale = plotter.style_graph(items)
+        items = plotter.layout_graph(items, size, frame, scale)
         print(string.ascii_uppercase, file=sys.stderr)
         print(f"{plotter.turtle.screen.getshapes()=}", file=sys.stderr)
 
