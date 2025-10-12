@@ -120,16 +120,19 @@ class Plotter:
             item.width = max(item.height, math.sqrt(item.area))
             print(f"{item.height=} {item.width=}")
 
+            pitch = (boundary[2] - boundary[0])[1] / len(work)
             if work is lhs:
                 # Allocate coordinates from lhs of boundary
-                pitch = (boundary[2] - boundary[0])[1] / len(work)
                 item.pos = C(
                     boundary[0][0] + item.width / 2,
                     boundary[0][1] + n * pitch + item.height / 2,
                 )
             else:
                 # Allocate coordinates from rhs of boundary
-                pass
+                item.pos = C(
+                    boundary[1][0] - item.width / 2,
+                    boundary[1][1] + n * pitch + item.height / 2,
+                )
 
             if item not in visited:
                 yield item
@@ -166,7 +169,7 @@ class Plotter:
 
         boundary = [frame[0], C(frame[1][0], frame[0][1]), C(frame[0][0], frame[1][1]), frame[1]]
         for n, node in enumerate(self.priority(initial, terminal, self.board.items, boundary=boundary)):
-            print(n, f"{node.area=}")
+            print(n, f"{node=}")
 
         for item in self.board.items:
             try:
