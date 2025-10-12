@@ -300,14 +300,23 @@ class Board:
         for item in self.items:
             for n, port in enumerate(item.ports):
                 try:
-                    survey[n].update({uid for uid in port.joins if isinstance(item.store[uid], Node)})
+                    survey[n].update({node for uid in port.joins if isinstance(node := item.store.get(uid), Node)})
                 except AttributeError:
                     assert isinstance(item, Node)
-        return [Node.store[uid] for uid in survey.get(0, {}).difference(survey.get(1, {}))]
+
+        return list(survey.get(0, {}).difference(survey.get(1, {})))
 
     @property
     def terminal(self) -> list[Node]:
-        return []
+        survey = defaultdict(set)
+        for item in self.items:
+            for n, port in enumerate(item.ports):
+                try:
+                    survey[n].update({node for uid in port.joins if isinstance(node := item.store.get(uid), Node)})
+                except AttributeError:
+                    assert isinstance(item, Node)
+
+        return list(survey.get(1, {}).difference(survey.get(0, {})))
 
     def toml(self) -> Generator[str]:
         yield "[board]"
