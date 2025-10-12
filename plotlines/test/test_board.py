@@ -143,7 +143,7 @@ class BoardTests(unittest.TestCase):
         ]
         edges = [
             nodes[0].connect(nodes[1], C(3, 2), C(6, 2)),
-            nodes[0].connect(nodes[2], C(8, 2), C(11, 2)),
+            nodes[1].connect(nodes[2], C(8, 2), C(11, 2)),
         ]
         return nodes, edges
 
