@@ -112,20 +112,26 @@ class Plotter:
         # Calculate placement column pitch
         print(f"{boundary=}")
         visited = set() if visited is None else visited
-        work = next(reversed(sorted((len(i), i) for i in (lhs, rhs))))[1]
+        work = next(reversed(sorted((len(i), i) for i in (lhs, rhs))))[1]  # Operate on the larger of lhs, rhs
         for item in work:
-            area = item.area + sum(p.area for p in item.ports.values())
             lhs_edges = {edge: math.sqrt(edge.ports[1].area) for edge in item.edges if item.uid in edge.ports[1].joins}
             rhs_edges = {edge: math.sqrt(edge.ports[0].area) for edge in item.edges if item.uid in edge.ports[0].joins}
-            print(f"{lhs_edges=}")
+            height = max(sum(lhs_edges.values()), sum(rhs_edges.values()))
+            width = max(height, math.sqrt(item.area))
+            print(f"{height=} {width=}")
+
+            if work is lhs:
+                # Allocate coordinates from lhs of boundary
+                pass
+            else:
+                # Allocate coordinates from rhs of boundary
+                pass
+
             if item not in visited:
                 yield item
             visited.add(item)
 
-        if work is lhs:
-            pass
-        else:
-            pass
+        # TODO: Modify boundary after pos allocation
 
     def style_graph(self, items: list, **kwargs) -> dict:
         screen = self.turtle.getscreen()
