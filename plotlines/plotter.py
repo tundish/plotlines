@@ -107,6 +107,21 @@ class Plotter:
                 tally[Edge] += 1
                 yield edge
 
+    @staticmethod
+    def priority(lhs: set, rhs: set, items: list, visited=None):
+        # Calculate placement column pitch
+        visited = set() if visited is None else visited
+        work = next(reversed(sorted((len(i), i) for i in (lhs, rhs))))[1]
+        for item in work:
+            if item not in visited:
+                yield item
+            visited.add(item)
+
+        if work is lhs:
+            pass
+        else:
+            pass
+
     def style_graph(self, items: list, **kwargs) -> dict:
         screen = self.turtle.getscreen()
         screen.colormode(255)
@@ -134,6 +149,9 @@ class Plotter:
         initial = set(self.board.initial)
         terminal = set(self.board.terminal)
 
+        for n, node in enumerate(self.priority(initial, terminal)):
+            print(n, f"{node=}")
+
         boundary = [frame[0], C(frame[1][0], frame[0][1]), C(frame[0][0], frame[1][1]), frame[1]]
         print(f"{boundary=}")
         for item in self.board.items:
@@ -145,8 +163,6 @@ class Plotter:
                 elif item in terminal:
                     item.pos = frame[1]
 
-                print(f"{item.nearby=}")
-                print(f"{item.edges=}")
             except AttributeError:
                 assert isinstance(item, Edge)
         # Allocate pos to each node
