@@ -71,6 +71,17 @@ class Plotter:
 
     @staticmethod
     def build_graph(ending: list[str], loading: list[int], trails: int, **kwargs) -> Generator[Node | Edge]:
+        nodes = [Node(), Node(), Node(), Node(), Node()]
+        edges = [
+            nodes[0].connect(nodes[1]),
+            nodes[1].connect(nodes[2]),
+            nodes[1].connect(nodes[3]),
+            nodes[2].connect(nodes[4]),
+            nodes[3].connect(nodes[4]),
+        ]
+        yield from  nodes + edges
+        return
+
         frame = deque([Node(label=name) for name in ending])
 
         tally = Counter()

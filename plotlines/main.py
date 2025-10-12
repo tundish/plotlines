@@ -65,7 +65,7 @@ def main(args):
 
         logger.debug(tk.font.families())
         items = plotter.draw_graph(items, debug=args.debug)
-        t.screen.mainloop()
+        plotter.turtle.screen.mainloop()
     elif args.format == "svg":
         # TODO: implement Renderer
         logger.warning("SVG output not yet implemented")
