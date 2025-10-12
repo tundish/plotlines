@@ -114,6 +114,10 @@ class Plotter:
         visited = set() if visited is None else visited
         work = next(reversed(sorted((len(i), i) for i in (lhs, rhs))))[1]
         for item in work:
+            area = item.area + sum(p.area for p in item.ports.values())
+            lhs_edges = {edge: math.sqrt(edge.ports[1].area) for edge in item.edges if item.uid in edge.ports[1].joins}
+            rhs_edges = {edge: math.sqrt(edge.ports[0].area) for edge in item.edges if item.uid in edge.ports[0].joins}
+            print(f"{lhs_edges=}")
             if item not in visited:
                 yield item
             visited.add(item)
@@ -152,7 +156,7 @@ class Plotter:
 
         boundary = [frame[0], C(frame[1][0], frame[0][1]), C(frame[0][0], frame[1][1]), frame[1]]
         for n, node in enumerate(self.priority(initial, terminal, self.board.items, boundary=boundary)):
-            print(n, f"{node=}")
+            print(n, f"{node.area=}")
 
         for item in self.board.items:
             try:
