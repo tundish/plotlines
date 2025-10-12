@@ -118,15 +118,31 @@ class Plotter:
                 assert isinstance(item, Edge)
         return size, frame, scale
 
-    @staticmethod
-    def layout_graph(items: list, size, frame, scale, **kwargs) -> dict:
+    def layout_graph(self, size, frame, scale, **kwargs) -> dict:
         print(f"{size=}", f"{frame=}", f"{scale=}")
+        initial = set(self.board.initial)
+        terminal = set(self.board.terminal)
+
+        boundary = [frame[0], C(frame[1][0], frame[0][1]), C(frame[0][0], frame[1][1]), frame[1]]
+        print(f"{boundary=}")
+        for item in self.board.items:
+            try:
+                item.pos = item.pos or frame[0]
+                if item in initial:
+                    item.pos = frame[0]
+
+                elif item in terminal:
+                    item.pos = frame[1]
+
+                print(f"{item.nearby=}")
+                print(f"{item.edges=}")
+            except AttributeError:
+                assert isinstance(item, Edge)
         # Allocate pos to each node
-        # Find terminal nodes
 
         # Allocate pos to each port
         # Allocate label to each node and edge
-        return items
+        return self.board.items
 
     def draw_graph(self, items: list[Edge], debug=False, delay: int = 10) -> RawTurtle:
         screen = self.turtle.getscreen()

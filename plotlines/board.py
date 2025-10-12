@@ -170,14 +170,9 @@ class Node(Pin):
 
     @property
     def nearby(self):
-        edges = [
-            e for port in self.ports.values()
-            for uid in port.joins
-            if isinstance(e := self.store.get(uid), Edge)
-        ]
         return [
             n
-            for edge in edges
+            for edge in self.edges
             for p in edge.ports
             for uid in p.joins
             if isinstance(n := self.store.get(uid), Node) and uid != self.uid
