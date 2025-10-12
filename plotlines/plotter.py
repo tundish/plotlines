@@ -108,8 +108,9 @@ class Plotter:
                 yield edge
 
     @staticmethod
-    def priority(lhs: set, rhs: set, items: list, visited=None):
+    def priority(lhs: set, rhs: set, items: list, boundary: tuple, visited=None):
         # Calculate placement column pitch
+        print(f"{boundary=}")
         visited = set() if visited is None else visited
         work = next(reversed(sorted((len(i), i) for i in (lhs, rhs))))[1]
         for item in work:
@@ -149,11 +150,10 @@ class Plotter:
         initial = set(self.board.initial)
         terminal = set(self.board.terminal)
 
-        for n, node in enumerate(self.priority(initial, terminal)):
+        boundary = [frame[0], C(frame[1][0], frame[0][1]), C(frame[0][0], frame[1][1]), frame[1]]
+        for n, node in enumerate(self.priority(initial, terminal, self.board.items, boundary=boundary)):
             print(n, f"{node=}")
 
-        boundary = [frame[0], C(frame[1][0], frame[0][1]), C(frame[0][0], frame[1][1]), frame[1]]
-        print(f"{boundary=}")
         for item in self.board.items:
             try:
                 item.pos = item.pos or frame[0]
