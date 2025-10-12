@@ -232,13 +232,13 @@ class BoardTests(unittest.TestCase):
         nodes, edges = self.build_3_nodes()
         board = Board(items=nodes + edges)
         self.assertEqual(len(board.initial), 1)
-        self.assertIs(board.initial(nodes[0]))
+        self.assertIs(board.initial[0], nodes[0])
 
     def test_3_nodes_terminal(self):
         nodes, edges = self.build_3_nodes()
         board = Board(items=nodes + edges)
-        self.assertEqual(len(board.initial), 1)
-        self.assertIs(board.terminal(nodes[-1]))
+        self.assertEqual(len(board.terminal), 1)
+        self.assertIs(board.terminal[0], nodes[-1])
 
     def test_3_nodes_toml(self):
         nodes, edges = self.build_3_nodes()

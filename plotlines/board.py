@@ -296,7 +296,14 @@ class Board:
 
     @property
     def initial(self) -> list[Node]:
-        return []
+        survey = defaultdict(set)
+        for item in self.items:
+            for n, port in enumerate(item.ports):
+                try:
+                    survey[n].update({uid for uid in port.joins if isinstance(item.store[uid], Node)})
+                except AttributeError:
+                    assert isinstance(item, Node)
+        return [Node.store[uid] for uid in survey.get(0, {}).difference(survey.get(1, {}))]
 
     @property
     def terminal(self) -> list[Node]:
