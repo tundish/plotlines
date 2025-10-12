@@ -113,16 +113,20 @@ class Plotter:
         print(f"{boundary=}")
         visited = set() if visited is None else visited
         work = next(reversed(sorted((len(i), i) for i in (lhs, rhs))))[1]  # Operate on the larger of lhs, rhs
-        for item in work:
+        for n, item in enumerate(work):
             lhs_edges = {edge: math.sqrt(edge.ports[1].area) for edge in item.edges if item.uid in edge.ports[1].joins}
             rhs_edges = {edge: math.sqrt(edge.ports[0].area) for edge in item.edges if item.uid in edge.ports[0].joins}
-            height = max(sum(lhs_edges.values()), sum(rhs_edges.values()))
-            width = max(height, math.sqrt(item.area))
-            print(f"{height=} {width=}")
+            item.height = max(sum(lhs_edges.values()), sum(rhs_edges.values()))
+            item.width = max(item.height, math.sqrt(item.area))
+            print(f"{item.height=} {item.width=}")
 
             if work is lhs:
                 # Allocate coordinates from lhs of boundary
-                pass
+                pitch = (boundary[2] - boundary[0])[1] / len(work)
+                item.pos = C(
+                    boundary[0][0] + item.width / 2,
+                    boundary[0][1] + n * pitch + item.height / 2,
+                )
             else:
                 # Allocate coordinates from rhs of boundary
                 pass
