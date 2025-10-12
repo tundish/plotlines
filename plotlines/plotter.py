@@ -31,6 +31,7 @@ from plotlines.board import Board
 from plotlines.board import Edge
 from plotlines.board import Node
 from plotlines.board import Pin
+from plotlines.coordinates import Coordinates as C
 
 
 class Plotter:
@@ -96,15 +97,19 @@ class Plotter:
                 yield edge
 
     @staticmethod
-    def layout_graph(t: RawTurtle, graph: dict, **kwargs) -> dict:
-        return graph
+    def layout_graph(items: list, **kwargs) -> dict:
+        return items
 
     def style_graph(self, items: list, **kwargs) -> dict:
         screen = self.turtle.getscreen()
         screen.colormode(255)
 
         frame = self.board.frame(*self.board.extent(items), square=True)
-        screen.setworldcoordinates(*[float(i) for c in frame for i in c])
+        try:
+            screen.setworldcoordinates(*[float(i) for c in frame for i in c])
+        except ZeroDivisionError:
+            frame = [C(0, 0), C(120, 120)]
+            screen.setworldcoordinates(*[float(i) for c in frame for i in c])
 
         size = screen.screensize()
         scale = self.board.scale_factor(size, frame)

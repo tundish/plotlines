@@ -259,8 +259,8 @@ class Board:
     @staticmethod
     def extent(items: list) -> tuple[Coordinates]:
         nodes = [i for i in items if isinstance(i, Node)]
-        x_vals = sorted([p.pos[0] for node in nodes for p in [node] + list(node.ports.values()) if p.pos])
-        y_vals = sorted([p.pos[1] for node in nodes for p in [node] + list(node.ports.values()) if p.pos])
+        x_vals = sorted([p.pos[0] for node in nodes for p in [node] + list(node.ports.values()) if p.pos]) or [0]
+        y_vals = sorted([p.pos[1] for node in nodes for p in [node] + list(node.ports.values()) if p.pos]) or [0]
 
         min_pos = Coordinates(x_vals[0], y_vals[0])
         max_pos = Coordinates(x_vals[-1], y_vals[-1])

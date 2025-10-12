@@ -61,8 +61,7 @@ def main(args):
         items = plotter.style_graph(items)
         items = plotter.layout_graph(items)
         print(string.ascii_uppercase, file=sys.stderr)
-        print(f"{t.screen.getshapes()=}", file=sys.stderr)
-        print(f"{stamps=}", file=sys.stderr)
+        print(f"{plotter.turtle.screen.getshapes()=}", file=sys.stderr)
 
         logger.debug(tk.font.families())
         items = plotter.draw_graph(items, debug=args.debug)
