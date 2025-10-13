@@ -108,7 +108,7 @@ class Plotter:
                 yield edge
 
     @staticmethod
-    def priority(lhs: set, rhs: set, items: list, boundary: tuple, visited=None):
+    def priority(lhs: set, rhs: set, items: list = None, boundary: tuple = None, visited=None):
         # Calculate placement column pitch
         print(f"{boundary=}")
         visited = set() if visited is None else visited
@@ -140,6 +140,42 @@ class Plotter:
 
         # TODO: Modify boundary after pos allocation
 
+    @staticmethod
+    def node_size(node: Node):
+        lhs_sizes = {edge: math.sqrt(edge.ports[1].area) for edge in node.edges if node.uid in edge.ports[1].joins}
+        rhs_sizes = {edge: math.sqrt(edge.ports[0].area) for edge in node.edges if node.uid in edge.ports[0].joins}
+        height = max(sum(lhs_sizes.values()), sum(rhs_sizes.values()), math.sqrt(node.area))
+        return height
+
+    @staticmethod
+    def spread(initial, items: list = None, boundary: tuple = None, visited=None):
+        # Calculate placement column pitch
+        print(f"{boundary=}")
+        visited = set() if visited is None else visited
+        work = initial.copy()
+        sizes = {item: Plotter.node_size(item) for item in items if isinstance(item, Node)}
+        print(f"{sizes=}")
+        for n, item in enumerate(work):
+            lhs_edges = {edge: math.sqrt(edge.ports[1].area) for edge in item.edges if item.uid in edge.ports[1].joins}
+            rhs_edges = {edge: math.sqrt(edge.ports[0].area) for edge in item.edges if item.uid in edge.ports[0].joins}
+            item.height = max(sum(lhs_edges.values()), sum(rhs_edges.values()))
+            item.width = max(item.height, math.sqrt(item.area))
+            print(f"{item.height=} {item.width=}")
+
+            pitch = (boundary[2] - boundary[0])[1] / len(work)
+            # Allocate coordinates from lhs of boundary
+            item.pos = C(
+                boundary[0][0] + item.width / 2,
+                boundary[0][1] + n * pitch + item.height / 2,
+            )
+
+            if item not in visited:
+                yield item
+            visited.add(item)
+            visited.add(item.pos)
+
+        # TODO: Modify boundary after pos allocation
+
     def style_graph(self, items: list, **kwargs) -> dict:
         screen = self.turtle.getscreen()
         screen.colormode(255)
@@ -168,9 +204,11 @@ class Plotter:
         terminal = set(self.board.terminal)
 
         boundary = [frame[0], C(frame[1][0], frame[0][1]), C(frame[0][0], frame[1][1]), frame[1]]
-        for n, node in enumerate(self.priority(initial, terminal, self.board.items, boundary=boundary)):
+        # for n, node in enumerate(self.priority(initial, terminal, self.board.items, boundary=boundary)):
+        for n, node in enumerate(self.spread(initial, self.board.items, boundary=boundary)):
             print(n, f"{node=}")
 
+        # FIXME: Remove after layout working
         for item in self.board.items:
             try:
                 item.pos = item.pos or frame[0]
