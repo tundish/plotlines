@@ -155,6 +155,8 @@ class Plotter:
         work = initial.copy()
         sizes = {item: Plotter.node_size(item) for item in items if isinstance(item, Node)}
         print(f"{sizes=}")
+        space_y = ((boundary[2] - boundary[0])[1] - sum(sizes[i] for i in work)) / (2 * len(work) + 1)
+        print(f"{space_y=}")
         for n, item in enumerate(work):
             lhs_edges = {edge: math.sqrt(edge.ports[1].area) for edge in item.edges if item.uid in edge.ports[1].joins}
             rhs_edges = {edge: math.sqrt(edge.ports[0].area) for edge in item.edges if item.uid in edge.ports[0].joins}
@@ -162,12 +164,12 @@ class Plotter:
             item.width = max(item.height, math.sqrt(item.area))
             print(f"{item.height=} {item.width=}")
 
-            pitch = (boundary[2] - boundary[0])[1] / len(work)
             # Allocate coordinates from lhs of boundary
             item.pos = C(
                 boundary[0][0] + item.width / 2,
-                boundary[0][1] + n * pitch + item.height / 2,
+                boundary[0][1] + n * space_y + item.height / 2,
             )
+            print(f"{item.pos=}")
 
             if item not in visited:
                 yield item
