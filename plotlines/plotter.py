@@ -22,8 +22,10 @@ from __future__ import annotations  # Until Python 3.14 is everywhere
 from collections import Counter
 from collections import deque
 import importlib.resources
+import itertools
 import logging
 import math
+import operator
 import tkinter as tk
 import turtle
 
@@ -148,13 +150,24 @@ class Plotter:
         return height
 
     @staticmethod
-    def spread(initial, items: list = None, boundary: tuple = None, visited=None):
+    def spread(items: list = None, boundary: tuple = None, visited=None):
         # Calculate placement column pitch
         print(f"{boundary=}")
         visited = set() if visited is None else visited
-        work = initial.copy()
+        work = list()
         sizes = {item: Plotter.node_size(item) for item in items if isinstance(item, Node)}
         print(f"{sizes=}")
+        zones = dict(
+            [
+                (key, item)
+                for key, group in itertools.groupby(
+                    sorted((item for item in items if isinstance(item, Node)), key=operator.attrgetter("zone")),
+                    key=operator.attrgetter("zone")
+                )
+                for item in group
+            ]
+        )
+        print(f"{zones=}")
 
         n = 0
         while True:
@@ -210,13 +223,12 @@ class Plotter:
 
     def layout_graph(self, size, frame, scale, **kwargs) -> dict:
         print(f"{size=}", f"{frame=}", f"{scale=}")
-        initial = self.board.initial
         nodes = set(i for i in self.board.items if isinstance(i, Node))
         placed = set()
 
         boundary = [frame[0], C(frame[1][0], frame[0][1]), C(frame[0][0], frame[1][1]), frame[1]]
         # for n, node in enumerate(self.priority(initial, terminal, self.board.items, boundary=boundary)):
-        for n, node in enumerate(self.spread(initial, self.board.items, boundary=boundary)):
+        for n, node in enumerate(self.spread(self.board.items, boundary=boundary)):
             print(n, f"{node=}")
 
         # FIXME: Remove after layout working
