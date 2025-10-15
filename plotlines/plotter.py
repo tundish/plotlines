@@ -229,7 +229,7 @@ class Plotter:
         for item in self.board.items:
             try:
                 item.pos = item.pos or frame[0]
-                if item in initial:
+                if item in self.board.initial:
                     item.pos = frame[0]
 
                 elif item in set(self.board.terminal):
