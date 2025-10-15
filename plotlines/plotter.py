@@ -159,43 +159,37 @@ class Plotter:
         print(f"{sizes=}")
         zones = dict(
             [
-                (key, item)
+                (key, list(group))
                 for key, group in itertools.groupby(
                     sorted((item for item in items if isinstance(item, Node)), key=operator.attrgetter("zone")),
                     key=operator.attrgetter("zone")
                 )
-                for item in group
             ]
         )
         print(f"{zones=}")
 
-        n = 0
-        while True:
-            space_y = ((boundary[2] - boundary[0])[1] - sum(sizes[i] for i in work)) / (2 * len(work) + 1)
-            print(f"{space_y=}")
-            try:
-                item = work.pop()
-            except KeyError:
-                # Fill work again.
-                break
+        for zone, nodes in zones.items():
+            space_y = ((boundary[2] - boundary[0])[1] - sum(sizes[i] for i in nodes)) / (2 * len(nodes) + 1)
+            for node in nodes:
+                print(f"{space_y=}")
 
-            lhs_edges = {edge: math.sqrt(edge.ports[1].area) for edge in item.edges if item.uid in edge.ports[1].joins}
-            rhs_edges = {edge: math.sqrt(edge.ports[0].area) for edge in item.edges if item.uid in edge.ports[0].joins}
-            item.height = max(sum(lhs_edges.values()), sum(rhs_edges.values()))
-            item.width = max(item.height, math.sqrt(item.area))
-            print(f"{item.height=} {item.width=}")
+                lhs_edges = {edge: math.sqrt(edge.ports[1].area) for edge in node.edges if node.uid in edge.ports[1].joins}
+                rhs_edges = {edge: math.sqrt(edge.ports[0].area) for edge in node.edges if node.uid in edge.ports[0].joins}
+                node.height = max(sum(lhs_edges.values()), sum(rhs_edges.values()))
+                node.width = max(node.height, math.sqrt(node.area))
+                print(f"{node.height=} {node.width=}")
 
-            # Allocate coordinates from lhs of boundary
-            item.pos = C(
-                boundary[0][0] + item.width / 2,
-                boundary[0][1] + n * space_y + item.height / 2,
-            )
-            print(f"{item.pos=}")
+                # Allocate coordinates from lhs of boundary
+                node.pos = C(
+                    boundary[0][0] + node.width / 2,
+                    boundary[0][1] + zone * space_y + node.height / 2,
+                )
+                print(f"{node.pos=}")
 
-            if item not in visited:
-                yield item
-            visited.add(item)
-            visited.add(item.pos)
+                if node not in visited:
+                    yield node
+                visited.add(node)
+                visited.add(node.pos)
 
         # TODO: Modify boundary after pos allocation
 
