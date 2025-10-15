@@ -155,9 +155,17 @@ class Plotter:
         work = initial.copy()
         sizes = {item: Plotter.node_size(item) for item in items if isinstance(item, Node)}
         print(f"{sizes=}")
-        space_y = ((boundary[2] - boundary[0])[1] - sum(sizes[i] for i in work)) / (2 * len(work) + 1)
-        print(f"{space_y=}")
-        for n, item in enumerate(work):
+
+        n = 0
+        while True:
+            space_y = ((boundary[2] - boundary[0])[1] - sum(sizes[i] for i in work)) / (2 * len(work) + 1)
+            print(f"{space_y=}")
+            try:
+                item = work.pop()
+            except KeyError:
+                # Fill work again.
+                break
+
             lhs_edges = {edge: math.sqrt(edge.ports[1].area) for edge in item.edges if item.uid in edge.ports[1].joins}
             rhs_edges = {edge: math.sqrt(edge.ports[0].area) for edge in item.edges if item.uid in edge.ports[0].joins}
             item.height = max(sum(lhs_edges.values()), sum(rhs_edges.values()))
@@ -202,8 +210,9 @@ class Plotter:
 
     def layout_graph(self, size, frame, scale, **kwargs) -> dict:
         print(f"{size=}", f"{frame=}", f"{scale=}")
-        initial = set(self.board.initial)
-        terminal = set(self.board.terminal)
+        initial = self.board.initial
+        nodes = set(i for i in self.board.items if isinstance(i, Node))
+        placed = set()
 
         boundary = [frame[0], C(frame[1][0], frame[0][1]), C(frame[0][0], frame[1][1]), frame[1]]
         # for n, node in enumerate(self.priority(initial, terminal, self.board.items, boundary=boundary)):
@@ -217,7 +226,7 @@ class Plotter:
                 if item in initial:
                     item.pos = frame[0]
 
-                elif item in terminal:
+                elif item in set(self.board.terminal):
                     item.pos = frame[1]
 
             except AttributeError:
