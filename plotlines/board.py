@@ -91,6 +91,7 @@ class Pin(Item):
     area:       int = dataclasses.field(default=4, kw_only=True)
     shape:      str = dataclasses.field(default="", kw_only=True)
     label:      str = dataclasses.field(default="", kw_only=True)
+    zone:       int = dataclasses.field(default=0, kw_only=True)
 
 
 @dataclasses.dataclass(unsafe_hash=True)

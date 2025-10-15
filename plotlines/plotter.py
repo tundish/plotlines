@@ -71,7 +71,7 @@ class Plotter:
 
     @staticmethod
     def build_graph(ending: list[str], loading: list[int], trails: int, **kwargs) -> Generator[Node | Edge]:
-        nodes = [Node(), Node(), Node(), Node(), Node()]
+        nodes = [Node(zone=0), Node(zone=1), Node(zone=2), Node(zone=3), Node(zone=4)]
         edges = [
             nodes[0].connect(nodes[1]),
             nodes[1].connect(nodes[2]),
