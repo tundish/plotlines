@@ -151,6 +151,11 @@ class Plotter:
 
                 visited.add(node)
                 visited.add(node.pos)
+
+                for n, edge in enumerate(lhs_edges):
+                    edge.ports[1].pos = node.pos - C(node.width / 2, 0)
+                for n, edge in enumerate(rhs_edges):
+                    edge.ports[0].pos = node.pos + C(node.width / 2, 0)
                 yield node
 
             edge_length = 2 * width_x
@@ -242,8 +247,10 @@ class Plotter:
                 continue
 
             self.turtle.setpos(edge.ports[0].pos)
-            self.turtle.write(self.turtle.pos())
+            if debug:
+                self.turtle.write(self.turtle.pos())
             self.turtle.down()
             self.turtle.setpos(edge.ports[1].pos)
-            self.turtle.write(self.turtle.pos())
+            if debug:
+                self.turtle.write(self.turtle.pos())
         return items
