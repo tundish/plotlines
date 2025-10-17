@@ -110,39 +110,6 @@ class Plotter:
                 yield edge
 
     @staticmethod
-    def priority(lhs: set, rhs: set, items: list = None, boundary: tuple = None, visited=None):
-        # Calculate placement column pitch
-        print(f"{boundary=}")
-        visited = set() if visited is None else visited
-        work = next(reversed(sorted((len(i), i) for i in (lhs, rhs))))[1]  # Operate on the larger of lhs, rhs
-        for n, item in enumerate(work):
-            lhs_edges = {edge: math.sqrt(edge.ports[1].area) for edge in item.edges if item.uid in edge.ports[1].joins}
-            rhs_edges = {edge: math.sqrt(edge.ports[0].area) for edge in item.edges if item.uid in edge.ports[0].joins}
-            item.height = max(sum(lhs_edges.values()), sum(rhs_edges.values()))
-            item.width = max(item.height, math.sqrt(item.area))
-            print(f"{item.height=} {item.width=}")
-
-            pitch = (boundary[2] - boundary[0])[1] / len(work)
-            if work is lhs:
-                # Allocate coordinates from lhs of boundary
-                item.pos = C(
-                    boundary[0][0] + item.width / 2,
-                    boundary[0][1] + n * pitch + item.height / 2,
-                )
-            else:
-                # Allocate coordinates from rhs of boundary
-                item.pos = C(
-                    boundary[1][0] - item.width / 2,
-                    boundary[1][1] + n * pitch + item.height / 2,
-                )
-
-            if item not in visited:
-                yield item
-            visited.add(item)
-
-        # TODO: Modify boundary after pos allocation
-
-    @staticmethod
     def node_size(node: Node):
         lhs_sizes = {edge: math.sqrt(edge.ports[1].area) for edge in node.edges if node.uid in edge.ports[1].joins}
         rhs_sizes = {edge: math.sqrt(edge.ports[0].area) for edge in node.edges if node.uid in edge.ports[0].joins}
@@ -152,11 +119,9 @@ class Plotter:
     @staticmethod
     def spread(items: list = None, boundary: tuple = None, visited=None):
         # Calculate placement column pitch
-        print(f"{boundary=}")
         visited = set() if visited is None else visited
         work = list()
         sizes = {item: Plotter.node_size(item) for item in items if isinstance(item, Node)}
-        print(f"{sizes=}")
         zones = dict(
             [
                 (key, list(group))
@@ -166,11 +131,9 @@ class Plotter:
                 )
             ]
         )
-        print(f"{zones=}")
 
         offset_x = 0
         width_x = 0
-        margin_x = 0.1
         for zone, nodes in zones.items():
             space_y = ((boundary[2] - boundary[0])[1] - sum(sizes[i] for i in nodes)) / (2 * len(nodes) + 1)
             for n, node in enumerate(nodes):
@@ -185,14 +148,13 @@ class Plotter:
                     boundary[0][0] + offset_x + node.width / 2,
                     boundary[0][1] + n * space_y + node.height / 2,
                 )
-                print(f"{node.pos=}")
 
-                if node not in visited:
-                    yield node
                 visited.add(node)
                 visited.add(node.pos)
+                yield node
 
-            offset_x += (1 + margin_x) * width_x
+            edge_length = 2 * width_x
+            offset_x += width_x + edge_length
             width_x = 0
 
         # TODO: Modify boundary after pos allocation
@@ -232,13 +194,7 @@ class Plotter:
         # FIXME: Remove after layout working
         for item in self.board.items:
             try:
-                item.pos = item.pos or frame[0]
-                if item in self.board.initial:
-                    item.pos = frame[0]
-
-                elif item in set(self.board.terminal):
-                    item.pos = frame[1]
-
+                item.pos = item.pos or frame[1]
             except AttributeError:
                 assert isinstance(item, Edge)
         # Allocate pos to each node
