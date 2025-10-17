@@ -85,6 +85,7 @@ class Plotter:
         yield from  nodes + edges
         return
 
+        # TODO: Allocate label to each node and edge
         frame = deque([Node(label=name) for name in ending])
 
         tally = Counter()
@@ -170,20 +171,9 @@ class Plotter:
         placed = set()
 
         boundary = [C(0, 0), C(0, size[0]), C(size[1], 0), C(*size)]
-        # for n, node in enumerate(self.priority(initial, terminal, self.board.items, boundary=boundary)):
         for n, node in enumerate(self.spread(self.board.items, boundary=boundary)):
             print(n, f"{node=}")
 
-        # FIXME: Remove after layout working
-        for item in self.board.items:
-            try:
-                item.pos = item.pos or frame[1]
-            except AttributeError:
-                assert isinstance(item, Edge)
-        # Allocate pos to each node
-
-        # Allocate pos to each port
-        # Allocate label to each node and edge
         return self.board.items
 
     def style_graph(self, items: list, **kwargs) -> dict:
@@ -206,7 +196,7 @@ class Plotter:
                 item.shape = self.build_shape(size=size, scale=scale).key
             except AttributeError:
                 assert isinstance(item, Edge)
-        return size, frame, scale
+        return frame, scale
 
     def draw_graph(self, items: list[Edge], debug=False, delay: int = 10) -> RawTurtle:
         screen = self.turtle.getscreen()

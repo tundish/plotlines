@@ -60,7 +60,7 @@ def main(args):
 
         size = plotter.turtle.screen.screensize()
         items = plotter.layout_graph(size)
-        size, frame, scale = plotter.style_graph(items)
+        frame, scale = plotter.style_graph(items, size=size)
         print(string.ascii_uppercase, file=sys.stderr)
         print(f"{plotter.turtle.screen.getshapes()=}", file=sys.stderr)
 

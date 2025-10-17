@@ -108,7 +108,7 @@ class PlotterTests(unittest.TestCase):
         board = Board(title="Multigraph")
         t = turtle.Turtle()
         plotter = Plotter(board, t)
-        rv = plotter.style_graph(nodes + edges)
+        frame, scale = plotter.style_graph(nodes + edges)
         rv = plotter.draw_graph(nodes + edges, debug=True, delay=0)
         t.screen.mainloop()
         self.assertEqual(len(board.shapes), 3, board.shapes)
