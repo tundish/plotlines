@@ -21,6 +21,7 @@ from __future__ import annotations  # Until Python 3.14 is everywhere
 
 from collections import Counter
 from collections import deque
+from decimal import Decimal
 import importlib.resources
 import itertools
 import logging
@@ -164,6 +165,27 @@ class Plotter:
 
         # TODO: Modify boundary after pos allocation
 
+    def layout_graph(self, size, **kwargs) -> dict:
+        nodes = set(i for i in self.board.items if isinstance(i, Node))
+        placed = set()
+
+        boundary = [C(0, 0), C(0, size[0]), C(size[1], 0), C(*size)]
+        # for n, node in enumerate(self.priority(initial, terminal, self.board.items, boundary=boundary)):
+        for n, node in enumerate(self.spread(self.board.items, boundary=boundary)):
+            print(n, f"{node=}")
+
+        # FIXME: Remove after layout working
+        for item in self.board.items:
+            try:
+                item.pos = item.pos or frame[1]
+            except AttributeError:
+                assert isinstance(item, Edge)
+        # Allocate pos to each node
+
+        # Allocate pos to each port
+        # Allocate label to each node and edge
+        return self.board.items
+
     def style_graph(self, items: list, **kwargs) -> dict:
         screen = self.turtle.getscreen()
         screen.colormode(255)
@@ -185,28 +207,6 @@ class Plotter:
             except AttributeError:
                 assert isinstance(item, Edge)
         return size, frame, scale
-
-    def layout_graph(self, size, frame, scale, **kwargs) -> dict:
-        print(f"{size=}", f"{frame=}", f"{scale=}")
-        nodes = set(i for i in self.board.items if isinstance(i, Node))
-        placed = set()
-
-        boundary = [frame[0], C(frame[1][0], frame[0][1]), C(frame[0][0], frame[1][1]), frame[1]]
-        # for n, node in enumerate(self.priority(initial, terminal, self.board.items, boundary=boundary)):
-        for n, node in enumerate(self.spread(self.board.items, boundary=boundary)):
-            print(n, f"{node=}")
-
-        # FIXME: Remove after layout working
-        for item in self.board.items:
-            try:
-                item.pos = item.pos or frame[1]
-            except AttributeError:
-                assert isinstance(item, Edge)
-        # Allocate pos to each node
-
-        # Allocate pos to each port
-        # Allocate label to each node and edge
-        return self.board.items
 
     def draw_graph(self, items: list[Edge], debug=False, delay: int = 10) -> RawTurtle:
         screen = self.turtle.getscreen()

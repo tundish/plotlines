@@ -264,8 +264,8 @@ class Board:
 
     @staticmethod
     def frame(*points: tuple[Coordinates], margin: Decimal = Decimal("0.05"), square=False):
-        x_vals = sorted([point[0] for point in points])
-        y_vals = sorted([point[1] for point in points])
+        x_vals = sorted([Decimal(point[0]) for point in points])
+        y_vals = sorted([Decimal(point[1]) for point in points])
 
         span_x = x_vals[-1] - x_vals[0] or y_vals[-1] - y_vals[0]
         span_y = y_vals[-1] - y_vals[0] or x_vals[-1] - x_vals[0]
