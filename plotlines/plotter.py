@@ -168,21 +168,22 @@ class Plotter:
         )
         print(f"{zones=}")
 
+        offset_x = 0
+        width_x = 0
+        margin_x = 0.1
         for zone, nodes in zones.items():
             space_y = ((boundary[2] - boundary[0])[1] - sum(sizes[i] for i in nodes)) / (2 * len(nodes) + 1)
-            for node in nodes:
-                print(f"{space_y=}")
-
+            for n, node in enumerate(nodes):
                 lhs_edges = {edge: math.sqrt(edge.ports[1].area) for edge in node.edges if node.uid in edge.ports[1].joins}
                 rhs_edges = {edge: math.sqrt(edge.ports[0].area) for edge in node.edges if node.uid in edge.ports[0].joins}
                 node.height = max(sum(lhs_edges.values()), sum(rhs_edges.values()))
                 node.width = max(node.height, math.sqrt(node.area))
-                print(f"{node.height=} {node.width=}")
+                width_x = max(width_x, node.width)
 
                 # Allocate coordinates from lhs of boundary
                 node.pos = C(
-                    boundary[0][0] + node.width / 2,
-                    boundary[0][1] + zone * space_y + node.height / 2,
+                    boundary[0][0] + offset_x + node.width / 2,
+                    boundary[0][1] + n * space_y + node.height / 2,
                 )
                 print(f"{node.pos=}")
 
@@ -190,6 +191,9 @@ class Plotter:
                     yield node
                 visited.add(node)
                 visited.add(node.pos)
+
+            offset_x += (1 + margin_x) * width_x
+            width_x = 0
 
         # TODO: Modify boundary after pos allocation
 
