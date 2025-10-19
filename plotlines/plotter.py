@@ -181,12 +181,9 @@ class Plotter:
             for item in self.board.items:
                 if node is item:
                     continue
-                try:
-                    spacing = node.spacing(item)
-                    for pair, space in spacing.items():
-                        print(node.uid, item.uid, node.zone, pair[0].pos, pair[1].pos, space)
-                except ZeroDivisionError:
-                    print("!!", f"{node.pos=}", f"{node.zone=}", f"{item=}")
+                spacing = node.spacing(item)
+                for pair, space in spacing.items():
+                    print(node.uid, item.uid, node.zone, pair[0].pos, pair[1].pos, space)
 
         return self.board.items
 

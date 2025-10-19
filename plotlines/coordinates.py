@@ -64,7 +64,10 @@ class Coordinates(tuple):
 
     @property
     def unity(self):
-        return self / abs(self)
+        try:
+            return self / abs(self)
+        except ZeroDivisionError:
+            return self
 
     def dot(self, other):
         return math.sumprod(self, other)
