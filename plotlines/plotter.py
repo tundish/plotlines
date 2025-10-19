@@ -175,16 +175,18 @@ class Plotter:
 
         boundary = [C(0, 0), C(0, size[0]), C(size[1], 0), C(*size)]
         for n, node in enumerate(self.spread(self.board.items, boundary=boundary)):
-            print(n, f"{node=}")
+            pass
 
         for node in nodes:
             for item in self.board.items:
                 if node is item:
                     continue
                 try:
-                    print(node, item, node.spacing(item))
+                    spacing = node.spacing(item)
+                    for pair, space in spacing.items():
+                        print(node.uid, item.uid, node.zone, pair[0].pos, pair[1].pos, space)
                 except ZeroDivisionError:
-                    print(node, item)
+                    print("!!", f"{node.pos=}", f"{node.zone=}", f"{item=}")
 
         return self.board.items
 
