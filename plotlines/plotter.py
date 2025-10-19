@@ -192,7 +192,7 @@ class Plotter:
 
         for item in items:
             try:
-                size = math.sqrt(item.area)
+                size = max(getattr(item, "width", 0), getattr(item, "height", 0)) or math.sqrt(item.area)
                 item.shape = self.build_shape(size=size, scale=scale).key
             except AttributeError:
                 assert isinstance(item, Edge)
