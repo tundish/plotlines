@@ -154,10 +154,16 @@ class Plotter:
                 visited.add(node)
                 visited.add(node.pos)
 
-                for n, edge in enumerate(lhs_edges):
-                    edge.ports[1].pos = node.pos - C(node.width / 2, 0)
-                for n, edge in enumerate(rhs_edges):
-                    edge.ports[0].pos = node.pos + C(node.width / 2, 0)
+                for n, (edge, size) in enumerate(lhs_edges.items()):
+                    if n == 0:
+                        pos = node.pos - C(node.width / 2, size / 2 + sum(lhs_edges.values()) / 2)
+                    pos += C(0, size)
+                    edge.ports[1].pos = pos
+                for n, (edge, size) in enumerate(rhs_edges.items()):
+                    if n == 0:
+                        pos = node.pos - C(node.width / -2, size / 2 + sum(rhs_edges.values()) / 2)
+                    pos += C(0, size)
+                    edge.ports[0].pos = pos
                 yield node
 
             edge_length = 2 * width_x
