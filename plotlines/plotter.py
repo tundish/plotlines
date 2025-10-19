@@ -120,7 +120,6 @@ class Plotter:
 
     @staticmethod
     def spread(items: list = None, boundary: tuple = None, visited=None):
-        # Calculate placement column pitch
         visited = set() if visited is None else visited
         work = list()
         sizes = {item: Plotter.node_size(item) for item in items if isinstance(item, Node)}
@@ -164,13 +163,11 @@ class Plotter:
                         pos = node.pos - C(node.width / -2, size / 2 + sum(rhs_edges.values()) / 2)
                     pos += C(0, size)
                     edge.ports[0].pos = pos
-                yield node
+            yield from nodes
 
             edge_length = 2 * width_x
             offset_x += width_x + edge_length
             width_x = 0
-
-        # TODO: Modify boundary after pos allocation
 
     def layout_graph(self, size, **kwargs) -> dict:
         nodes = set(i for i in self.board.items if isinstance(i, Node))
@@ -179,6 +176,15 @@ class Plotter:
         boundary = [C(0, 0), C(0, size[0]), C(size[1], 0), C(*size)]
         for n, node in enumerate(self.spread(self.board.items, boundary=boundary)):
             print(n, f"{node=}")
+
+        for node in nodes:
+            for item in self.board.items:
+                if node is item:
+                    continue
+                try:
+                    print(node, item, node.spacing(item))
+                except ZeroDivisionError:
+                    print(node, item)
 
         return self.board.items
 
