@@ -119,7 +119,7 @@ class Plotter:
         return height
 
     @staticmethod
-    def spread(items: list = None, boundary: tuple = None, visited=None):
+    def place(items: list = None, boundary: tuple = None, visited=None):
         visited = set() if visited is None else visited
         work = list()
         sizes = {item: Plotter.node_size(item) for item in items if isinstance(item, Node)}
@@ -163,7 +163,7 @@ class Plotter:
                         pos = node.pos - C(node.width / -2, size / 2 + sum(rhs_edges.values()) / 2)
                     pos += C(0, size)
                     edge.ports[0].pos = pos
-            yield from nodes
+            yield zone, nodes
 
             edge_length = 2 * width_x
             offset_x += width_x + edge_length
@@ -174,19 +174,20 @@ class Plotter:
         placed = set()
 
         boundary = [C(0, 0), C(0, size[0]), C(size[1], 0), C(*size)]
-        for n, node in enumerate(self.spread(self.board.items, boundary=boundary)):
-            pass
+        zones = dict(self.place(self.board.items, boundary=boundary))
 
         gaps = Counter()
-        for node in nodes:
-            for item in self.board.items:
-                if node is not item:
-                    gaps[node] = min(
-                        filter(
-                            None,
-                            list(node.spacing(item).values()) + [gaps[node]]
+        for zone in zones.values():
+            for node in zone:
+                # TODO: method spread
+                for item in self.board.items:
+                    if node is not item:
+                        gaps[node] = min(
+                            filter(
+                                None,
+                                list(node.spacing(item).values()) + [gaps[node]]
+                            )
                         )
-                    )
         print({n.pos: g for n, g in gaps.items()})
 
         return self.board.items
