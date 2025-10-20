@@ -177,13 +177,17 @@ class Plotter:
         for n, node in enumerate(self.spread(self.board.items, boundary=boundary)):
             pass
 
+        gaps = Counter()
         for node in nodes:
             for item in self.board.items:
-                if node is item:
-                    continue
-                spacing = node.spacing(item)
-                for pair, space in spacing.items():
-                    print(node.uid, item.uid, node.zone, pair[0].pos, pair[1].pos, space)
+                if node is not item:
+                    gaps[node] = min(
+                        filter(
+                            None,
+                            list(node.spacing(item).values()) + [gaps[node]]
+                        )
+                    )
+        print({n.pos: g for n, g in gaps.items()})
 
         return self.board.items
 
