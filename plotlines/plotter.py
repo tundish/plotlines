@@ -187,25 +187,17 @@ class Plotter:
         boundary = [C(0, 0), C(0, size[0]), C(size[1], 0), C(*size)]
         zones = dict(self.place(self.board.items, boundary=boundary))
 
-        gaps = Counter()
-        # x = [node.spacing(item) for z, zone in zones.items() for node in zone for item in [node] + node.edges]
-        x = {
-            z: min([val for node in zone for item in [node] + node.edges for val in node.spacing(item).values()])
+        crowding = {
+            z: min([
+                val for node in zone
+                for other in zone
+                for item in other.nearby + other.edges
+                for val in node.spacing(item).values()
+                if val != 0
+            ])
             for z, zone in zones.items()
         }
-        print(f"{x=}")
-        for zone in zones.values():
-            for node in zone:
-                # TODO: method spread
-                for item in self.board.items:
-                    if node is not item:
-                        gaps[node] = min(
-                            filter(
-                                None,
-                                list(node.spacing(item).values()) + [gaps[node]]
-                            )
-                        )
-        print({n.pos: g for n, g in gaps.items()})
+        print(f"{crowding=}")
 
         return self.board.items
 
