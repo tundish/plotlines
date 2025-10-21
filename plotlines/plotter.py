@@ -119,13 +119,15 @@ class Plotter:
         return height
 
     @staticmethod
-    def spread(items):
-        mid = len(items) // 2
-        up = range(mid, len(items))
+    def expandex(length: int):
+        "Generate indexes from the middle outwards"
+        mid = length // 2
+        up = range(mid, length)
         dn = range(mid - 1, -1, -1)
         for i, j in itertools.zip_longest(up, dn):
-            yield i
-            yield j
+            for x in (i, j):
+                if x is not None:
+                    yield x
 
     @staticmethod
     def place(items: list = None, boundary: tuple = None, visited=None):

@@ -114,10 +114,9 @@ class PlotterTests(unittest.TestCase):
         self.assertEqual(len(board.shapes), 3, board.shapes)
         self.assertEqual(len(plotter.stamps), len(nodes), plotter.stamps)
 
-    def test_spread_zone(self):
-        odd = [0, 1, 2, 3, 4]
-        rv = list(Plotter.spread(odd))
-        self.assertEqual(
-            rv,
-            [(2, 1), (1, -1), (3, 1), (0, -1), (4, 1)]
-        )
+    def test_expandex(self):
+        odd = list(Plotter.expandex(5))
+        self.assertEqual(odd, [2, 1, 3, 0, 4,])
+
+        even = list(Plotter.expandex(6))
+        self.assertEqual(even, [3, 2, 4, 1, 5, 0])
