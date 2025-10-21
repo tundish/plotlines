@@ -188,6 +188,12 @@ class Plotter:
         zones = dict(self.place(self.board.items, boundary=boundary))
 
         gaps = Counter()
+        # x = [node.spacing(item) for z, zone in zones.items() for node in zone for item in [node] + node.edges]
+        x = {
+            z: min([val for node in zone for item in [node] + node.edges for val in node.spacing(item).values()])
+            for z, zone in zones.items()
+        }
+        print(f"{x=}")
         for zone in zones.values():
             for node in zone:
                 # TODO: method spread
