@@ -227,6 +227,11 @@ class Node(Pin):
         rv = {(mk, ok): abs(ov - mv) for (mk, mv), (ok, ov) in itertools.product(mine.items(), others.items())}
         return rv
 
+    def translate(self, vec: Coordinates):
+        self.pos += vec
+        for port in self.ports.values():
+            port.pos += vec
+
     def toml(self):
         yield f'uid     = "{self.uid}"'
         yield f'pos     = {list(self.pos)}'

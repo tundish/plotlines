@@ -201,12 +201,12 @@ class Plotter:
         crowded = {v: k for k, v in crowding.items()}.get(min(crowding.values()))
         zone = zones[crowded]
         for n, index in enumerate(self.expandex(len(zone))):
+            node = zone[index]
             if n % 2 == 0:
-                hop = 1
+                hop = node.height
             else:
-                hop = -1
-        print(f"{indexes=}")
-        print(*zone, sep="\n")
+                hop = -node.height
+            zone[index].translate(C(0, hop))
 
         return self.board.items
 
