@@ -189,7 +189,8 @@ class Plotter:
 
         crowding = {
             z: min([
-                val for node in zone
+                val
+                for node in zone
                 for other in zone
                 for item in other.nearby + other.edges
                 for val in node.spacing(item).values()
@@ -197,7 +198,15 @@ class Plotter:
             ])
             for z, zone in zones.items()
         }
-        print(f"{crowding=}")
+        crowded = {v: k for k, v in crowding.items()}.get(min(crowding.values()))
+        zone = zones[crowded]
+        for n, index in enumerate(self.expandex(len(zone))):
+            if n % 2 == 0:
+                hop = 1
+            else:
+                hop = -1
+        print(f"{indexes=}")
+        print(*zone, sep="\n")
 
         return self.board.items
 
