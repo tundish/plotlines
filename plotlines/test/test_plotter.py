@@ -113,3 +113,11 @@ class PlotterTests(unittest.TestCase):
         t.screen.mainloop()
         self.assertEqual(len(board.shapes), 3, board.shapes)
         self.assertEqual(len(plotter.stamps), len(nodes), plotter.stamps)
+
+    def test_spread_zone(self):
+        odd = [0, 1, 2, 3, 4]
+        rv = list(Plotter.spread(odd))
+        self.assertEqual(
+            rv,
+            [(2, 1), (1, -1), (3, 1), (0, -1), (4, 1)]
+        )

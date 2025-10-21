@@ -119,6 +119,15 @@ class Plotter:
         return height
 
     @staticmethod
+    def spread(items):
+        mid = len(items) // 2
+        up = range(mid, len(items))
+        dn = range(mid - 1, -1, -1)
+        for i, j in itertools.zip_longest(up, dn):
+            yield i
+            yield j
+
+    @staticmethod
     def place(items: list = None, boundary: tuple = None, visited=None):
         visited = set() if visited is None else visited
         work = list()
