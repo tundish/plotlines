@@ -73,7 +73,7 @@ class Plotter:
         return words
 
     @staticmethod
-    def build_graph(ending: list[str], loading: list[int], trails: int, **kwargs) -> Generator[Node | Edge]:
+    def build_graph(ending: list[str], trails: int, **kwargs) -> Generator[Node | Edge]:
         """
         nodes = [Node(zone=0), Node(zone=1), Node(zone=2), Node(zone=3), Node(zone=4)]
         edges = [
@@ -91,7 +91,8 @@ class Plotter:
         frame = deque([Node(label=name) for name in ending])
 
         tally = Counter()
-        while tally[Node] + tally[Edge] < max(loading):
+        stack = 12
+        while tally[Node] + tally[Edge] < stack:
             # Connect each node to one or more trail edges
             try:
                 node = frame.popleft()

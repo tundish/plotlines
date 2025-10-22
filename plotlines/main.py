@@ -92,12 +92,12 @@ def parser():
     rv = argparse.ArgumentParser(usage=__doc__, fromfile_prefix_chars="=")
     rv.add_argument("--debug", action="store_true", default=False, help="Display debug information")
     rv.add_argument(
-        "--ending", type=InlineValues(str), default=["A"], help="Declare named endings"
+        "--ending", type=InlineValues(str), default=["1", "2", "3"], help="Declare named endings"
     )
-    rv.add_argument(
-        "--loading", type=InlineValues(int), default=[10, 100],
-        help="Define limits for the number of nodes of the story graph"
-    )
+    # rv.add_argument(
+    #     "--loading", type=InlineValues(int), default=[10, 100],
+    #     help="Define limits for the number of nodes of the story graph"
+    # )
     rv.add_argument(
         "--trails", type=int, default=None,
         help="Define the number of trails through the story graph"
