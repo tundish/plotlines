@@ -74,6 +74,7 @@ class Plotter:
 
     @staticmethod
     def build_graph(ending: list[str], loading: list[int], trails: int, **kwargs) -> Generator[Node | Edge]:
+        """
         nodes = [Node(zone=0), Node(zone=1), Node(zone=2), Node(zone=3), Node(zone=4)]
         edges = [
             nodes[0].connect(nodes[1]),
@@ -82,8 +83,9 @@ class Plotter:
             nodes[2].connect(nodes[4]),
             nodes[3].connect(nodes[4]),
         ]
-        yield from  nodes + edges
+        yield from nodes + edges
         return
+        """
 
         # TODO: Allocate label to each node and edge
         frame = deque([Node(label=name) for name in ending])

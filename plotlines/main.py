@@ -54,9 +54,10 @@ def main(args):
     logger.info(f"Start")
     logger.debug(f"{args=}")
 
+    board = Board()
     if args.format == "plot":
-        plotter = Plotter(Board(), t=turtle.Turtle())
-        items = plotter.board.items = list(plotter.build_graph(**vars(args)))
+        plotter = Plotter(board, t=turtle.Turtle())
+        board.items = list(plotter.build_graph(**vars(args)))
 
         size = plotter.turtle.screen.screensize()
         items = plotter.layout_graph(size)
@@ -71,9 +72,9 @@ def main(args):
         # TODO: implement Renderer
         logger.warning("SVG output not yet implemented")
     elif args.format == "text":
-        pprint.pprint(graph, depth=3)
+        pprint.pprint(board, depth=3)
     elif args.format == "toml":
-        print(*Board.toml_graph(graph), sep="\n", file=sys.stdout)
+        print(*Board.toml_graph(board), sep="\n", file=sys.stdout)
 
     return 0
 
