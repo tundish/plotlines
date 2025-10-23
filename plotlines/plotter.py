@@ -74,6 +74,7 @@ class Plotter:
 
     @staticmethod
     def build_graph(ending: list[str], trails: int, **kwargs) -> Generator[Node | Edge]:
+        # https://heterogenoustasks.wordpress.com/2015/01/26/standard-patterns-in-choice-based-games/
         """
         nodes = [Node(zone=0), Node(zone=1), Node(zone=2), Node(zone=3), Node(zone=4)]
         edges = [
