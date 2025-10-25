@@ -74,21 +74,6 @@ class Plotter:
 
     @staticmethod
     def build_graph(ending: list[str], trails: int, **kwargs) -> Generator[Node | Edge]:
-        # https://heterogenoustasks.wordpress.com/2015/01/26/standard-patterns-in-choice-based-games/
-        """
-        nodes = [Node(zone=0), Node(zone=1), Node(zone=2), Node(zone=3), Node(zone=4)]
-        edges = [
-            nodes[0].connect(nodes[1]),
-            nodes[1].connect(nodes[2]),
-            nodes[1].connect(nodes[3]),
-            nodes[2].connect(nodes[4]),
-            nodes[3].connect(nodes[4]),
-        ]
-        yield from nodes + edges
-        return
-        """
-
-        # TODO: Allocate label to each node and edge
         frame = deque([Node(label=name) for name in ending])
 
         tally = Counter()
