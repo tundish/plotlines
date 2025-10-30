@@ -34,8 +34,12 @@ class Motif:
     """
 
     class Edit(enum.Flag):
+        FILL = enum.auto()
         FORK = enum.auto()
         JOIN = enum.auto()
+        LINE = enum.auto()
+        STEM = enum.auto()
+        STEP = enum.auto()
 
     @staticmethod
     def diamond(zone: int = 0):
@@ -51,15 +55,32 @@ class Motif:
         yield from nodes + edges
 
     @staticmethod
-    def terminate_group(group: list[Node | Edge]) -> list[Node | Edge]:
-        pass
+    def connections(node: Node):
+        l_edges = [edge for edge in node.edges if node.uid in edge.ports[1].joins]
+        r_edges = [edge for edge in node.edges if node.uid in edge.ports[0].joins]
+        return (l_edges, r_edges)
+
+    @staticmethod
+    def ljoin(items: list[Node | Edge]) -> list[Node | Edge]:
+        nodes = [i for i in items if len(Motif.connections(i)[0]) == 0]
+        for node in nodes:
+            lhs = [Node(zone=node.zone), Node(zone=node.zone)]
+            items.extend(lhs)
+            items.append(lhs[0].connect(node))
+            items.append(lhs[1].connect(node))
+        return items
 
 
 class MotifTests(unittest.TestCase):
 
-    def test_terminate_group(self):
-        graph = Node()
+    def test_one_ljoin(self):
+        group = [Node()]
+        items = Motif.ljoin(group)
+        self.assertEqual(len(items), 5)
+
+        nodes = [i for i in items if isinstance(i, Node)]
+        self.assertEqual(len(nodes), 3)
+        self.assertIn(group[0], nodes)
 
     def test_diamond(self):
         items = list(Motif.diamond())
-        self.fail(items)
