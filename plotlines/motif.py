@@ -39,7 +39,7 @@ class Motif:
         FORK = enum.auto()
         JOIN = enum.auto()
         LINK = enum.auto()
-        STEM = enum.auto()
+        LOOP = enum.auto()
         STEP = enum.auto()
 
     @staticmethod
@@ -93,3 +93,25 @@ class Motif:
             else:
                 yield node.connect(nodes[0])
                 yield node.connect(nodes[1])
+
+    @staticmethod
+    def fill(items: list[Node | Edge], limit: int = None, fwd=True, stems=2) -> Generator[Node | Edge]:
+        pass
+
+    @staticmethod
+    def loop(items: list[Node | Edge], limit: int = 1, fwd=True) -> Generator[Node | Edge]:
+        if fwd:
+            leaves = [i for i in items if isinstance(i, Node) and len(i.connections[1]) == 0]
+        else:
+            leaves = [i for i in items if isinstance(i, Node) and len(i.connections[0]) == 0]
+
+        n = 0
+        limit = len(leaves) if limit is None else min(limit, len(leaves))
+        while n < limit:
+            n += 1
+            leaf = random.choice(leaves)
+            node = random.choice(leaf.nearby)
+            if fwd:
+                yield leaf.connect(node)
+            else:
+                yield node.connect(leaf)
