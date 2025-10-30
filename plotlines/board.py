@@ -188,6 +188,13 @@ class Node(Pin):
     def edges(self):
         return [e for p in self.ports.values() for uid in p.joins if isinstance(e := self.store.get(uid), Edge)]
 
+    @property
+    def connections(self):
+        edges = self.edges
+        i_edges = [edge for edge in edges if self.uid in edge.ports[1].joins]
+        x_edges = [edge for edge in edges if self.uid in edge.ports[0].joins]
+        return (i_edges, x_edges)
+
     def handle(self, fmt="{0:02d}"):
         return next(n for n in (fmt.format(n) for n in itertools.count(len(self.ports))) if n not in self.ports)
 

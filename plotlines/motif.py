@@ -19,6 +19,7 @@
 
 
 import enum
+import random
 
 from plotlines.board import Board
 from plotlines.board import Edge
@@ -36,7 +37,7 @@ class Motif:
         FILL = enum.auto()
         FORK = enum.auto()
         JOIN = enum.auto()
-        LINE = enum.auto()
+        LINK = enum.auto()
         STEM = enum.auto()
         STEP = enum.auto()
 
@@ -54,16 +55,10 @@ class Motif:
         yield from nodes + edges
 
     @staticmethod
-    def connections(node: Node):
-        l_edges = [edge for edge in node.edges if node.uid in edge.ports[1].joins]
-        r_edges = [edge for edge in node.edges if node.uid in edge.ports[0].joins]
-        return (l_edges, r_edges)
-
-    @staticmethod
     def ljoin(items: list[Node | Edge], limit: int = None) -> list[Node | Edge]:
-        limit = len(items) if limit is None else limit
-        nodes = [i for i in items if len(Motif.connections(i)[0]) == 0]
-        for node in nodes:
+        nodes = [i for i in items if len(i.connections[0]) == 0]
+        limit = len(nodes) if limit is None else min(limit, len(nodes))
+        for node in random.sample(nodes, limit):
             lhs = [Node(zone=node.zone), Node(zone=node.zone)]
             items.extend(lhs)
             items.append(lhs[0].connect(node))

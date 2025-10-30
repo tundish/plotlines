@@ -35,6 +35,8 @@ class MotifTests(unittest.TestCase):
         nodes = [i for i in items if isinstance(i, Node)]
         self.assertEqual(len(nodes), 3)
         self.assertIn(group[0], nodes)
+        self.assertEqual(len(group[0].connections[0]), 2)
+        self.assertEqual(len(group[0].connections[1]), 0)
 
     def test_diamond(self):
         items = list(Motif.diamond())

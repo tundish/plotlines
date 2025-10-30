@@ -102,8 +102,9 @@ class Plotter:
 
     @staticmethod
     def node_size(node: Node):
-        lhs_sizes = {edge: math.sqrt(edge.ports[1].area) for edge in node.edges if node.uid in edge.ports[1].joins}
-        rhs_sizes = {edge: math.sqrt(edge.ports[0].area) for edge in node.edges if node.uid in edge.ports[0].joins}
+        connections = node.connections
+        lhs_sizes = {edge: math.sqrt(edge.ports[1].area) for edge in connections[0]}
+        rhs_sizes = {edge: math.sqrt(edge.ports[0].area) for edge in connections[1]}
         height = max(sum(lhs_sizes.values()), sum(rhs_sizes.values()), math.sqrt(node.area))
         return height
 
