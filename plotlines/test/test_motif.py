@@ -18,6 +18,7 @@
 # If not, see <https://www.gnu.org/licenses/>.
 
 
+import enum
 import unittest
 
 from plotlines.board import Board
@@ -32,6 +33,10 @@ class Motif:
 
     """
 
+    class Edit(enum.Flag):
+        FORK = enum.auto()
+        JOIN = enum.auto()
+
     @staticmethod
     def diamond(zone: int = 0):
         # TODO: Allocate label to each node and edge
@@ -45,8 +50,15 @@ class Motif:
         ]
         yield from nodes + edges
 
+    @staticmethod
+    def terminate_group(group: list[Node | Edge]) -> list[Node | Edge]:
+        pass
+
 
 class MotifTests(unittest.TestCase):
+
+    def test_terminate_group(self):
+        graph = Node()
 
     def test_diamond(self):
         items = list(Motif.diamond())
