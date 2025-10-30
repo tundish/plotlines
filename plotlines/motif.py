@@ -18,6 +18,7 @@
 # If not, see <https://www.gnu.org/licenses/>.
 
 
+from collections.abc import Generator
 import enum
 import random
 
@@ -55,12 +56,11 @@ class Motif:
         yield from nodes + edges
 
     @staticmethod
-    def ljoin(items: list[Node | Edge], limit: int = None) -> list[Node | Edge]:
+    def ljoin(items: list[Node | Edge], limit: int = None) -> Generator[Node | Edge]:
         nodes = [i for i in items if len(i.connections[0]) == 0]
         limit = len(nodes) if limit is None else min(limit, len(nodes))
         for node in random.sample(nodes, limit):
             lhs = [Node(zone=node.zone), Node(zone=node.zone)]
-            items.extend(lhs)
-            items.append(lhs[0].connect(node))
-            items.append(lhs[1].connect(node))
-        return items
+            yield from lhs
+            yield lhs[0].connect(node)
+            yield lhs[1].connect(node)
