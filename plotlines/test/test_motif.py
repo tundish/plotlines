@@ -77,3 +77,14 @@ class MotifTests(unittest.TestCase):
         self.assertEqual(len(nodes), 3)
         self.assertEqual(len(nodes[-1].connections[0]), 2)
         self.assertEqual(len(nodes[-1].connections[1]), 0)
+
+    def test_rstem(self):
+        group = [Node(), Node(), Node()]
+        group.append(group[0].connect(group[1]))
+        group.extend(Motif.fork(group, fwd=True, stems=1))
+        self.assertEqual(len(group), 8)
+
+        nodes = [i for i in group if isinstance(i, Node)]
+        self.assertEqual(len(nodes), 5)
+        self.assertEqual(len(nodes[-1].connections[0]), 1)
+        self.assertEqual(len(nodes[-1].connections[1]), 0)
