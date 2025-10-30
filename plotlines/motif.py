@@ -75,14 +75,22 @@ class Motif:
 
     @staticmethod
     def join(items: list[Node | Edge], limit: int = None, fwd=True) -> Generator[Node | Edge]:
-        nodes = [i for i in items if len(i.connections[0]) == 0]
-        limit = len(nodes) if limit is None else min(limit, len(nodes))
-        for node in random.sample(nodes, limit):
-            lhs = [Node(zone=node.zone), Node(zone=node.zone)]
-            yield from lhs
+        if fwd:
+            leaves = {i for i in items if isinstance(i, Node) and len(i.connections[0]) == 0}
+        else:
+            leaves = {i for i in items if isinstance(i, Node) and len(i.connections[1]) == 0}
+
+        n = 0
+        limit = len(leaves) // 2 if limit is None else min(limit, len(leaves) // 2)
+        while n < limit:
+            n += 1
+            nodes = random.sample(list(leaves), 2)
+            node = Node(zone=nodes[0].zone)
+            leaves -= set(nodes)
+            yield node
             if fwd:
-                yield node.connect(lhs[0])
-                yield node.connect(lhs[1])
+                yield nodes[0].connect(node)
+                yield nodes[1].connect(node)
             else:
-                yield lhs[0].connect(node)
-                yield lhs[1].connect(node)
+                yield node.connect(nodes[0])
+                yield node.connect(nodes[1])

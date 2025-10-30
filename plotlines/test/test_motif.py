@@ -34,7 +34,6 @@ class MotifTests(unittest.TestCase):
 
         nodes = [i for i in group if isinstance(i, Node)]
         self.assertEqual(len(nodes), 3)
-        self.assertIn(group[0], nodes)
         self.assertEqual(len(group[0].connections[0]), 2)
         self.assertEqual(len(group[0].connections[1]), 0)
 
@@ -45,7 +44,6 @@ class MotifTests(unittest.TestCase):
 
         nodes = [i for i in group if isinstance(i, Node)]
         self.assertEqual(len(nodes), 3)
-        self.assertIn(group[0], nodes)
         self.assertEqual(len(group[0].connections[0]), 0)
         self.assertEqual(len(group[0].connections[1]), 2)
 
@@ -60,13 +58,22 @@ class MotifTests(unittest.TestCase):
         self.assertIn(nodes[1].nearby[0], group)
         self.assertEqual(nodes[0].nearby[0], nodes[1].nearby[0])
 
-    def test_stem(self):
-        group = [Node()]
-        group.extend(Motif.fork(group, fwd=False))
+    def test_ljoin(self):
+        group = [Node(), Node()]
+        group.extend(Motif.join(group, fwd=False))
         self.assertEqual(len(group), 5)
 
         nodes = [i for i in group if isinstance(i, Node)]
         self.assertEqual(len(nodes), 3)
-        self.assertIn(group[0], nodes)
-        self.assertEqual(len(group[0].connections[0]), 2)
-        self.assertEqual(len(group[0].connections[1]), 0)
+        self.assertEqual(len(nodes[-1].connections[0]), 0)
+        self.assertEqual(len(nodes[-1].connections[1]), 2)
+
+    def test_rjoin(self):
+        group = [Node(), Node()]
+        group.extend(Motif.join(group, fwd=True))
+        self.assertEqual(len(group), 5)
+
+        nodes = [i for i in group if isinstance(i, Node)]
+        self.assertEqual(len(nodes), 3)
+        self.assertEqual(len(nodes[-1].connections[0]), 2)
+        self.assertEqual(len(nodes[-1].connections[1]), 0)
