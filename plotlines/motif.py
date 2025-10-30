@@ -56,6 +56,24 @@ class Motif:
         yield from nodes + edges
 
     @staticmethod
+    def fork(items: list[Node | Edge], limit: int = None, fwd=True) -> Generator[Node | Edge]:
+        if fwd:
+            leaves = [i for i in items if isinstance(i, Node) and len(i.connections[1]) == 0]
+        else:
+            leaves = [i for i in items if isinstance(i, Node) and len(i.connections[0]) == 0]
+
+        limit = len(leaves) if limit is None else min(limit, len(leaves))
+        for node in random.sample(leaves, limit):
+            nodes = [Node(zone=node.zone), Node(zone=node.zone)]
+            yield from nodes
+            if fwd:
+                yield node.connect(nodes[0])
+                yield node.connect(nodes[1])
+            else:
+                yield nodes[0].connect(node)
+                yield nodes[1].connect(node)
+
+    @staticmethod
     def join(items: list[Node | Edge], limit: int = None, fwd=True) -> Generator[Node | Edge]:
         nodes = [i for i in items if len(i.connections[0]) == 0]
         limit = len(nodes) if limit is None else min(limit, len(nodes))
