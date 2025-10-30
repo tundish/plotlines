@@ -29,7 +29,7 @@ class MotifTests(unittest.TestCase):
 
     def test_one_ljoin(self):
         group = [Node()]
-        group.extend(Motif.ljoin(group))
+        group.extend(Motif.join(group, fwd=False))
         self.assertEqual(len(group), 5)
 
         nodes = [i for i in group if isinstance(i, Node)]
@@ -38,9 +38,20 @@ class MotifTests(unittest.TestCase):
         self.assertEqual(len(group[0].connections[0]), 2)
         self.assertEqual(len(group[0].connections[1]), 0)
 
+    def test_one_rjoin(self):
+        group = [Node()]
+        group.extend(Motif.join(group, fwd=True))
+        self.assertEqual(len(group), 5)
+
+        nodes = [i for i in group if isinstance(i, Node)]
+        self.assertEqual(len(nodes), 3)
+        self.assertIn(group[0], nodes)
+        self.assertEqual(len(group[0].connections[0]), 0)
+        self.assertEqual(len(group[0].connections[1]), 2)
+
     def test_limit_ljoin(self):
         group = [Node(), Node()]
-        items = list(Motif.ljoin(group, limit=1))
+        items = list(Motif.join(group, limit=1, fwd=False))
         self.assertEqual(len(items), 4)
 
         nodes = [i for i in items if isinstance(i, Node)]

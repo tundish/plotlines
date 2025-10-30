@@ -56,11 +56,15 @@ class Motif:
         yield from nodes + edges
 
     @staticmethod
-    def ljoin(items: list[Node | Edge], limit: int = None) -> Generator[Node | Edge]:
+    def join(items: list[Node | Edge], limit: int = None, fwd=True) -> Generator[Node | Edge]:
         nodes = [i for i in items if len(i.connections[0]) == 0]
         limit = len(nodes) if limit is None else min(limit, len(nodes))
         for node in random.sample(nodes, limit):
             lhs = [Node(zone=node.zone), Node(zone=node.zone)]
             yield from lhs
-            yield lhs[0].connect(node)
-            yield lhs[1].connect(node)
+            if fwd:
+                yield node.connect(lhs[0])
+                yield node.connect(lhs[1])
+            else:
+                yield lhs[0].connect(node)
+                yield lhs[1].connect(node)
