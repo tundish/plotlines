@@ -100,3 +100,14 @@ class MotifTests(unittest.TestCase):
         self.assertEqual(len(nodes), 3)
         self.assertEqual(len(nodes[0].connections[0]), 1)
         self.assertEqual(len(nodes[0].connections[1]), 2)
+
+    def test_rfill(self):
+        group = [Node(), Node()]
+        group.append(group[0].connect(group[1]))
+        group.extend(Motif.fill(group, fwd=True, limit=1))
+        self.assertEqual(len(group), 5)
+
+        nodes = [i for i in group if isinstance(i, Node)]
+        self.assertEqual(len(nodes), 3)
+        self.assertIn(nodes[-1], nodes[0].nearby)
+        self.assertIn(nodes[-1], nodes[1].nearby)
