@@ -75,14 +75,14 @@ class Plotter:
 
     @staticmethod
     def build_graph(ending: list[str], trails: int, **kwargs) -> Generator[Node | Edge]:
-        zone = 1
-        group = deque([Node(label=name, zone=zone) for name in ending])
+        stack = 12
+        zone = stack
+        group = deque([Node(label=name, zone=stack) for name in ending])
         yield from group
 
         tally = Counter()
-        stack = 12
         while tally[Node] + tally[Edge] < stack:
-            zone += 1
+            zone -= 1
             for n, item in enumerate(Motif.join(group, fwd=False)):
                 item.zone = zone
                 tally[type(item)] += 1
