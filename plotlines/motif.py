@@ -35,6 +35,7 @@ class Motif:
     """
 
     class Edit(enum.Flag):
+        COPY = enum.auto()
         FILL = enum.auto()
         FORK = enum.auto()
         JOIN = enum.auto()
@@ -95,8 +96,26 @@ class Motif:
                 yield node.connect(nodes[1])
 
     @staticmethod
-    def fill(items: list[Node | Edge], limit: int = None, fwd=True, stems=2, **kwargs) -> Generator[Node | Edge]:
-        pass
+    def link(items: list[Node | Edge], limit: int = None, fwd=True, stems=2, **kwargs) -> Generator[Node | Edge]:
+        if fwd:
+            nodes = [i for i in items if isinstance(i, Node) and i.connections[1]]
+        else:
+            nodes = [i for i in items if isinstance(i, Node) and i.connections[0]]
+
+        n = 0
+        limit = len(nodes) if limit is None else min(limit, len(nodes))
+        while n < limit:
+            n += 1
+            node = random.choice(nodes)
+            other = random.choice(node.nearby)
+            rv = Node(zone=node.zone)
+            yield rv
+            if fwd:
+                yield node.connect(rv)
+                yield rv.connect(other)
+            else:
+                yield rv.connect(node)
+                yield other.connect(rv)
 
     @staticmethod
     def loop(items: list[Node | Edge], limit: int = 1, fwd=True, **kwargs) -> Generator[Node | Edge]:
