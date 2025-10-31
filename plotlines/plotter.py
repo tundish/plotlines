@@ -223,7 +223,7 @@ class Plotter:
                 assert isinstance(item, Edge)
         return frame, scale
 
-    def draw_graph(self, items: list[Edge], debug=False, delay: int = 10) -> RawTurtle:
+    def draw_items(self, items: list[Edge], debug=False, delay: int = 10) -> RawTurtle:
         screen = self.turtle.getscreen()
         try:
             screen.title(self.board.title)

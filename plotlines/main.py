@@ -66,7 +66,7 @@ def main(args):
         print(f"{plotter.turtle.screen.getshapes()=}", file=sys.stderr)
 
         logger.debug(tk.font.families())
-        items = plotter.draw_graph(items, debug=args.debug)
+        items = plotter.draw_items(items, debug=args.debug)
         plotter.turtle.screen.mainloop()
     elif args.format == "svg":
         # TODO: implement Renderer

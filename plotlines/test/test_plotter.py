@@ -68,7 +68,7 @@ class PlotterTests(unittest.TestCase):
             rv = plotter.style_items(nodes + edges)
             self.assertTrue(all(i.shape == "sq2.00x2.00-2727/100" for i in nodes))
 
-            rv = plotter.draw_graph(nodes + edges)
+            rv = plotter.draw_items(nodes + edges)
             self.assertEqual(len(board.shapes), 1, board.shapes)
             self.assertEqual(len(plotter.stamps), len(nodes), plotter.stamps)
 
@@ -109,7 +109,7 @@ class PlotterTests(unittest.TestCase):
         t = turtle.Turtle()
         plotter = Plotter(board, t)
         frame, scale = plotter.style_items(nodes + edges)
-        rv = plotter.draw_graph(nodes + edges, debug=True, delay=0)
+        rv = plotter.draw_items(nodes + edges, debug=True, delay=0)
         t.screen.mainloop()
         self.assertEqual(len(board.shapes), 3, board.shapes)
         self.assertEqual(len(plotter.stamps), len(nodes), plotter.stamps)
