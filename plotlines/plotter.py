@@ -27,6 +27,7 @@ import itertools
 import logging
 import math
 import operator
+import statistics
 import tkinter as tk
 import turtle
 
@@ -158,33 +159,38 @@ class Plotter:
             offset_x += width_x + edge_length
             width_x = 0
 
-    def layout_board(self, size, **kwargs) -> dict:
+    def layout_board(self, size, threshold=0.1, limit: int = None, **kwargs) -> dict:
+        limit = limit or 2 * len(self.board.items)
         nodes = set(i for i in self.board.items if isinstance(i, Node))
         placed = set()
 
         boundary = [C(0, 0), C(0, size[0]), C(size[1], 0), C(*size)]
         zones = dict(self.place_items(self.board.items, boundary=boundary))
 
-        crowding = {
-            z: min([
-                val
-                for node in zone
-                for other in zone
-                for item in other.nearby + other.edges
-                for val in node.spacing(item).values()
-                if val != 0
-            ])
-            for z, zone in zones.items()
-        }
-        crowded = {v: k for k, v in crowding.items()}.get(min(crowding.values()))
-        zone = zones[crowded]
-        for n, index in enumerate(self.expandex(len(zone))):
-            node = zone[index]
-            if n % 2 == 0:
-                hop = node.height
-            else:
-                hop = -node.height
-            zone[index].translate(C(0, hop))
+        step = 0
+        crowding = {0: 0}
+        while step < limit and statistics.median(crowding.values()) < threshold:
+            step += 1
+            crowding = {
+                z: min([
+                    val
+                    for node in zone
+                    for other in zone
+                    for item in other.nearby + other.edges
+                    for val in node.spacing(item).values()
+                    if val != 0
+                ])
+                for z, zone in zones.items()
+            }
+            crowded = {v: k for k, v in crowding.items()}.get(min(crowding.values()))
+            zone = zones[crowded]
+            for n, index in enumerate(self.expandex(len(zone))):
+                node = zone[index]
+                if n % 2 == 0:
+                    hop = node.height
+                else:
+                    hop = -node.height
+                zone[index].translate(C(0, hop))
 
         return self.board.items
 
