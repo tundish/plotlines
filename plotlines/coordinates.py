@@ -59,8 +59,11 @@ class Coordinates(tuple):
     @staticmethod
     def intercept(origin: Component, transit: Component, point: Component) -> Component:
         "Find the normal intercept from a point to a line between origin and transit"
-        shadow = (point - origin).unity.dot((transit - origin).unity) * abs(point - origin)
-        return origin + (transit - origin) * shadow / abs(transit - origin)
+        try:
+            shadow = (point - origin).unity.dot((transit - origin).unity) * abs(point - origin)
+            return origin + (transit - origin) * shadow / abs(transit - origin)
+        except TypeError:
+            return None
 
     @property
     def unity(self):

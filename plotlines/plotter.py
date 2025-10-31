@@ -75,31 +75,14 @@ class Plotter:
 
     @staticmethod
     def build_graph(ending: list[str], trails: int, **kwargs) -> Generator[Node | Edge]:
-        frame = deque([Node(label=name) for name in ending])
+        group = deque([Node(label=name) for name in ending])
 
         tally = Counter()
         stack = 12
         while tally[Node] + tally[Edge] < stack:
-            # Connect each node to one or more trail edges
-            try:
-                node = frame.popleft()
-                yield node
-            except IndexError:
-                break
-            else:
-                node = Node()
-                tally[Node] += 1
-                frame.append(node)
-                edge = node.connect(frame[-1])
-                tally[Edge] += 1
-                yield edge
-        else:
-            # Finish with start node
-            start = Node(label="start")
-            for node in frame:
-                edge = start.connect(node)
-                tally[Edge] += 1
-                yield edge
+            for n, item in enumerate(Motif.join(group, fwd=False)):
+                tally[type(item)] += 1
+                yield item
 
     @staticmethod
     def node_size(node: Node):

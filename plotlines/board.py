@@ -218,7 +218,11 @@ class Node(Pin):
     def spacing(self, other: Node) -> dict[tuple[Pin, Pin], Number]:
         mine = {i: i.pos for i in self.ports.values()} | {self: self.pos}
         others = {i: i.pos for i in other.ports.values()} | {other: other.pos}
-        rv = {(mk, ok): abs(ov - mv) for (mk, mv), (ok, ov) in itertools.product(mine.items(), others.items())}
+        rv = {
+            (mk, ok): abs(ov - mv)
+            for (mk, mv), (ok, ov) in itertools.product(mine.items(), others.items())
+            if None not in (ov, mv)
+        }
         return rv
 
     @spacing.register
@@ -231,7 +235,11 @@ class Node(Pin):
                 for pos in mine.values()
             )
         })
-        rv = {(mk, ok): abs(ov - mv) for (mk, mv), (ok, ov) in itertools.product(mine.items(), others.items())}
+        rv = {
+            (mk, ok): abs(ov - mv)
+            for (mk, mv), (ok, ov) in itertools.product(mine.items(), others.items())
+            if None not in (ov, mv)
+        }
         return rv
 
     def translate(self, vec: Coordinates):
