@@ -121,7 +121,7 @@ class Plotter:
                     yield x
 
     @staticmethod
-    def place(items: list = None, boundary: tuple = None, visited=None):
+    def place_items(items: list = None, boundary: tuple = None, visited=None):
         visited = set() if visited is None else visited
         work = list()
         sizes = {item: Plotter.node_size(item) for item in items if isinstance(item, Node)}
@@ -176,7 +176,7 @@ class Plotter:
         placed = set()
 
         boundary = [C(0, 0), C(0, size[0]), C(size[1], 0), C(*size)]
-        zones = dict(self.place(self.board.items, boundary=boundary))
+        zones = dict(self.place_items(self.board.items, boundary=boundary))
 
         crowding = {
             z: min([
