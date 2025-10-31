@@ -76,6 +76,7 @@ class Plotter:
     @staticmethod
     def build_graph(ending: list[str], trails: int, **kwargs) -> Generator[Node | Edge]:
         group = deque([Node(label=name) for name in ending])
+        yield from group
 
         tally = Counter()
         stack = 12
