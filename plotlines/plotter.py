@@ -201,7 +201,7 @@ class Plotter:
 
         return self.board.items
 
-    def style_graph(self, items: list, **kwargs) -> dict:
+    def style_items(self, items: list, **kwargs) -> dict:
         screen = self.turtle.getscreen()
         screen.colormode(255)
 
