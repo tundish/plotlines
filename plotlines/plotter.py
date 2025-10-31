@@ -35,6 +35,7 @@ from plotlines.board import Edge
 from plotlines.board import Node
 from plotlines.board import Pin
 from plotlines.coordinates import Coordinates as C
+from plotlines.motif import Motif
 
 
 class Plotter:
@@ -170,7 +171,7 @@ class Plotter:
             offset_x += width_x + edge_length
             width_x = 0
 
-    def layout_graph(self, size, **kwargs) -> dict:
+    def layout_board(self, size, **kwargs) -> dict:
         nodes = set(i for i in self.board.items if isinstance(i, Node))
         placed = set()
 
