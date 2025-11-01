@@ -82,22 +82,22 @@ class Plotter:
         **kwargs
     ) -> Generator[Node | Edge]:
         zone = limit
-        group = deque([Node(label=name, zone=zone) for name in ending])
-        yield from group
-
         motif = Motif()
         tally = Counter()
         kwargs = dict(fwd=False)
+        group = deque([Node(label=name, zone=zone) for name in ending])
         while tally[Node] + tally[Edge] < limit:
             zone -= 1
-            for n, item in enumerate(motif(group, **kwargs)):
+            for n, item in enumerate(motif(list(group), **kwargs)):
+                print(*motif.edits, sep="\n")
+                if n == 0:
+                    yield from group
+                    group.clear()
+
                 item.zone = zone
                 tally[type(item)] += 1
-                # group.append(item)
-                yield item
-                print(f"{tally=}")
-            # group.clear()
-        print(*motif.edits, sep="\n")
+                group.append(item)
+                print(f"{group=}")
 
     @staticmethod
     def node_size(node: Node):

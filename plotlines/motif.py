@@ -150,7 +150,7 @@ class Motif:
                 leaf = random.choice(leaves)
                 node = random.choice(leaf.nearby)
             except IndexError:
-                continue
+                return
 
             n += 1
             if fwd:

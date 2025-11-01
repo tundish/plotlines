@@ -57,7 +57,11 @@ def main(args):
     board = Board()
     if args.format == "plot":
         plotter = Plotter(board, t=turtle.Turtle())
-        board.items = list(plotter.build_graph(**vars(args)))
+        try:
+            for item in plotter.build_graph(**vars(args)):
+                board.items.append(item)
+        except KeyboardInterrupt:
+            pass
 
         size = plotter.turtle.screen.screensize()
         items = plotter.layout_board(size)
