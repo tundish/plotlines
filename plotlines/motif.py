@@ -34,14 +34,20 @@ class Motif:
 
     """
 
-    class Edit(enum.Flag):
-        COPY = enum.auto()
-        FILL = enum.auto()
+    class Edit(enum.Enum):
         FORK = enum.auto()
         JOIN = enum.auto()
         LINK = enum.auto()
         LOOP = enum.auto()
         STEP = enum.auto()
+        COPY = enum.auto()
+        FILL = enum.auto()
+
+    def __init__(self):
+        pass
+
+    def method(self):
+        return self.join
 
     @staticmethod
     def diamond(zone: int = 0):

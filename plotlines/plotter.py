@@ -75,16 +75,24 @@ class Plotter:
         return words
 
     @staticmethod
-    def build_graph(ending: list[str], trails: int, **kwargs) -> Generator[Node | Edge]:
+    def build_graph(
+        ending: list[str],
+        trails: int,
+        counts: list = [10, 5, 20, 5],
+        **kwargs
+    ) -> Generator[Node | Edge]:
         stack = 12
         zone = stack
         group = deque([Node(label=name, zone=stack) for name in ending])
         yield from group
 
+        motif = Motif()
         tally = Counter()
+        kwargs = dict(fwd=False)
         while tally[Node] + tally[Edge] < stack:
             zone -= 1
-            for n, item in enumerate(Motif.join(group, fwd=False)):
+            method = motif.method()
+            for n, item in enumerate(method(group, **kwargs)):
                 item.zone = zone
                 tally[type(item)] += 1
                 yield item
