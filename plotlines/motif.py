@@ -18,6 +18,7 @@
 # If not, see <https://www.gnu.org/licenses/>.
 
 
+from collections import deque
 from collections.abc import Generator
 import enum
 import random
@@ -34,7 +35,7 @@ class Motif:
 
     """
 
-    class Edit(enum.Enum):
+    class Edit(enum.Flag):
         FORK = enum.auto()
         JOIN = enum.auto()
         LINK = enum.auto()
@@ -44,11 +45,21 @@ class Motif:
         FILL = enum.auto()
 
     def __init__(self):
+        self.methods = {
+            self.Edit.FORK: 10,
+            self.Edit.JOIN: 10,
+            self.Edit.LINK: 10,
+            self.Edit.LOOP: 10,
+        }
         self.edits = []
 
     def __call__(self, items: list[Node | Edge], **kwargs):
-        rv = list(self.join(items, **kwargs))
-        self.edits.append(("join", len(rv)))
+        edit = random.sample(
+            list(self.methods), k=1, counts=list(self.methods.values())
+        )[0]
+        method = getattr(self, edit.name.lower())
+        rv = list(method(items, **kwargs))
+        self.edits.append((edit, len(rv)))
         return rv
 
     @staticmethod
@@ -135,9 +146,13 @@ class Motif:
         n = 0
         limit = len(leaves) if limit is None else min(limit, len(leaves))
         while n < limit:
+            try:
+                leaf = random.choice(leaves)
+                node = random.choice(leaf.nearby)
+            except IndexError:
+                continue
+
             n += 1
-            leaf = random.choice(leaves)
-            node = random.choice(leaf.nearby)
             if fwd:
                 yield leaf.connect(node)
             else:
