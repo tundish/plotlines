@@ -44,10 +44,12 @@ class Motif:
         FILL = enum.auto()
 
     def __init__(self):
-        pass
+        self.edits = []
 
-    def method(self):
-        return self.join
+    def __call__(self, items: list[Node | Edge], **kwargs):
+        rv = list(self.join(items, **kwargs))
+        self.edits.append(("join", len(rv)))
+        return rv
 
     @staticmethod
     def diamond(zone: int = 0):

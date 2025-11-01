@@ -91,11 +91,11 @@ class Plotter:
         kwargs = dict(fwd=False)
         while tally[Node] + tally[Edge] < stack:
             zone -= 1
-            method = motif.method()
-            for n, item in enumerate(method(group, **kwargs)):
+            for n, item in enumerate(motif(group, **kwargs)):
                 item.zone = zone
                 tally[type(item)] += 1
                 yield item
+        print(*motif.edits, sep="\n")
 
     @staticmethod
     def node_size(node: Node):
