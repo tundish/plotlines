@@ -78,18 +78,17 @@ class Plotter:
     def build_graph(
         ending: list[str],
         trails: int,
-        counts: list = [10, 5, 20, 5],
+        limit: int,
         **kwargs
     ) -> Generator[Node | Edge]:
-        stack = 12
-        zone = stack
-        group = deque([Node(label=name, zone=stack) for name in ending])
+        zone = limit
+        group = deque([Node(label=name, zone=zone) for name in ending])
         yield from group
 
         motif = Motif()
         tally = Counter()
         kwargs = dict(fwd=False)
-        while tally[Node] + tally[Edge] < stack:
+        while tally[Node] + tally[Edge] < limit:
             zone -= 1
             for n, item in enumerate(motif(group, **kwargs)):
                 item.zone = zone

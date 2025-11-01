@@ -95,10 +95,10 @@ def parser():
     rv.add_argument(
         "--ending", type=InlineValues(str), default=["1", "2", "3"], help="Declare named endings"
     )
-    # rv.add_argument(
-    #     "--loading", type=InlineValues(int), default=[10, 100],
-    #     help="Define limits for the number of nodes of the story graph"
-    # )
+    rv.add_argument(
+        "--limit", type=int, default=12,
+        help="Limit the number of Nodes and Edges in the graph."
+    )
     rv.add_argument(
         "--trails", type=int, default=None,
         help="Define the number of trails through the story graph"
