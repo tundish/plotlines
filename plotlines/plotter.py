@@ -94,7 +94,10 @@ class Plotter:
             for n, item in enumerate(motif(group, **kwargs)):
                 item.zone = zone
                 tally[type(item)] += 1
+                # group.append(item)
                 yield item
+                print(f"{tally=}")
+            # group.clear()
         print(*motif.edits, sep="\n")
 
     @staticmethod
