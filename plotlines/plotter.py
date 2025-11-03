@@ -22,6 +22,7 @@ from __future__ import annotations  # Until Python 3.14 is everywhere
 from collections import Counter
 from collections import deque
 from decimal import Decimal
+from fractions import Fraction
 import importlib.resources
 import itertools
 import logging
@@ -87,6 +88,8 @@ class Plotter:
         kwargs = dict(fwd=False)
         group = deque([Node(label=name, zone=zone) for name in ending])
         while tally[Node] + tally[Edge] < limit:
+            metric = Fraction(tally[Node] + tally[Edge], limit)
+            print(f"{metric=}")
             zone -= 1
             for n, item in enumerate(motif(list(group), **kwargs)):
                 print(*motif.edits, sep="\n")
