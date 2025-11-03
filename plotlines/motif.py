@@ -53,7 +53,13 @@ class Motif:
         }
         self.edits = []
 
-    def __call__(self, items: list[Node | Edge], **kwargs):
+    def __call__(
+        self,
+        items: list[Node | Edge],
+        metric = None,
+        **kwargs
+    ):
+        print(f"{metric=}")
         edit = random.sample(
             list(self.methods), k=1, counts=list(self.methods.values())
         )[0]

@@ -89,9 +89,10 @@ class Plotter:
         group = deque([Node(label=name, zone=zone) for name in ending])
         while tally[Node] + tally[Edge] < limit:
             metric = Fraction(tally[Node] + tally[Edge], limit)
-            print(f"{metric=}")
             zone -= 1
-            for n, item in enumerate(motif(list(group), **kwargs)):
+            for n, item in enumerate(
+                motif(list(group), metric=metric, **kwargs)
+            ):
                 print(*motif.edits, sep="\n")
                 if n == 0:
                     yield from group
