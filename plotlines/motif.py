@@ -79,15 +79,23 @@ class Motif:
                 {},
             ),
             Fraction(1, 3): (
-                {},
+                {
+                    self.Edit.FORK: 1,
+                    self.Edit.LINK: 1,
+                    self.Edit.LOOP: 1,
+                },
                 {},
             ),
             Fraction(2, 3): (
-                {},
+                {
+                    self.Edit.LINK: 1,
+                    self.Edit.LOOP: 1,
+                    self.Edit.JOIN: 1,
+                },
                 {},
             ),
             Fraction(9, 10): (
-                {},
+                {self.Edit.JOIN: 1},
                 {},
             ),
             1: (
