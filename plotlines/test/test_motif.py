@@ -117,4 +117,9 @@ class MotifTests(unittest.TestCase):
         for ratio in (0, 0.5, 1):
             with self.subTest(ratio=ratio):
                 rv = m.configure(ratio=ratio)
-                self.fail(rv)
+                self.assertIsInstance(rv, tuple)
+                self.assertEqual(len(rv), 2)
+                self.assertIsInstance(rv[0], dict)
+                self.assertTrue(rv[0])
+                self.assertTrue(all(isinstance(i, Motif.Edit) for i in rv[0]))
+                self.assertIsInstance(rv[1], dict)

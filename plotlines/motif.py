@@ -18,6 +18,7 @@
 # If not, see <https://www.gnu.org/licenses/>.
 
 
+import bisect
 from collections import deque
 from collections.abc import Generator
 from fractions import Fraction
@@ -70,17 +71,35 @@ class Motif:
         self.edits.append((edit, len(rv)))
         return rv
 
+    @property
     def config(self):
         return {
-            Fraction(1, 10): {
-            },
-            Fraction(1, 3): {
-            },
-            Fraction(2, 3): {
-            },
-            Fraction(9, 10): {
-            },
+            Fraction(1, 10): (
+                {self.Edit.FORK: 1},
+                {},
+            ),
+            Fraction(1, 3): (
+                {},
+                {},
+            ),
+            Fraction(2, 3): (
+                {},
+                {},
+            ),
+            Fraction(9, 10): (
+                {},
+                {},
+            ),
+            1: (
+                {self.Edit.JOIN: 1},
+                {},
+            ),
         }
+
+    def configure(self, ratio: Fraction):
+        keys = list(self.config)
+        pos = bisect.bisect_left(keys, ratio)
+        return self.config[keys[pos]]
 
     @staticmethod
     def diamond(zone: int = 0):
