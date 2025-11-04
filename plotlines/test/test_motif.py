@@ -111,3 +111,10 @@ class MotifTests(unittest.TestCase):
         self.assertEqual(len(nodes), 3)
         self.assertIn(nodes[-1], nodes[0].nearby)
         self.assertIn(nodes[-1], nodes[1].nearby)
+
+    def test_configure(self):
+        m = Motif()
+        for ratio in (0, 0.5, 1):
+            with self.subTest(ratio=ratio):
+                rv = m.configure(ratio=ratio)
+                self.fail(rv)

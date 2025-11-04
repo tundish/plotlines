@@ -20,6 +20,7 @@
 
 from collections import deque
 from collections.abc import Generator
+from fractions import Fraction
 import enum
 import random
 
@@ -56,6 +57,7 @@ class Motif:
     def __call__(
         self,
         items: list[Node | Edge],
+        ratio: Fraction = None,
         metric = None,
         **kwargs
     ):
@@ -67,6 +69,18 @@ class Motif:
         rv = list(method(items, **kwargs))
         self.edits.append((edit, len(rv)))
         return rv
+
+    def config(self):
+        return {
+            Fraction(1, 10): {
+            },
+            Fraction(1, 3): {
+            },
+            Fraction(2, 3): {
+            },
+            Fraction(9, 10): {
+            },
+        }
 
     @staticmethod
     def diamond(zone: int = 0):
