@@ -62,12 +62,12 @@ class Motif:
         metric = None,
         **kwargs
     ):
-        print(f"{metric=}")
+        conf, params = self.configure(ratio)
         edit = random.sample(
-            list(self.methods), k=1, counts=list(self.methods.values())
+            list(conf), k=1, counts=list(conf.values())
         )[0]
         method = getattr(self, edit.name.lower())
-        rv = list(method(items, **kwargs))
+        rv = list(method(items, **dict(params, **kwargs)))
         self.edits.append((edit, len(rv)))
         return rv
 

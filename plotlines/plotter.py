@@ -88,12 +88,11 @@ class Plotter:
         kwargs = dict(fwd=False)
         group = deque([Node(label=name, zone=zone) for name in ending])
         while tally[Node] + tally[Edge] < limit:
-            metric = Fraction(tally[Node] + tally[Edge], limit)
+            ratio = Fraction(tally[Node] + tally[Edge], limit)
             zone -= 1
             for n, item in enumerate(
-                motif(list(group), metric=metric, **kwargs)
+                motif(list(group), ratio=ratio, **kwargs)
             ):
-                print(*motif.edits, sep="\n")
                 if n == 0:
                     yield from group
                     group.clear()
