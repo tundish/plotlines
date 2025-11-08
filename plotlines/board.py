@@ -142,7 +142,7 @@ class Edge(Item):
         for port in self.ports:
             yield f"[[ports]]"
             yield f'uid     = "{port.uid}"'
-            yield f'pos     = {list(port.pos)}'
+            yield f'pos     = {list(port.pos or [])}'
             yield f'joins   = {[str(i) for i in port.joins]}'
 
 
@@ -338,14 +338,19 @@ class Board:
         yield "[board]"
         yield "[board.shapes]"
         yield from (f'"{key}" = {[list(pos) for pos in val._data]}' for key, val in self.shapes.items())
+        yield ""
         for item in self.items:
             if isinstance(item, Node):
                 yield "[[board.nodes]]"
                 yield from item.toml()
+                yield ""
+        yield ""
         for item in self.items:
             if isinstance(item, Edge):
                 yield "[[board.edges]]"
                 yield from item.toml()
+                yield ""
+        yield ""
 
     def svg(self, width=None, height=None) -> Generator[str]:
         frame = self.frame(*self.extent(self.items), square=True)

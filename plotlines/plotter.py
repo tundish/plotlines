@@ -100,6 +100,7 @@ class Plotter:
                 item.zone = zone
                 tally[type(item)] += 1
                 group.append(item)
+                yield item
 
     @staticmethod
     def node_size(node: Node):
