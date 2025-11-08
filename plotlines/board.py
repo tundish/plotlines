@@ -249,7 +249,7 @@ class Node(Pin):
 
     def toml(self):
         yield f'uid     = "{self.uid}"'
-        yield f'pos     = {list(self.pos)}'
+        yield f'pos     = {list(self.pos or [])}'
         yield "[style]"
         yield f'stroke  = {list(self.style.stroke)}'
         yield f'fill    = {list(self.style.fill)}'
@@ -257,7 +257,7 @@ class Node(Pin):
         for handle, port in self.ports.items():
             yield f"[ports.{handle}]"
             yield f'uid     = "{port.uid}"'
-            yield f'pos     = {list(port.pos)}'
+            yield f'pos     = {list(port.pos or [])}'
             yield f'joins   = {[str(i) for i in port.joins]}'
 
 
