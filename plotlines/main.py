@@ -66,9 +66,6 @@ def main(args):
         size = plotter.turtle.screen.screensize()
         items = plotter.layout_board(size)
         frame, scale = plotter.style_items(board.items, size=size)
-        print(*board.items, sep="\n")
-        print(string.ascii_uppercase, file=sys.stderr)
-        print(f"{plotter.turtle.screen.getshapes()=}", file=sys.stderr)
 
         logger.debug(tk.font.families())
         items = plotter.draw_items(items, debug=args.debug, delay=0)
