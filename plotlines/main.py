@@ -55,14 +55,14 @@ def main(args):
     logger.debug(f"{args=}")
 
     board = Board()
-    if args.format == "plot":
-        plotter = Plotter(board, t=turtle.Turtle())
-        try:
-            for item in plotter.build_graph(**vars(args)):
-                board.items.append(item)
-        except KeyboardInterrupt:
-            pass
+    plotter = Plotter(board, t=turtle.Turtle())
+    try:
+        for item in plotter.build_graph(**vars(args)):
+            board.items.append(item)
+    except KeyboardInterrupt:
+        pass
 
+    if args.format == "plot":
         size = plotter.turtle.screen.screensize()
         items = plotter.layout_board(size)
         frame, scale = plotter.style_items(board.items, size=size)
@@ -79,7 +79,7 @@ def main(args):
     elif args.format == "text":
         pprint.pprint(board, depth=3)
     elif args.format == "toml":
-        print(*Board.toml_graph(board), sep="\n", file=sys.stdout)
+        print(*board.toml(), sep="\n", file=sys.stdout)
 
     return 0
 
@@ -108,7 +108,7 @@ def parser():
         help="Define the number of trails through the story graph"
     )
     rv.add_argument(
-        "--format", choices=["plot", "svg", "text", "toml"], default="plot",
+        "--format", choices=["plot", "svg", "text", "toml"], default="toml",
         help="Specify format of output [text]"
     )
     rv.convert_arg_line_to_args = lambda x: x.split()
