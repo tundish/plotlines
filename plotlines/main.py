@@ -54,10 +54,9 @@ def main(args):
     logger.info(f"Start")
     logger.debug(f"{args=}")
 
-    board = Board()
     try:
-        for item in Plotter.build_graph(**vars(args)):
-            board.items.append(item)
+        items = list(Plotter.build_graph(**vars(args)))
+        board = Board(items=items)
     except KeyboardInterrupt:
         pass
 
