@@ -75,6 +75,8 @@ def main(args):
     elif args.format == "text":
         pprint.pprint(board, depth=3)
     elif args.format == "toml":
+        # text = sys.stdin.read()
+        # data = tomllib.loads(text)
         print(*board.toml(), sep="\n", file=sys.stdout)
 
     return 0

@@ -350,7 +350,6 @@ class Board:
                 yield "[[board.edges]]"
                 yield from item.toml()
                 yield ""
-        yield ""
 
     def svg(self, width=None, height=None) -> Generator[str]:
         frame = self.frame(*self.extent(self.items), square=True)
