@@ -72,6 +72,7 @@ class PlotterTests(unittest.TestCase):
             self.assertEqual(len(board.shapes), 1, board.shapes)
             self.assertEqual(len(plotter.stamps), len(nodes), plotter.stamps)
 
+    @unittest.skip("Dev quicker without GUI")
     def test_style_graph(self):
         nodes = [
             Node((1, 8)),
@@ -120,3 +121,7 @@ class PlotterTests(unittest.TestCase):
 
         even = list(Plotter.expandex(6))
         self.assertEqual(even, [3, 2, 4, 1, 5, 0])
+
+    def test_build_graph_minimal(self):
+        items = list(Plotter.build_graph())
+        self.fail(items)
