@@ -153,7 +153,6 @@ class Motif:
         limit = limit or sys.maxsize
         nodes = []
         while leaves:
-            # limit = len(leaves) // 2 if limit is None else min(limit, len(leaves) // 2)
             if not nodes or len(nodes[-1].ports) >= (exits or sys.maxsize):
                 item = random.choice(list(leaves))
                 nodes.append(node := Node(zone=item.zone))
@@ -161,13 +160,13 @@ class Motif:
             else:
                 pair = (random.choice(list(leaves)), nodes[-1])
 
-            leaves -= set(pair)
             if fwd:
                 yield pair[0].connect(pair[1])
-                n += 1
             else:
                 yield pair[1].connect(pair[0])
-                n += 1
+
+            leaves -= set(pair)
+            n += 1
 
             if len(nodes) + n >= limit:
                 break
