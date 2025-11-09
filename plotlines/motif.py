@@ -24,6 +24,7 @@ from collections.abc import Generator
 from fractions import Fraction
 import enum
 import random
+import sys
 
 from plotlines.board import Board
 from plotlines.board import Edge
@@ -149,19 +150,31 @@ class Motif:
             leaves = {i for i in items if isinstance(i, Node) and len(i.connections[1]) == 0}
 
         n = 0
-        limit = len(leaves) // 2 if limit is None else min(limit, len(leaves) // 2)
-        while n < limit:
-            n += 1
-            nodes = random.sample(list(leaves), 2)
-            node = Node(zone=nodes[0].zone)
-            leaves -= set(nodes)
+        limit = limit or sys.maxsize
+        while leaves:
+            # limit = len(leaves) // 2 if limit is None else min(limit, len(leaves) // 2)
+            nodes = []
+            try:
+                pair = random.sample(list(leaves), 2)
+            except ValueError:
+                return
+
+            nodes.append(node := Node(zone=pair[0].zone))
+            leaves -= set(pair)
+
             yield node
+            n += 1
             if fwd:
-                yield nodes[0].connect(node)
-                yield nodes[1].connect(node)
+                yield pair[0].connect(node)
+                yield pair[1].connect(node)
+                n += 2
             else:
-                yield node.connect(nodes[0])
-                yield node.connect(nodes[1])
+                yield node.connect(pair[0])
+                yield node.connect(pair[1])
+                n += 2
+
+            if n >= limit:
+                return
 
     @staticmethod
     def link(items: list[Node | Edge], limit: int = None, fwd=True, stems=2, **kwargs) -> Generator[Node | Edge]:
