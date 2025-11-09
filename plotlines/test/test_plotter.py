@@ -147,7 +147,7 @@ class PlotterTests(unittest.TestCase):
 
     def test_build_graph_minimal_exits(self):
         witness = defaultdict(list)
-        for i in Plotter.build_graph(limit=7, ending=3, exits=2, steps=3):
+        for i in Plotter.build_graph(limit=9, ending=3, exits=2, steps=3):
             witness[type(i)].append(i)
 
         board = Board(items=witness[Node] + witness[Edge])

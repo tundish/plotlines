@@ -151,6 +151,7 @@ class Motif:
 
         n = 0
         limit = limit or sys.maxsize
+        group = leaves.copy()
         nodes = []
         while leaves:
             if not nodes or len(nodes[-1].ports) >= (exits or sys.maxsize):
@@ -170,6 +171,13 @@ class Motif:
 
             if len(nodes) + n >= limit:
                 break
+
+        while nodes and exits and len(nodes[-1].ports) < exits:
+            item = random.choice(list(group))
+            if fwd:
+                yield item.connect(nodes[-1])
+            else:
+                yield nodes[-1].connect(item)
 
         yield from nodes
 
