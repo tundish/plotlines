@@ -143,7 +143,7 @@ class Motif:
                     yield n.connect(node)
 
     @staticmethod
-    def join(items: list[Node | Edge], limit: int = None, fwd=True, stems=2, **kwargs) -> Generator[Node | Edge]:
+    def join(items: list[Node | Edge], limit: int = None, fwd=True, exits=None, **kwargs) -> Generator[Node | Edge]:
         if fwd:
             leaves = {i for i in items if isinstance(i, Node) and len(i.connections[0]) == 0}
         else:
@@ -154,25 +154,22 @@ class Motif:
         nodes = []
         while leaves:
             # limit = len(leaves) // 2 if limit is None else min(limit, len(leaves) // 2)
-            try:
-                pair = (random.choice(list(leaves)), nodes[-1])
-            except IndexError:
+            if not nodes or len(nodes[-1].ports) >= (exits or sys.maxsize):
                 item = random.choice(list(leaves))
                 nodes.append(node := Node(zone=item.zone))
-                n += 1
                 pair = (item, node)
+            else:
+                pair = (random.choice(list(leaves)), nodes[-1])
 
             leaves -= set(pair)
             if fwd:
-                yield pair[0].connect(node)
-                yield pair[1].connect(node)
-                n += 2
+                yield pair[0].connect(pair[1])
+                n += 1
             else:
-                yield node.connect(pair[0])
-                yield node.connect(pair[1])
-                n += 2
+                yield pair[1].connect(pair[0])
+                n += 1
 
-            if n >= limit:
+            if len(nodes) + n >= limit:
                 break
 
         yield from nodes
