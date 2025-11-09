@@ -123,5 +123,5 @@ class PlotterTests(unittest.TestCase):
         self.assertEqual(even, [3, 2, 4, 1, 5, 0])
 
     def test_build_graph_minimal(self):
-        items = list(Plotter.build_graph())
+        items = list(Plotter.build_graph(limit=7, ending=3))
         self.fail(items)
