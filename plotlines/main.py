@@ -50,7 +50,6 @@ def main(args):
     logging.basicConfig(level=level)
     logger = logging.getLogger("plotlines")
 
-    args.trails = args.trails or len(args.ending)
     logger.info(f"Start")
     logger.debug(f"{args=}")
 
@@ -103,8 +102,8 @@ def parser():
         help="Limit the number of Nodes and Edges in the graph."
     )
     rv.add_argument(
-        "--trails", type=int, default=None,
-        help="Define the number of trails through the story graph"
+        "--exits", type=int, default=None,
+        help="Fix the number of exiting Edges from each Node [None]"
     )
     rv.add_argument(
         "--format", choices=["plot", "svg", "text", "toml"], default="toml",

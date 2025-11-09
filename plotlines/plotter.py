@@ -78,7 +78,6 @@ class Plotter:
     @staticmethod
     def build_graph(
         ending: list[str],
-        trails: int,
         limit: int,
         **kwargs
     ) -> Generator[Node | Edge]:
@@ -87,6 +86,7 @@ class Plotter:
         tally = Counter()
         kwargs = dict(fwd=False)
         group = deque([Node(label=name, zone=zone) for name in ending])
+        trails = {} # A walk in G where no Edge is repeated
         while tally[Node] + tally[Edge] < limit:
             ratio = Fraction(tally[Node] + tally[Edge], limit)
             zone -= 1
