@@ -15,6 +15,7 @@
 # If not, see <https://www.gnu.org/licenses/>.
 
 
+from collections import defaultdict
 from decimal import Decimal
 from fractions import Fraction
 import itertools
@@ -123,5 +124,8 @@ class PlotterTests(unittest.TestCase):
         self.assertEqual(even, [3, 2, 4, 1, 5, 0])
 
     def test_build_graph_minimal(self):
-        items = list(Plotter.build_graph(limit=7, ending=3))
-        self.fail(items)
+        witness = defaultdict(list)
+        for i in Plotter.build_graph(limit=7, ending=3):
+            witness[type(i)].append(i)
+        self.assertEqual(len(witness.get(Node, [])), 4)
+        self.assertEqual(len(witness.get(Edge, [])), 3)
