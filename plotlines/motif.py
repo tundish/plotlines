@@ -67,7 +67,9 @@ class Motif:
             list(conf), k=1, counts=list(conf.values())
         )[0]
         method = getattr(self, edit.name.lower())
-        rv = list(method(items, **dict(params, **kwargs)))
+        kwargs = dict(params, **kwargs)
+        print(f"{method=} {kwargs=}")
+        rv = list(method(items, **kwargs))
         self.edits.append((edit, len(rv)))
         return rv
 

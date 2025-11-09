@@ -89,7 +89,8 @@ class Plotter:
         state = SimpleNamespace(step=0, tally=Counter(), zone=limit)
 
         motif = Motif()
-        group = deque([Node(label="TODO", zone=state.zone) for _ in range(ending)])
+        endings = [f"ending_{i + 1:02d}" for i in range(ending)]
+        group = deque([Node(label=i, zone=state.zone) for i in endings])
         trails = {} # A walk in G where no Edge is repeated
         while state.step < steps:
             state.step += 1

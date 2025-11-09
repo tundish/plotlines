@@ -249,6 +249,8 @@ class Node(Pin):
 
     def toml(self):
         yield f'uid     = "{self.uid}"'
+        yield f'label   = "{self.label}"'
+        yield f'zone    = {self.zone}'
         yield f'pos     = {list(self.pos or [])}'
         yield "[style]"
         yield f'stroke  = {list(self.style.stroke)}'

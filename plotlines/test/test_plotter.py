@@ -127,9 +127,11 @@ class PlotterTests(unittest.TestCase):
         witness = defaultdict(list)
         for i in Plotter.build_graph(limit=7, ending=3, steps=3):
             witness[type(i)].append(i)
-        self.assertEqual(len(witness.get(Node, [])), 4)
-        self.assertEqual(len(witness.get(Edge, [])), 3)
 
         board = Board(items=witness[Node] + witness[Edge])
+        print(*board.toml(), sep="\n")
+        self.assertEqual(len(witness.get(Node, [])), 4, board.items)
+        self.assertEqual(len(witness.get(Edge, [])), 3, board.items)
+
         self.assertEqual(len(board.initial), 1)
         self.assertEqual(len(board.terminal), 3)
