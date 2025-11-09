@@ -94,9 +94,10 @@ class InlineValues:
 def parser():
     rv = argparse.ArgumentParser(usage=__doc__, fromfile_prefix_chars="=")
     rv.add_argument("--debug", action="store_true", default=False, help="Display debug information")
-    rv.add_argument(
-        "--ending", type=InlineValues(str), default=["1", "2", "3"], help="Declare named endings"
-    )
+    # rv.add_argument(
+    #     "--ending", type=InlineValues(str), default=["1", "2", "3"], help="Declare named endings"
+    # )
+    rv.add_argument("--ending", type=int, default=3, help="Set the number of endings")
     rv.add_argument(
         "--limit", type=int, default=12,
         help="Limit the number of Nodes and Edges in the graph."
