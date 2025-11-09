@@ -125,7 +125,7 @@ class PlotterTests(unittest.TestCase):
 
     def test_build_graph_minimal(self):
         witness = defaultdict(list)
-        for i in Plotter.build_graph(limit=7, ending=3):
+        for i in Plotter.build_graph(limit=7, ending=3, steps=3):
             witness[type(i)].append(i)
         self.assertEqual(len(witness.get(Node, [])), 4)
         self.assertEqual(len(witness.get(Edge, [])), 3)

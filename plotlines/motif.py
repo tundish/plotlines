@@ -106,7 +106,7 @@ class Motif:
 
     def configure(self, ratio: Fraction):
         keys = list(self.config)
-        pos = bisect.bisect_left(keys, ratio)
+        pos = max(bisect.bisect_left(keys, ratio), len(keys) - 1)
         return self.config[keys[pos]]
 
     @staticmethod

@@ -29,6 +29,7 @@ import logging
 import math
 import operator
 import statistics
+import sys
 import tkinter as tk
 import turtle
 from types import SimpleNamespace
@@ -81,21 +82,22 @@ class Plotter:
         limit: int,
         ending: int,
         exits: int = None,
+        steps: int = sys.maxsize,
         **kwargs
     ) -> Generator[Node | Edge]:
-        state = SimpleNamespace(zone=limit)
+        state = SimpleNamespace(step=0, tally=Counter(), zone=limit)
 
         motif = Motif()
-        tally = Counter()
         kwargs = dict(fwd=False)
         group = deque([Node(label="TODO", zone=state.zone) for _ in range(ending)])
         trails = {} # A walk in G where no Edge is repeated
-        while True:
-            state.spare = limit - tally[Node] + tally[Edge]
+        while state.step < steps:
+            state.step += 1
+            state.spare = limit - state.tally[Node] + state.tally[Edge]
             if state.spare <= 0:
                 break
 
-            state.ratio = Fraction(tally[Node] + tally[Edge], limit)
+            state.ratio = Fraction(state.tally[Node] + state.tally[Edge], limit)
             state.zone -= 1
             for n, item in enumerate(
                 motif(list(group), ratio=state.ratio, **kwargs)
@@ -106,7 +108,7 @@ class Plotter:
                     group.clear()
 
                 item.zone = state.zone
-                tally[type(item)] += 1
+                state.tally[type(item)] += 1
                 group.append(item)
                 yield item
 
