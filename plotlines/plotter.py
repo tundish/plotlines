@@ -83,12 +83,12 @@ class Plotter:
         ending: int,
         exits: int = None,
         steps: int = sys.maxsize,
+        mode: str = "rtl",
         **kwargs
     ) -> Generator[Node | Edge]:
         state = SimpleNamespace(step=0, tally=Counter(), zone=limit)
 
         motif = Motif()
-        kwargs = dict(fwd=False)
         group = deque([Node(label="TODO", zone=state.zone) for _ in range(ending)])
         trails = {} # A walk in G where no Edge is repeated
         while state.step < steps:
@@ -100,7 +100,12 @@ class Plotter:
             state.ratio = Fraction(state.tally[Node] + state.tally[Edge], limit)
             state.zone -= 1
             for n, item in enumerate(
-                motif(list(group), ratio=state.ratio, **kwargs)
+                motif(
+                    list(group),
+                    ratio=state.ratio,
+                    fwd=mode == "ltr",
+                    **kwargs
+                )
             ):
                 print(f"{state=}")
                 if n == 0:
