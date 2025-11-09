@@ -58,6 +58,16 @@ class PlotterTests(unittest.TestCase):
         rv.screensize.return_value = size
         return rv
 
+    @staticmethod
+    def display_items(items: list):
+        board = Board(items=items)
+        plotter = Plotter(board, t=turtle.Turtle())
+        size = plotter.turtle.screen.screensize()
+        items = plotter.layout_board(size)
+        frame, scale = plotter.style_items(board.items, size=size)
+        rv = plotter.draw_items(board.items, debug=True, delay=0)
+        plotter.turtle.screen.mainloop()
+
     def test_3_nodes_draw(self):
         nodes, edges = BoardTests.build_3_nodes()
         mock_screen = self.build_screen()
@@ -141,7 +151,9 @@ class PlotterTests(unittest.TestCase):
             witness[type(i)].append(i)
 
         board = Board(items=witness[Node] + witness[Edge])
-        print(*board.toml(), sep="\n")
+        if True:
+            self.display_items(board.items)
+
         self.assertEqual(len(witness.get(Node, [])), 6, board.items)
         self.assertEqual(len(witness.get(Edge, [])), 6, board.items)
 
