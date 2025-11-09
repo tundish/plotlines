@@ -104,6 +104,7 @@ class Plotter:
                 motif(
                     list(group),
                     ratio=state.ratio,
+                    exits=exits,
                     fwd=mode == "ltr",
                     **kwargs
                 )
