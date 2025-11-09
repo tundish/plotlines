@@ -79,6 +79,7 @@ class Plotter:
     def build_graph(
         ending: list[str],
         limit: int,
+        exits: int = None,
         **kwargs
     ) -> Generator[Node | Edge]:
         zone = limit
