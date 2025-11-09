@@ -54,12 +54,13 @@ def main(args):
     logger.info(f"Start")
     logger.debug(f"{args=}")
 
+    items = []
     try:
-        items = list(Plotter.build_graph(**vars(args)))
-        board = Board(items=items)
+        items.extend(Plotter.build_graph(**vars(args)))
     except KeyboardInterrupt:
         pass
 
+    board = Board(items=items)
     if args.format == "plot":
         plotter = Plotter(board, t=turtle.Turtle())
         size = plotter.turtle.screen.screensize()
