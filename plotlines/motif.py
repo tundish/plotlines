@@ -151,19 +151,18 @@ class Motif:
 
         n = 0
         limit = limit or sys.maxsize
+        nodes = []
         while leaves:
             # limit = len(leaves) // 2 if limit is None else min(limit, len(leaves) // 2)
-            nodes = []
             try:
-                pair = random.sample(list(leaves), 2)
-            except ValueError:
-                return
+                pair = (random.choice(list(leaves)), nodes[-1])
+            except IndexError:
+                item = random.choice(list(leaves))
+                nodes.append(node := Node(zone=item.zone))
+                n += 1
+                pair = (item, node)
 
-            nodes.append(node := Node(zone=pair[0].zone))
             leaves -= set(pair)
-
-            yield node
-            n += 1
             if fwd:
                 yield pair[0].connect(node)
                 yield pair[1].connect(node)
@@ -174,7 +173,10 @@ class Motif:
                 n += 2
 
             if n >= limit:
-                return
+                break
+
+        yield from nodes
+
 
     @staticmethod
     def link(items: list[Node | Edge], limit: int = None, fwd=True, stems=2, **kwargs) -> Generator[Node | Edge]:
