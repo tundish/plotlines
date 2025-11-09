@@ -129,3 +129,7 @@ class PlotterTests(unittest.TestCase):
             witness[type(i)].append(i)
         self.assertEqual(len(witness.get(Node, [])), 4)
         self.assertEqual(len(witness.get(Edge, [])), 3)
+
+        board = Board(items=witness[Node] + witness[Edge])
+        self.assertEqual(len(board.initial), 1)
+        self.assertEqual(len(board.terminal), 3)

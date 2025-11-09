@@ -47,7 +47,6 @@ class Plotter:
         self.board = b
         self.turtle = t or turtle.RawTurtle(None)
         self.stamps = dict()
-        self.state = SimpleNamespace()
         try:
             self.words = self.build_words()
         except Exception:
@@ -84,23 +83,29 @@ class Plotter:
         exits: int = None,
         **kwargs
     ) -> Generator[Node | Edge]:
-        zone = limit
+        state = SimpleNamespace(zone=limit)
+
         motif = Motif()
         tally = Counter()
         kwargs = dict(fwd=False)
-        group = deque([Node(label="TODO", zone=zone) for _ in range(ending)])
+        group = deque([Node(label="TODO", zone=state.zone) for _ in range(ending)])
         trails = {} # A walk in G where no Edge is repeated
-        while tally[Node] + tally[Edge] < limit:
-            ratio = Fraction(tally[Node] + tally[Edge], limit)
-            zone -= 1
+        while True:
+            state.spare = limit - tally[Node] + tally[Edge]
+            if state.spare <= 0:
+                break
+
+            state.ratio = Fraction(tally[Node] + tally[Edge], limit)
+            state.zone -= 1
             for n, item in enumerate(
-                motif(list(group), ratio=ratio, **kwargs)
+                motif(list(group), ratio=state.ratio, **kwargs)
             ):
+                print(f"{state=}")
                 if n == 0:
                     yield from group
                     group.clear()
 
-                item.zone = zone
+                item.zone = state.zone
                 tally[type(item)] += 1
                 group.append(item)
                 yield item
