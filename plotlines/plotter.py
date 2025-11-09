@@ -31,6 +31,7 @@ import operator
 import statistics
 import tkinter as tk
 import turtle
+from types import SimpleNamespace
 
 from plotlines.board import Board
 from plotlines.board import Edge
@@ -46,6 +47,7 @@ class Plotter:
         self.board = b
         self.turtle = t or turtle.RawTurtle(None)
         self.stamps = dict()
+        self.state = SimpleNamespace()
         try:
             self.words = self.build_words()
         except Exception:
