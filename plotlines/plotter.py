@@ -96,7 +96,7 @@ class Plotter:
         trails = {} # A walk in G where no Edge is repeated
         while state.step < steps:
             state.step += 1
-            state.ratio = Fraction(state.tally[Node] + state.tally[Edge] - ending, limit)
+            state.ratio = Fraction(state.tally[Node] + state.tally[Edge], limit - exits)
             state.zone -= 1
             for n, item in enumerate(
                 state.motif(
