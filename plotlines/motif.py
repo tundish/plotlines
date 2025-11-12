@@ -113,36 +113,6 @@ class Motif:
         return self.config[keys[pos]]
 
     @staticmethod
-    def diamond(zone: int = 0):
-        # TODO: Allocate label to each node and edge
-        nodes = [Node(zone=0), Node(zone=1), Node(zone=2), Node(zone=3), Node(zone=4)]
-        edges = [
-            nodes[0].connect(nodes[1]),
-            nodes[1].connect(nodes[2]),
-            nodes[1].connect(nodes[3]),
-            nodes[2].connect(nodes[4]),
-            nodes[3].connect(nodes[4]),
-        ]
-        yield from nodes + edges
-
-    @staticmethod
-    def fork(items: list[Node | Edge], limit: int = None, fwd=True, stems=2, **kwargs) -> Generator[Node | Edge]:
-        if fwd:
-            leaves = [i for i in items if isinstance(i, Node) and len(i.connections[1]) == 0]
-        else:
-            leaves = [i for i in items if isinstance(i, Node) and len(i.connections[0]) == 0]
-
-        limit = len(leaves) if limit is None else min(limit, len(leaves))
-        for node in random.sample(leaves, limit):
-            nodes = [Node(zone=node.zone) for _ in range(stems)]
-            yield from nodes
-            for n in nodes:
-                if fwd:
-                    yield node.connect(n)
-                else:
-                    yield n.connect(node)
-
-    @staticmethod
     def fork(items: list[Node | Edge], limit: int = None, fwd=True, exits: int = 2, **kwargs) -> Generator[Node | Edge]:
         if fwd:
             leaves = {i: exits - c for i in items if isinstance(i, Node) and (c := len(i.connections[1])) < exits}
