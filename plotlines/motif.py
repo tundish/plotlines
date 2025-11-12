@@ -69,7 +69,7 @@ class Motif:
         )[0]
         method = getattr(self, edit.name.lower())
         kwargs = dict(params, **kwargs)
-        print(f"{method=} {kwargs=}")
+        print(f"{len(items)=} {ratio=} {conf=} {method=} {kwargs=}")
         rv = list(method(items, **kwargs))
         self.edits.append((edit, len(rv)))
         return rv
@@ -109,7 +109,7 @@ class Motif:
 
     def configure(self, ratio: Fraction):
         keys = list(self.config)
-        pos = max(bisect.bisect_left(keys, ratio), len(keys) - 1)
+        pos = min(bisect.bisect_left(keys, ratio), len(keys) - 1)
         return self.config[keys[pos]]
 
     @staticmethod
