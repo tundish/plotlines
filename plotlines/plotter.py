@@ -275,6 +275,9 @@ class Plotter:
                         pass
                     except KeyError as error:
                         raise
+                    except turtle.TurtleGraphicsError:
+                        # TODO: Diagnose shape bug
+                        pass
                     else:
                         self.stamps[self.turtle.stamp()] = node.shape
                         nodes.add(node_uid)

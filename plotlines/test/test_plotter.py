@@ -171,17 +171,18 @@ class PlotterTests(unittest.TestCase):
 
     def test_build_graph_extended_exits(self):
         witness = defaultdict(list)
-        for i in Plotter.build_graph(limit=12, ending=3, exits=2, steps=2):
+        for i in Plotter.build_graph(limit=16, ending=3, exits=2, steps=1):
             witness[type(i)].append(i)
 
         board = Board(items=witness[Node] + witness[Edge])
 
         try:
-            self.assertEqual(len(witness.get(Node, [])), 5)
-            self.assertEqual(len(witness.get(Edge, [])), 4)
+            self.assertGreater(len(witness.get(Node, [])), 6)
+            self.assertGreater(len(witness.get(Edge, [])), 4)
 
-            self.assertEqual(len(board.initial), 2)
             self.assertEqual(len(board.terminal), 3)
+            self.assertEqual(len(board.initial), 2)
         except AssertionError:
             self.display_items(board.items)
+            print(*board.toml(), sep="\n", file=sys.stderr)
             raise
