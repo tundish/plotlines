@@ -91,12 +91,11 @@ class Plotter:
         endings = [f"ending_{i + 1:02d}" for i in range(ending)]
         group = deque([Node(label=i, zone=state.zone) for i in endings])
         state.tally = Counter(type(i) for i in group)
+        yield from group
+
         trails = {} # A walk in G where no Edge is repeated
         while state.step < steps:
             state.step += 1
-            if state.spare <= 0:
-                break
-
             state.ratio = Fraction(state.tally[Node] + state.tally[Edge] - ending, limit)
             state.zone -= 1
             for n, item in enumerate(
@@ -108,17 +107,19 @@ class Plotter:
                     **kwargs
                 )
             ):
-                if n == 0:
-                    yield from group
-                    group.clear()
 
                 item.zone = state.zone
                 item.state = state
                 state.tally[type(item)] += 1
                 state.spare = limit - state.tally[Node] - state.tally[Edge]
+
                 group.append(item)
                 print(f"{state=}")
                 yield item
+
+                if state.spare <= 0:
+                    break
+
 
     @staticmethod
     def node_size(node: Node):

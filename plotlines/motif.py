@@ -181,7 +181,6 @@ class Motif:
 
         yield from nodes
 
-
     @staticmethod
     def link(items: list[Node | Edge], limit: int = None, fwd=True, stems=2, **kwargs) -> Generator[Node | Edge]:
         if fwd:

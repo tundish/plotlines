@@ -139,11 +139,16 @@ class PlotterTests(unittest.TestCase):
             witness[type(i)].append(i)
 
         board = Board(items=witness[Node] + witness[Edge])
-        self.assertEqual(len(witness.get(Node, [])), 4, board.items)
-        self.assertEqual(len(witness.get(Edge, [])), 3, board.items)
 
-        self.assertEqual(len(board.initial), 1)
-        self.assertEqual(len(board.terminal), 3)
+        try:
+            self.assertEqual(len(witness.get(Node, [])), 4, board.items)
+            self.assertEqual(len(witness.get(Edge, [])), 3, board.items)
+
+            self.assertEqual(len(board.initial), 1)
+            self.assertEqual(len(board.terminal), 3)
+        except AssertionError:
+            self.display_items(board.items)
+            raise
 
     @unittest.skip("dev")
     def test_build_graph_minimal_exits(self):
