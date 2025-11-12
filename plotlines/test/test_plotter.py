@@ -19,6 +19,7 @@ from collections import defaultdict
 from decimal import Decimal
 from fractions import Fraction
 import itertools
+import sys
 import textwrap
 import tkinter as tk
 import tomllib
@@ -135,7 +136,7 @@ class PlotterTests(unittest.TestCase):
 
     def test_build_graph_minimal(self):
         witness = defaultdict(list)
-        for i in Plotter.build_graph(limit=7, ending=3, steps=1):
+        for i in Plotter.build_graph(limit=7, ending=3, steps=1, exits=3):
             witness[type(i)].append(i)
 
         board = Board(items=witness[Node] + witness[Edge])
@@ -148,6 +149,7 @@ class PlotterTests(unittest.TestCase):
             self.assertEqual(len(board.terminal), 3)
         except AssertionError:
             self.display_items(board.items)
+            print(*board.toml(), sep="\n", file=sys.stderr)
             raise
 
     @unittest.skip("dev")

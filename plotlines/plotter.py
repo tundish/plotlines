@@ -81,7 +81,7 @@ class Plotter:
     def build_graph(
         limit: int,
         ending: int,
-        exits: int = 0,
+        exits: int = 2,
         steps: int = sys.maxsize,
         mode: str = "rtl",
         **kwargs
@@ -211,7 +211,7 @@ class Plotter:
                     for item in other.nearby + other.edges
                     for val in node.spacing(item).values()
                     if val != 0
-                ])
+                ] + [sys.maxsize])
                 for z, zone in zones.items()
             }
             crowded = {v: k for k, v in crowding.items()}.get(min(crowding.values()))

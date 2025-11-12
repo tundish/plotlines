@@ -145,29 +145,25 @@ class Motif:
     @staticmethod
     def fork(items: list[Node | Edge], limit: int = None, fwd=True, exits: int = 2, **kwargs) -> Generator[Node | Edge]:
         if fwd:
-            leaves = {i for i in items if isinstance(i, Node) and len(i.connections[1]) == 0}
+            leaves = {i: exits - c for i in items if isinstance(i, Node) and (c := len(i.connections[1])) < exits}
         else:
-            leaves = {i for i in items if isinstance(i, Node) and len(i.connections[0]) == 0}
+            leaves = {i: exits - c for i in items if isinstance(i, Node) and (c := len(i.connections[0])) < exits}
 
         n = 0
         limit = limit or sys.maxsize
-        group = leaves.copy()
-        while leaves:
-            item = random.choice(list(leaves))
-            for _ in range(exits):
-                node = Node(zone=item.zone)
-
+        nodes = []
+        for item, m in leaves.items():
+            for _ in range(m):
+                nodes.append(Node(zone=item.zone))
                 if fwd:
-                    yield item.connect(node)
+                    yield item.connect(nodes[-1])
                 else:
-                    yield node.connect(item)
-                yield node
+                    yield nodes[-1].connect(item)
                 n += 2
-
-            leaves.discard(item)
 
             if n >= limit:
                 break
+        yield from nodes
 
     @staticmethod
     def join(items: list[Node | Edge], limit: int = None, fwd=True, exits: int = 0, **kwargs) -> Generator[Node | Edge]:
@@ -209,7 +205,7 @@ class Motif:
         yield from nodes
 
     @staticmethod
-    def link(items: list[Node | Edge], limit: int = None, fwd=True, stems=2, **kwargs) -> Generator[Node | Edge]:
+    def link(items: list[Node | Edge], limit: int = None, fwd=True, **kwargs) -> Generator[Node | Edge]:
         if fwd:
             nodes = [i for i in items if isinstance(i, Node) and i.connections[1]]
         else:
