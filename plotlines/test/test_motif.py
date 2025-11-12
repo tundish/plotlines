@@ -49,7 +49,7 @@ class MotifTests(unittest.TestCase):
 
     def test_limit_lfork(self):
         group = [Node(), Node()]
-        items = list(Motif.fork(group, limit=1, fwd=False))
+        items = list(Motif.fork(group, limit=4, fwd=False))
         self.assertEqual(len(items), 4)
 
         nodes = [i for i in items if isinstance(i, Node)]
@@ -81,7 +81,7 @@ class MotifTests(unittest.TestCase):
     def test_rstem(self):
         group = [Node(), Node(), Node()]
         group.append(group[0].connect(group[1]))
-        group.extend(Motif.fork(group, fwd=True, stems=1))
+        group.extend(Motif.fork(group, fwd=True, exits=1))
         self.assertEqual(len(group), 8)
 
         nodes = [i for i in group if isinstance(i, Node)]

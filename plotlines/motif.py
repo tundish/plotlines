@@ -143,7 +143,34 @@ class Motif:
                     yield n.connect(node)
 
     @staticmethod
-    def join(items: list[Node | Edge], limit: int = None, fwd=True, exits=None, **kwargs) -> Generator[Node | Edge]:
+    def fork(items: list[Node | Edge], limit: int = None, fwd=True, exits: int = 2, **kwargs) -> Generator[Node | Edge]:
+        if fwd:
+            leaves = {i for i in items if isinstance(i, Node) and len(i.connections[1]) == 0}
+        else:
+            leaves = {i for i in items if isinstance(i, Node) and len(i.connections[0]) == 0}
+
+        n = 0
+        limit = limit or sys.maxsize
+        group = leaves.copy()
+        while leaves:
+            item = random.choice(list(leaves))
+            for _ in range(exits):
+                node = Node(zone=item.zone)
+
+                if fwd:
+                    yield item.connect(node)
+                else:
+                    yield node.connect(item)
+                yield node
+                n += 2
+
+            leaves.discard(item)
+
+            if n >= limit:
+                break
+
+    @staticmethod
+    def join(items: list[Node | Edge], limit: int = None, fwd=True, exits: int = 0, **kwargs) -> Generator[Node | Edge]:
         if fwd:
             leaves = {i for i in items if isinstance(i, Node) and len(i.connections[0]) == 0}
         else:

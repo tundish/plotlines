@@ -81,7 +81,7 @@ class Plotter:
     def build_graph(
         limit: int,
         ending: int,
-        exits: int = None,
+        exits: int = 0,
         steps: int = sys.maxsize,
         mode: str = "rtl",
         **kwargs
