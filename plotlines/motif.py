@@ -148,6 +148,7 @@ class Motif:
         items: list[Node | Edge],
         limit: int = None,
         exits: int = 0,
+        zone=None,
         fwd=True,
         **kwargs
     ) -> Generator[Node | Edge]:
@@ -161,17 +162,15 @@ class Motif:
         group = leaves.copy()
         nodes = []
         while leaves:
+            item = random.choice(list(leaves))
+            z = item.zone if zone is None else (fwd and item.zone + n + 1) or item.zone - n - 1
             if not nodes or len(nodes[-1].ports) >= (exits or sys.maxsize):
-                item = random.choice(list(leaves))
-                nodes.append(node := Node(zone=item.zone))
-                pair = (item, node)
-            else:
-                pair = (random.choice(list(leaves)), nodes[-1])
+                nodes.append(Node(zone=z))
 
             if fwd:
-                yield pair[0].connect(pair[1])
+                yield item.connect(nodes[-1])
             else:
-                yield pair[1].connect(pair[0])
+                yield nodes[-1].connect(item)
 
             leaves -= set(pair)
             n += 1
