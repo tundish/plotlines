@@ -117,6 +117,7 @@ class Motif:
         items: list[Node | Edge],
         limit: int = None,
         exits: int = 2,
+        zone=None,
         fwd=True,
         **kwargs
     ) -> Generator[Node | Edge]:
@@ -128,9 +129,10 @@ class Motif:
         n = 0
         limit = limit or sys.maxsize
         nodes = []
-        for item, m in leaves.items():
+        for n, (item, m) in enumerate(leaves.items()):
             for _ in range(m):
-                nodes.append(Node(zone=item.zone))
+                z = item.zone if zone is None else (fwd and item.zone + n + 1) or item.zone - n - 1
+                nodes.append(Node(zone=z))
                 if fwd:
                     yield item.connect(nodes[-1])
                 else:

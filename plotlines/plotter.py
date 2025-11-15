@@ -110,6 +110,7 @@ class Plotter:
                     group,
                     ratio=state.ratio,
                     exits=exits,
+                    zone=state.zone,
                     fwd=fwd,
                     **kwargs
                 )
