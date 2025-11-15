@@ -89,9 +89,10 @@ class Plotter:
         **kwargs
     ) -> Generator[Node | Edge]:
 
+        fwd = mode == "ltr"
         trails = {} # A walk in G where no Edge is repeated
         zones = defaultdict(list)
-        state = SimpleNamespace(step=0, spare=limit, zone=limit, motif=builder())
+        state = SimpleNamespace(step=0, spare=limit, zone=0 if fwd else limit, motif=builder())
 
         endings = [f"ending_{i + 1:02d}" for i in range(ending)]
         zones[state.zone].extend(Node(label=i, zone=state.zone) for i in endings)
@@ -104,18 +105,21 @@ class Plotter:
 
             state.step += 1
             state.ratio = Fraction(state.tally[Node] + state.tally[Edge], limit - exits)
-            state.zone -= 1
             for n, item in enumerate(
                 state.motif(
                     group,
                     ratio=state.ratio,
                     exits=exits,
-                    fwd=mode == "ltr",
+                    fwd=fwd,
                     **kwargs
                 )
             ):
 
-                item.zone = state.zone
+                try:
+                    state.zone = max(state.zone, item.zone) if fwd else min(state.zone, item.zone)
+                except AttributeError:
+                    pass
+
                 item.state = state
                 state.tally[type(item)] += 1
                 state.spare = limit - state.tally[Node] - state.tally[Edge]
