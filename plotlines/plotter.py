@@ -20,6 +20,7 @@
 from __future__ import annotations  # Until Python 3.14 is everywhere
 
 from collections import Counter
+from collections import defaultdict
 from collections import deque
 from decimal import Decimal
 from fractions import Fraction
@@ -86,21 +87,26 @@ class Plotter:
         mode: str = "rtl",
         **kwargs
     ) -> Generator[Node | Edge]:
+
+        trails = {} # A walk in G where no Edge is repeated
+        zones = defaultdict(list)
         state = SimpleNamespace(step=0, spare=limit, zone=limit, motif=Motif())
 
         endings = [f"ending_{i + 1:02d}" for i in range(ending)]
-        group = deque([Node(label=i, zone=state.zone) for i in endings])
-        state.tally = Counter(type(i) for i in group)
-        yield from group
+        zones[state.zone].extend(Node(label=i, zone=state.zone) for i in endings)
+        state.tally = Counter({Node: len(endings)})
 
-        trails = {} # A walk in G where no Edge is repeated
         while state.step < steps:
+            group = list(itertools.chain.from_iterable(zones.values()))
+            if state.step == 0:
+                yield from group
+
             state.step += 1
             state.ratio = Fraction(state.tally[Node] + state.tally[Edge], limit - exits)
             state.zone -= 1
             for n, item in enumerate(
                 state.motif(
-                    list(group),
+                    group,
                     ratio=state.ratio,
                     exits=exits,
                     fwd=mode == "ltr",
@@ -113,7 +119,7 @@ class Plotter:
                 state.tally[type(item)] += 1
                 state.spare = limit - state.tally[Node] - state.tally[Edge]
 
-                group.append(item)
+                zones[state.zone].append(item)
                 print(f"{state=}")
                 yield item
 
