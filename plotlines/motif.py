@@ -113,7 +113,13 @@ class Motif:
         return self.config[keys[pos]]
 
     @staticmethod
-    def fork(items: list[Node | Edge], limit: int = None, fwd=True, exits: int = 2, **kwargs) -> Generator[Node | Edge]:
+    def fork(
+        items: list[Node | Edge],
+        limit: int = None,
+        fwd=True, exits:
+        int = 2,
+        **kwargs
+    ) -> Generator[Node | Edge]:
         if fwd:
             leaves = {i: exits - c for i in items if isinstance(i, Node) and (c := len(i.connections[1])) < exits}
         else:
@@ -136,7 +142,13 @@ class Motif:
         yield from nodes
 
     @staticmethod
-    def join(items: list[Node | Edge], limit: int = None, fwd=True, exits: int = 0, **kwargs) -> Generator[Node | Edge]:
+    def join(
+        items: list[Node | Edge],
+        limit: int = None,
+        fwd=True,
+        exits: int = 0,
+        **kwargs
+    ) -> Generator[Node | Edge]:
         if fwd:
             leaves = {i for i in items if isinstance(i, Node) and len(i.connections[0]) == 0}
         else:
@@ -175,7 +187,12 @@ class Motif:
         yield from nodes
 
     @staticmethod
-    def link(items: list[Node | Edge], limit: int = None, fwd=True, **kwargs) -> Generator[Node | Edge]:
+    def link(
+        items: list[Node | Edge],
+        limit: int = None,
+        fwd=True,
+        **kwargs
+    ) -> Generator[Node | Edge]:
         if fwd:
             nodes = [i for i in items if isinstance(i, Node) and i.connections[1]]
         else:
@@ -197,7 +214,12 @@ class Motif:
                 yield other.connect(rv)
 
     @staticmethod
-    def loop(items: list[Node | Edge], limit: int = 1, fwd=True, **kwargs) -> Generator[Node | Edge]:
+    def loop(
+        items: list[Node | Edge],
+        limit: int = 1,
+        fwd=True,
+        **kwargs
+    ) -> Generator[Node | Edge]:
         if fwd:
             leaves = [i for i in items if isinstance(i, Node) and len(i.connections[1]) == 0]
         else:
