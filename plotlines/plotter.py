@@ -85,12 +85,13 @@ class Plotter:
         exits: int = 2,
         steps: int = sys.maxsize,
         mode: str = "rtl",
+        builder: type = Motif,
         **kwargs
     ) -> Generator[Node | Edge]:
 
         trails = {} # A walk in G where no Edge is repeated
         zones = defaultdict(list)
-        state = SimpleNamespace(step=0, spare=limit, zone=limit, motif=Motif())
+        state = SimpleNamespace(step=0, spare=limit, zone=limit, motif=builder())
 
         endings = [f"ending_{i + 1:02d}" for i in range(ending)]
         zones[state.zone].extend(Node(label=i, zone=state.zone) for i in endings)

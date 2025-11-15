@@ -68,7 +68,7 @@ class Motif:
             list(conf), k=1, counts=list(conf.values())
         )[0]
         method = getattr(self, edit.name.lower())
-        kwargs = dict(params, **kwargs)
+        kwargs = dict(kwargs, **params)
         print(f"{len(items)=} {ratio=} {conf=} {method=} {kwargs=}")
         rv = list(method(items, **kwargs))
         self.edits.append((edit, len(rv)))
@@ -116,8 +116,8 @@ class Motif:
     def fork(
         items: list[Node | Edge],
         limit: int = None,
-        fwd=True, exits:
-        int = 2,
+        exits: int = 2,
+        fwd=True,
         **kwargs
     ) -> Generator[Node | Edge]:
         if fwd:
@@ -145,8 +145,8 @@ class Motif:
     def join(
         items: list[Node | Edge],
         limit: int = None,
-        fwd=True,
         exits: int = 0,
+        fwd=True,
         **kwargs
     ) -> Generator[Node | Edge]:
         if fwd:
