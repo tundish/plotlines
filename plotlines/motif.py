@@ -160,32 +160,32 @@ class Motif:
         n = 0
         limit = limit or sys.maxsize
         group = leaves.copy()
-        nodes = []
+        node = None
         while leaves:
             item = random.choice(list(leaves))
             z = item.zone if zone is None else (fwd and item.zone + n + 1) or item.zone - n - 1
-            if not nodes or len(nodes[-1].ports) >= (exits or sys.maxsize):
-                nodes.append(Node(zone=z))
+            if not node or len(node.ports) >= (exits or sys.maxsize):
+                node = Node(zone=z)
+                yield node
+                n += 1
 
             if fwd:
-                yield item.connect(nodes[-1])
+                yield item.connect(node)
             else:
-                yield nodes[-1].connect(item)
+                yield node.connect(item)
 
-            leaves -= set(pair)
             n += 1
+            leaves.discard(item)
 
-            if len(nodes) + n >= limit:
+            if n >= limit:
                 break
 
-        while nodes and exits and len(nodes[-1].ports) < exits:
+        while node and exits and len(node.ports) < exits:
             item = random.choice(list(group))
             if fwd:
-                yield item.connect(nodes[-1])
+                yield item.connect(node)
             else:
-                yield nodes[-1].connect(item)
-
-        yield from nodes
+                yield node.connect(item)
 
     @staticmethod
     def link(
