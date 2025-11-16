@@ -54,8 +54,9 @@ def main(args):
     logger.debug(f"{args=}")
 
     items = []
+    steps = args.limit // 10
     try:
-        items.extend(Plotter.build_graph(**vars(args)))
+        items.extend(Plotter.build_graph(steps=steps, **vars(args)))
     except KeyboardInterrupt:
         pass
 
@@ -94,17 +95,14 @@ class InlineValues:
 def parser():
     rv = argparse.ArgumentParser(usage=__doc__, fromfile_prefix_chars="=")
     rv.add_argument("--debug", action="store_true", default=False, help="Display debug information")
-    # rv.add_argument(
-    #     "--ending", type=InlineValues(str), default=["1", "2", "3"], help="Declare named endings"
-    # )
-    rv.add_argument("--ending", type=int, default=3, help="Set the number of endings")
+    rv.add_argument("--ending", type=int, default=4, help="Set the number of endings [4]x.")
     rv.add_argument(
-        "--limit", type=int, default=12,
-        help="Limit the number of Nodes and Edges in the graph."
+        "--limit", type=int, default=100,
+        help="Limit the number of Nodes and Edges in the graph [100]"
     )
     rv.add_argument(
-        "--exits", type=int, default=None,
-        help="Fix the number of exiting Edges from each Node [None]"
+        "--exits", type=int, default=4,
+        help="Fix the number of exiting Edges from each Node [4]"
     )
     rv.add_argument(
         "--format", choices=["plot", "svg", "text", "toml"], default="toml",
