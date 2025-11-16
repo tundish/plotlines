@@ -25,6 +25,7 @@ import string
 import sys
 import tkinter as tk
 import tkinter.font
+import tomllib
 import turtle
 
 from plotlines.board import Board
@@ -50,15 +51,21 @@ def main(args):
     logging.basicConfig(level=level)
     logger = logging.getLogger("plotlines")
 
-    logger.info(f"Start")
     logger.debug(f"{args=}")
+    logger.info(f"Format option: {args.format.upper()}")
 
-    items = []
-    steps = args.limit // 10
-    try:
-        items.extend(Plotter.build_graph(steps=steps, **vars(args)))
-    except KeyboardInterrupt:
-        pass
+    if args.read:
+        text = stdin.read()
+        data = tomllib.loads(text)
+        pprint.pprint(data)
+        return 0
+    else:
+        items = []
+        steps = args.limit // 10
+        try:
+            items = list(Plotter.build_graph(steps=steps, **vars(args)))
+        except KeyboardInterrupt:
+            pass
 
     board = Board(items=items)
     if args.format == "plot":
@@ -72,12 +79,12 @@ def main(args):
         plotter.turtle.screen.mainloop()
     elif args.format == "svg":
         # TODO: implement Renderer
+        # text = sys.stdin.read()
+        # data = tomllib.loads(text)
         logger.warning("SVG output not yet implemented")
     elif args.format == "text":
         pprint.pprint(board, depth=3)
     elif args.format == "toml":
-        # text = sys.stdin.read()
-        # data = tomllib.loads(text)
         print(*board.toml(), sep="\n", file=sys.stdout)
 
     return 0
@@ -95,6 +102,7 @@ class InlineValues:
 def parser():
     rv = argparse.ArgumentParser(usage=__doc__, fromfile_prefix_chars="=")
     rv.add_argument("--debug", action="store_true", default=False, help="Display debug information")
+    rv.add_argument("--read", action="store_true", default=False, help="Read a TOML graph from stdin [False]")
     rv.add_argument("--ending", type=int, default=4, help="Set the number of endings [4]x.")
     rv.add_argument(
         "--limit", type=int, default=100,
