@@ -103,7 +103,7 @@ def parser():
     rv = argparse.ArgumentParser(usage=__doc__, fromfile_prefix_chars="=")
     rv.add_argument("--debug", action="store_true", default=False, help="Display debug information")
     rv.add_argument("--read", action="store_true", default=False, help="Read a TOML graph from stdin [False]")
-    rv.add_argument("--ending", type=int, default=4, help="Set the number of endings [4]x.")
+    rv.add_argument("--ending", type=int, default=4, help="Set the number of endings [4].")
     rv.add_argument(
         "--limit", type=int, default=100,
         help="Limit the number of Nodes and Edges in the graph [100]"
