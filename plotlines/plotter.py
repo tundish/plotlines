@@ -132,7 +132,6 @@ class Plotter:
                 if state.spare <= 0:
                     break
 
-
     @staticmethod
     def node_size(node: Node):
         connections = node.connections
