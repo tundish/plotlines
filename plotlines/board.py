@@ -322,7 +322,7 @@ class Board:
                 except AttributeError:
                     assert isinstance(item, Node)
 
-        return list(survey.get(0, {}).difference(survey.get(1, {})))
+        return list(survey.get(0, set()).difference(survey.get(1, set())))
 
     @property
     def terminal(self) -> list[Node]:
@@ -334,7 +334,7 @@ class Board:
                 except AttributeError:
                     assert isinstance(item, Node)
 
-        return list(survey.get(1, {}).difference(survey.get(0, {})))
+        return list(survey.get(1, set()).difference(survey.get(0, set())))
 
     def toml(self) -> Generator[str]:
         yield "[board]"
