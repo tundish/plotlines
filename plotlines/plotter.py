@@ -126,7 +126,6 @@ class Plotter:
                 state.spare = limit - state.tally[Node] - state.tally[Edge]
 
                 zones[state.zone].append(item)
-                print(f"{state=}")
                 yield item
 
                 if state.spare <= 0:
