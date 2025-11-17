@@ -88,10 +88,8 @@ def main(args):
         items = plotter.draw_items(items, debug=args.debug, delay=0)
         plotter.turtle.screen.mainloop()
     elif args.format == "svg":
-        # TODO: implement Renderer
-        # text = sys.stdin.read()
-        # data = tomllib.loads(text)
-        logger.warning("SVG output not yet implemented")
+        print(*board.svg(width=400, height=300), sep="\n", file=sys.stdout)
+        logger.warning("SVG output complete")
     elif args.format == "text":
         pprint.pprint(board, depth=3)
     elif args.format == "toml":
