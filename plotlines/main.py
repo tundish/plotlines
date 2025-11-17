@@ -59,22 +59,24 @@ def main(args):
         text = sys.stdin.read()
         try:
             data = tomllib.loads(text)
-            pprint.pprint(data)
         except tomllib.TOMLDecodeError as error:
             detail = format(error).splitlines()[-1]
             n = int(re.compile(r"(?<=line )(\d+)").search(detail).group(0))
             logger.warning(detail)
             logger.warning(f"{n}: " + text.splitlines()[n-1])
-        return 0
+            return 1
+        else:
+            board = Board.build(data)
     else:
         items = []
         steps = args.limit // 10
         try:
             items = list(Plotter.build_graph(steps=steps, **vars(args)))
         except KeyboardInterrupt:
-            pass
+            return 0
+        else:
+            board = Board(items=items)
 
-    board = Board(items=items)
     if args.format == "plot":
         plotter = Plotter(board, t=turtle.Turtle())
         size = plotter.turtle.screen.screensize()
