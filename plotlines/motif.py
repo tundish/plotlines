@@ -69,7 +69,6 @@ class Motif:
         )[0]
         method = getattr(self, edit.name.lower())
         kwargs = dict(kwargs, **params)
-        print(f"{len(items)=} {ratio=} {conf=} {method=} {kwargs=}")
         rv = list(method(items, **kwargs))
         self.edits.append((edit, len(rv)))
         return rv

@@ -64,7 +64,7 @@ def main(args):
             detail = format(error).splitlines()[-1]
             n = int(re.compile(r"(?<=line )(\d+)").search(detail).group(0))
             logger.warning(detail)
-            logger.warning(text.splitlines()[n+1])
+            logger.warning(f"{n}: " + text.splitlines()[n-1])
         return 0
     else:
         items = []
