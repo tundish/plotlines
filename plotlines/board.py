@@ -267,7 +267,10 @@ class Board:
 
     @classmethod
     def build(cls, data: dict) -> Board:
-        pass
+        body = data.get("board", {})
+        nodes = [Node.build(**item) for item in body.get("nodes", [])]
+        edges = [Edge.build(**item) for item in body.get("edges", [])]
+        return cls(items=nodes + edges)
 
     def __init__(self, title: str = "", items: list = None):
         self.title = title

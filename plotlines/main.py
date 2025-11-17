@@ -59,6 +59,7 @@ def main(args):
         text = sys.stdin.read()
         try:
             data = tomllib.loads(text)
+            # pprint.pprint(data)
         except tomllib.TOMLDecodeError as error:
             detail = format(error).splitlines()[-1]
             n = int(re.compile(r"(?<=line )(\d+)").search(detail).group(0))
