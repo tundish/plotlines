@@ -133,14 +133,14 @@ class Edge(Item):
         self.style.stroke = RGB(*self.style.stroke)
         self.style.fill = RGB(*self.style.fill)
 
-    def toml(self):
+    def toml(self, array="board.edges"):
         yield f'uid     = "{self.uid}"'
-        yield "[style]"
+        yield f"[{array}.style]"
         yield f'stroke  = {list(self.style.stroke)}'
         yield f'fill    = {list(self.style.fill)}'
         yield f'weight  = {self.style.weight}'
         for port in self.ports:
-            yield f"[[ports]]"
+            yield f"[[{array}.ports]]"
             yield f'uid     = "{port.uid}"'
             yield f'pos     = {list(port.pos or [])}'
             yield f'joins   = {[str(i) for i in port.joins]}'
@@ -247,17 +247,17 @@ class Node(Pin):
         for port in self.ports.values():
             port.pos += vec
 
-    def toml(self):
+    def toml(self, array="board.nodes"):
         yield f'uid     = "{self.uid}"'
         yield f'label   = "{self.label}"'
         yield f'zone    = {self.zone}'
         yield f'pos     = {list(self.pos or [])}'
-        yield "[style]"
+        yield f"[{array}.style]"
         yield f'stroke  = {list(self.style.stroke)}'
         yield f'fill    = {list(self.style.fill)}'
         yield f'weight  = {self.style.weight}'
         for handle, port in self.ports.items():
-            yield f"[ports.{handle}]"
+            yield f"[{array}.ports.{handle}]"
             yield f'uid     = "{port.uid}"'
             yield f'pos     = {list(port.pos or [])}'
             yield f'joins   = {[str(i) for i in port.joins]}'
