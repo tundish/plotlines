@@ -21,6 +21,7 @@ import argparse
 import datetime
 import logging
 import pprint
+import re
 import string
 import sys
 import tkinter as tk
@@ -55,9 +56,15 @@ def main(args):
     logger.info(f"Format option: {args.format.upper()}")
 
     if args.read:
-        text = stdin.read()
-        data = tomllib.loads(text)
-        pprint.pprint(data)
+        text = sys.stdin.read()
+        try:
+            data = tomllib.loads(text)
+            pprint.pprint(data)
+        except tomllib.TOMLDecodeError as error:
+            detail = format(error).splitlines()[-1]
+            n = int(re.compile(r"(?<=line )(\d+)").search(detail).group(0))
+            logger.warning(detail)
+            logger.warning(text.splitlines()[n+1])
         return 0
     else:
         items = []
