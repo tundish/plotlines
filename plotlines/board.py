@@ -270,9 +270,9 @@ class Board:
         body = data.get("board", {})
         nodes = [Node.build(**item) for item in body.get("nodes", [])]
         edges = [Edge.build(**item) for item in body.get("edges", [])]
-        return cls(items=nodes + edges)
+        return cls(items=nodes + edges, **body)
 
-    def __init__(self, title: str = "", items: list = None):
+    def __init__(self, title: str = "", items: list = None, **kwargs):
         self.title = title
         self.shapes = dict()
         self.items = items or list()
