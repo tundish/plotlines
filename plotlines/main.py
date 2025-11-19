@@ -88,7 +88,15 @@ def main(args):
         items = plotter.draw_items(items, debug=args.debug, delay=0)
         plotter.turtle.screen.mainloop()
     elif args.format == "svg":
-        print(*board.svg(width=400, height=300), sep="\n", file=sys.stdout)
+        plotter = Plotter(board, t=turtle.Turtle())
+        size = plotter.turtle.screen.screensize()
+        items = plotter.layout_board(size)
+        frame, scale = plotter.style_items(board.items, size=size)
+        print(f"{frame=}", file=sys.stderr)
+        items = plotter.draw_items(items, debug=args.debug, delay=0)
+        width = frame[1][0] - frame[0][0]
+        height = frame[1][1] - frame[0][1]
+        print(*board.svg(width=width, height=height), sep="\n", file=sys.stdout)
         logger.warning("SVG output complete")
     elif args.format == "text":
         pprint.pprint(board, depth=3)

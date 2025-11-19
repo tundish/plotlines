@@ -357,7 +357,7 @@ class Board:
                 yield ""
 
     def svg(self, width=None, height=None) -> Generator[str]:
-        frame = self.frame(*self.extent(self.items), square=True)
+        frame = self.frame(*self.extent(self.items), square=width==height)
         size = (width, height)
         scale = self.scale_factor(size, frame)
 
