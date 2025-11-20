@@ -378,7 +378,9 @@ class Board:
         ]
         lines = [
             (f'<line x1="{item.ports[0].pos[0]}" y1="{item.ports[0].pos[1]}" '
-            f'x2="{item.ports[1].pos[0]}" y2="{item.ports[1].pos[1]}" />')
+             f'x2="{item.ports[1].pos[0]}" y2="{item.ports[1].pos[1]}" '
+             f'stroke="black" '
+             '/>')
             for item in self.items
             if isinstance(item, Edge)
         ]
