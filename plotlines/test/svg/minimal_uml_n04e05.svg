@@ -29,11 +29,11 @@
         <attr_section_height></attr_section_height>
         <method_section_height></method_section_height>
     </dunnart:node>
-    <dunnart:node dstID="2" type="connector" srcX="-519.254" directed="1" dstX="-297.254" libavoidPath="11 -519.254 -34.1995 1 9 -519.254 -5.19947 0 0 -519.254 -4.80459 0 0 -519.254 28.8005 0 0 -519.254 57.8005 0 0 -519.254 86.8005 0 0 -519.254 99.4102 0 0 -519.254 128.41 0 0 -480.254 128.41 0 0 -336.254 128.41 0 0 -297.254 128.41 2 9 " path="-519.254,-34.1995 -519.254,128.41 -297.254,128.41 " srcID="1" srcY="-34.1995" dstY="128.41" routingType="orthogonal" id="6"/>
-    <dunnart:node dstID="4" type="connector" srcX="-297.254" directed="1" dstX="-173.254" libavoidPath="2 -297.254 128.41 2 9 -173.254 57.8005 4 9 " path="-297.254,128.41 -173.254,57.8005 " srcID="2" srcY="128.41" dstY="57.8005" id="9"/>
-    <dunnart:node dstID="3" type="connector" srcX="-519.254" directed="1" dstX="-295.254" libavoidPath="2 -519.254 -34.1995 1 9 -295.254 -33.8046 3 9 " path="-519.254,-34.1995 -295.254,-33.8046 " srcID="1" srcY="-34.1995" dstY="-33.8046" id="7"/>
-    <dunnart:node dstID="2" type="connector" srcX="-519.254" directed="1" dstX="-297.254" libavoidPath="2 -519.254 -34.1995 1 9 -297.254 128.41 2 9 " path="-519.254,-34.1995 -297.254,128.41 " srcID="1" srcY="-34.1995" dstY="128.41" id="5"/>
-    <dunnart:node dstID="4" type="connector" srcX="-295.254" directed="1" dstX="-173.254" libavoidPath="2 -295.254 -33.8046 3 9 -173.254 57.8005 4 9 " path="-295.254,-33.8046 -173.254,57.8005 " srcID="3" srcY="-33.8046" dstY="57.8005" id="8"/>
+    <dunnart:node dstID="2" type="connector" srcX="-519.254" directed="1" dstX="-297.254" path="-519.254,-34.1995 -519.254,128.41 -297.254,128.41 " srcID="1" srcY="-34.1995" dstY="128.41" routingType="orthogonal" id="6"/>
+    <dunnart:node dstID="4" type="connector" srcX="-297.254" directed="1" dstX="-173.254" path="-297.254,128.41 -173.254,57.8005 " srcID="2" srcY="128.41" dstY="57.8005" id="9"/>
+    <dunnart:node dstID="3" type="connector" srcX="-519.254" directed="1" dstX="-295.254" path="-519.254,-34.1995 -295.254,-33.8046 " srcID="1" srcY="-34.1995" dstY="-33.8046" id="7"/>
+    <dunnart:node dstID="2" type="connector" srcX="-519.254" directed="1" dstX="-297.254" path="-519.254,-34.1995 -297.254,128.41 " srcID="1" srcY="-34.1995" dstY="128.41" id="5"/>
+    <dunnart:node dstID="4" type="connector" srcX="-295.254" directed="1" dstX="-173.254" path="-295.254,-33.8046 -173.254,57.8005 " srcID="3" srcY="-33.8046" dstY="57.8005" id="8"/>
     <dunnart:node cy="-34.1995" type="org.dunnart.shapes.umlClass" layeredStartChannelPadding="35" layeredEndChannelPadding="35" height="50" width="70" cx="-519.254" id="1" label="intro">
         <class_name></class_name>
         <class_stereotype></class_stereotype>

@@ -38,13 +38,3 @@ class Handle(enum.IntFlag):
     HAN_CENTER = 512
     HAN_POINT  = 1024
     HAN_SEPARA = 2048
-
-#  libavoidPath
-"""
-pathStr += str.sprintf("%d ", (int) route.size());
-    for (size_t i = 0; i < route.size(); ++i)
-    {
-        pathStr += str.sprintf("%g %g %d %d ", route.ps[i].x, route.ps[i].y,
-                route.ps[i].id, route.ps[i].vn);
-    }
-"""
