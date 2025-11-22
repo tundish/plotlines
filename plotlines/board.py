@@ -399,3 +399,20 @@ class Board:
         yield from polygons
         yield from lines
         yield "</svg>"
+
+    def svg(self, width=None, height=None) -> Generator[str]:
+        defs = []
+        frame = self.frame(*self.extent(self.items), square=width==height)
+        yield textwrap.dedent(f"""
+        <svg xmlns="http://www.w3.org/2000/svg"
+             xmlns:xlink="http://www.w3.org/1999/xlink"
+        width="{width}" height="{height}"
+        viewBox="{frame[0][0]} {frame[0][1]} {frame[1][0]} {frame[1][1]}"
+        preserveAspectRatio="xMidYMid slice"
+        >
+        """)
+        yield "<title>{0}</title>".format(html.escape(self.title)) if self.title else ""
+        yield "<defs>"
+        yield from defs
+        yield "</defs>"
+        yield "</svg>"
