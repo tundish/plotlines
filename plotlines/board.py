@@ -35,6 +35,8 @@ import uuid
 import weakref
 
 from plotlines.coordinates import Coordinates
+from plotlines.dunnart import LayoutMode
+from plotlines.dunnart import OptimizationMethod
 
 RGB = functools.partial(Coordinates, coerce=int)
 
@@ -265,6 +267,11 @@ class Node(Pin):
 
 class Board:
 
+    xml_options = dict(
+        layoutMode=LayoutMode.FlowLayout,
+        layoutMethod=OptimizationMethod.MAJORIZATION,
+    )
+
     @classmethod
     def build(cls, data: dict) -> Board:
         body = data.get("board", {})
@@ -409,5 +416,6 @@ class Board:
         >
         """)
         yield "<title>{0}</title>".format(html.escape(self.title)) if self.title else ""
-        yield '<dunnart:options />'
+        options = [f'{k}="{v}"' for k, v in self.xml_options.items()]
+        yield '<dunnart:options {0}/>'.format(" ".join(options))
         yield "</svg>"

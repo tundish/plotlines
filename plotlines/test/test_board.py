@@ -324,3 +324,4 @@ class BoardTests(unittest.TestCase):
         options = root.find("dunnart:options", namespaces=vars(ns))
         self.assertIsNotNone(options, xml)
         self.assertEqual(options.tag, ET.QName(ns.dunnart, "options"))
+        print(xml)

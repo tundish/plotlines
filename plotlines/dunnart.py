@@ -38,3 +38,27 @@ class Handle(enum.IntFlag):
     HAN_CENTER = 512
     HAN_POINT  = 1024
     HAN_SEPARA = 2048
+
+
+class FlowDirection(enum.IntEnum):
+    FlowDown  = 0
+    FlowLeft  = 1
+    FlowUp    = 2
+    FlowRight = 3
+
+
+class LayeredAlignment(enum.IntEnum):
+    ShapeMiddle = 0
+    ShapeStart = 1
+    ShapeEnd = 2
+
+
+class LayoutMode(enum.IntEnum):
+    OrganicLayout = 0
+    FlowLayout    = 1
+    LayeredLayout = 2
+
+
+class OptimizationMethod(enum.IntEnum):
+    MAJORIZATION = 0
+    STEEPESTDESCENT = 1
