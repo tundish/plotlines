@@ -255,7 +255,7 @@ class BoardTests(unittest.TestCase):
             for field in dataclasses.fields(Node):
                 with self.subTest(field=field):
                     try:
-                        self.assertEqual(sorted(getattr(node, field.name)), sorted(getattr(check, field.name)), "\n" + toml)
+                        self.assertEqual(format(getattr(node, field.name)), format(getattr(check, field.name)), "\n" + toml)
                     except TypeError:
                         self.assertEqual(getattr(node, field.name), getattr(check, field.name), "\n" + toml)
 
@@ -340,11 +340,7 @@ class BoardTests(unittest.TestCase):
         for e, edge in enumerate(edges):
             with self.subTest(e=e, edge=edge):
                 self.assertTrue(edge.attrib["id"], edge)
-                self.assertTrue(edge.attrib["srcId"], edge)
-                self.assertTrue(edge.attrib["dstId"], edge)
-                self.assertEqual(edge.attrib["srcX"], "0", edge)
-                self.assertEqual(edge.attrib["srcY"], "0", edge)
-                self.assertEqual(edge.attrib["dstX"], "0", edge)
-                self.assertEqual(edge.attrib["dstY"], "0", edge)
+                self.assertTrue(edge.attrib["srcID"], edge)
+                self.assertTrue(edge.attrib["dstID"], edge)
         self.assertEqual(len(edges), 2, edges)
         print(xml)

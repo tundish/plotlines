@@ -265,6 +265,7 @@ class Node(Pin):
         yield f'label   = "{self.label}"'
         yield f'zone    = {self.zone}'
         yield f'pos     = {list(self.pos or [])}'
+        yield f'area    = {self.area}'
         yield f"[{scope}style]"
         yield f'stroke  = {list(self.style.stroke)}'
         yield f'fill    = {list(self.style.fill)}'
@@ -281,7 +282,7 @@ class Board:
     xml_options = dict(
         layoutMode=LayoutMode.OrganicLayout,
         layoutMethod=OptimizationMethod.MAJORIZATION,
-        defaultIdealConnectorLength=1
+        defaultIdealConnectorLength=2,
     )
 
     @classmethod
@@ -434,11 +435,11 @@ class Board:
         yield '<dunnart:options {0}/>'.format(" ".join(options))
         nodes = [i for i in self.items if isinstance(i, Node)]
         for node in nodes:
-            size = max(math.sqrt(node.area), 10)
+            size = math.sqrt(node.area)
             yield (
                 f'<dunnart:node id="{lookup[node.uid]}" type="org.dunnart.shapes.rect" '
                 f'cx="{node.pos[0]}" cy="{node.pos[1]}" '
-                f'width="{size}" height="{size}" '
+                f'width="{size:.2f}" height="{size:.2f}" '
                 '/>'
             )
         edges = [i for i in self.items if isinstance(i, Edge)]
@@ -447,9 +448,7 @@ class Board:
             yield (
                 f'<dunnart:node id="{lookup[edge.uid]}" type="connector" '
                 f'srcID="{lookup[j[0].uid]}" dstID="{lookup[j[1].uid]}" '
-                f'srcX="{j[0].pos[0]}" srcY="{j[0].pos[1]}" dstX="{j[1].pos[0]}" dstY="{j[1].pos[1]}" '
-                f'path="{j[0].pos[0]},{j[0].pos[1]} {j[1].pos[0]},{j[1].pos[1]}" '
-                # 'directed="1" '
+                'directed="1" '
                 '/>'
             )
         yield "</svg>"
