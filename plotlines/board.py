@@ -401,7 +401,6 @@ class Board:
         yield "</svg>"
 
     def xml(self, width=None, height=None) -> Generator[str]:
-        defs = []
         frame = self.frame(*self.extent(self.items), square=width==height)
         yield textwrap.dedent(f"""
         <svg xmlns="http://www.w3.org/2000/svg"
@@ -410,7 +409,5 @@ class Board:
         >
         """)
         yield "<title>{0}</title>".format(html.escape(self.title)) if self.title else ""
-        yield "<defs>"
-        yield from defs
-        yield "</defs>"
+        yield '<dunnart:options />'
         yield "</svg>"

@@ -320,3 +320,7 @@ class BoardTests(unittest.TestCase):
 
         title = root.find(f"svg:title", vars(ns))
         self.assertEqual(title.text, "Test")
+
+        options = root.find("dunnart:options", namespaces=vars(ns))
+        self.assertIsNotNone(options, xml)
+        self.assertEqual(options.tag, ET.QName(ns.dunnart, "options"))
