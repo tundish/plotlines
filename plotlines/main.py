@@ -92,7 +92,6 @@ def main(args):
         size = plotter.turtle.screen.screensize()
         items = plotter.layout_board(size)
         frame, scale = plotter.style_items(board.items, size=size)
-        print(f"{frame=}", file=sys.stderr)
         items = plotter.draw_items(items, debug=args.debug, delay=0)
         width = frame[1][0] - frame[0][0]
         height = frame[1][1] - frame[0][1]
