@@ -56,6 +56,7 @@ class Item:
 
     uid:        uuid.UUID = dataclasses.field(default_factory=uuid.uuid4, kw_only=True)
     style:      Style = dataclasses.field(default_factory=Style, kw_only=True)
+    label:      str = dataclasses.field(default="", kw_only=True)
     contents:   list = dataclasses.field(default_factory=list, compare=False, kw_only=True)
 
     @staticmethod
@@ -94,7 +95,6 @@ class Pin(Item):
     pos:        Coordinates = None
     area:       int = dataclasses.field(default=4, kw_only=True)
     shape:      str = dataclasses.field(default="", kw_only=True)
-    label:      str = dataclasses.field(default="", kw_only=True)
     zone:       int = dataclasses.field(default=0, kw_only=True)
 
 
@@ -148,6 +148,7 @@ class Edge(Item):
 
     def toml(self, scope="board.edges."):
         yield f'uid     = "{self.uid}"'
+        yield f'label   = "{self.label}"'
         yield f"[{scope}style]"
         yield f'stroke  = {list(self.style.stroke)}'
         yield f'fill    = {list(self.style.fill)}'
@@ -211,8 +212,8 @@ class Node(Pin):
     def handle(self, fmt="{0:02d}"):
         return next(n for n in (fmt.format(n) for n in itertools.count(len(self.ports))) if n not in self.ports)
 
-    def connect(self, other: Pin, *pos, edge=None):
-        rv = edge or Edge()
+    def connect(self, other: Pin, *pos, edge=None, **kwargs):
+        rv = edge or Edge(**kwargs)
         rv.ports[0].joins.add(self.uid)
         self.ports[self.handle()] = rv.ports[0]
 
@@ -437,6 +438,7 @@ class Board:
             yield (
                 f'<dunnart:node id="{node.uid}" '
                 f'type="org.dunnart.shapes.rect" '
+                f'label="{node.label}" '
                 f'cx="{node.pos[0]}" cy="{node.pos[1]}" '
                 f'width="{size:.2f}" height="{size:.2f}" '
                 '/>'
@@ -446,6 +448,7 @@ class Board:
             j = edge.joins
             yield (
                 f'<dunnart:node id="{edge.uid}" type="connector" '
+                f'label="{edge.label}" '
                 f'srcID="{j[0].uid}" dstID="{j[1].uid}" '
                 'directed="1" '
                 '/>'

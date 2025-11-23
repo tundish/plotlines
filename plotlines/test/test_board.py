@@ -137,13 +137,17 @@ class BoardTests(unittest.TestCase):
     @staticmethod
     def build_3_nodes():
         nodes = [
-            Node((20, 20), area=1600),
-            Node((70, 20), area=1600, style=Style(stroke=RGB(127, 127, 127), fill=RGB(32, 32, 32), weight=10)),
-            Node((120, 20), area=1600)
+            Node((20, 20), area=1600, label="a"),
+            Node(
+                (70, 20), area=1600,
+                label="b", style=Style(stroke=RGB(127, 127, 127),
+                fill=RGB(32, 32, 32), weight=10)
+            ),
+            Node((120, 20), area=1600, label="c")
         ]
         edges = [
-            nodes[0].connect(nodes[1], C(30, 20), C(60, 20)),
-            nodes[1].connect(nodes[2], C(80, 20), C(110, 20)),
+            nodes[0].connect(nodes[1], C(30, 20), C(60, 20), label="d"),
+            nodes[1].connect(nodes[2], C(80, 20), C(110, 20), label="e"),
         ]
         return nodes, edges
 
