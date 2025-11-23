@@ -324,4 +324,10 @@ class BoardTests(unittest.TestCase):
         options = root.find("dunnart:options", namespaces=vars(ns))
         self.assertIsNotNone(options, xml)
         self.assertEqual(options.tag, ET.QName(ns.dunnart, "options"))
-        print(xml)
+
+        nodes = root.findall("dunnart:node", namespaces=vars(ns))
+        for n, node in enumerate(nodes):
+            with self.subTest(n=n, node=node):
+                self.assertTrue(node.attrib["id"], node)
+                self.assertEqual(node.attrib["type"], "org.dunnart.shapes.rect")
+        self.assertEqual(len(nodes), 3, nodes)
