@@ -304,7 +304,11 @@ class BoardTests(unittest.TestCase):
 
         board = Board(title="Test", items=nodes + edges)
         xml = "\n".join(board.xml(*screen_size))
-        root = ET.fromstring(xml)
+        try:
+            root = ET.fromstring(xml)
+        except ET.ParseError:
+            print(xml)
+            raise
 
         ns = NS(
             svg="http://www.w3.org/2000/svg",
@@ -325,9 +329,22 @@ class BoardTests(unittest.TestCase):
         self.assertIsNotNone(options, xml)
         self.assertEqual(options.tag, ET.QName(ns.dunnart, "options"))
 
-        nodes = root.findall("dunnart:node", namespaces=vars(ns))
+        nodes = root.findall("dunnart:node[@type!='connector']", namespaces=vars(ns))
         for n, node in enumerate(nodes):
             with self.subTest(n=n, node=node):
                 self.assertTrue(node.attrib["id"], node)
                 self.assertEqual(node.attrib["type"], "org.dunnart.shapes.rect")
         self.assertEqual(len(nodes), 3, nodes)
+
+        edges = root.findall("dunnart:node[@type='connector']", namespaces=vars(ns))
+        for e, edge in enumerate(edges):
+            with self.subTest(e=e, edge=edge):
+                self.assertTrue(edge.attrib["id"], edge)
+                self.assertTrue(edge.attrib["srcId"], edge)
+                self.assertTrue(edge.attrib["dstId"], edge)
+                self.assertEqual(edge.attrib["srcX"], "0", edge)
+                self.assertEqual(edge.attrib["srcY"], "0", edge)
+                self.assertEqual(edge.attrib["dstX"], "0", edge)
+                self.assertEqual(edge.attrib["dstY"], "0", edge)
+        self.assertEqual(len(edges), 2, edges)
+        print(xml)

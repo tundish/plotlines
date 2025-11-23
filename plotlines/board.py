@@ -29,6 +29,7 @@ import html
 import itertools
 import logging
 from numbers import Number
+import sys
 import textwrap
 import typing
 import uuid
@@ -134,6 +135,15 @@ class Edge(Item):
 
         self.style.stroke = RGB(*self.style.stroke)
         self.style.fill = RGB(*self.style.fill)
+
+    @property
+    def joins(self):
+        return [
+            n
+            for p in self.ports
+            for uid in p.joins
+            if isinstance(n := self.store.get(uid), Node) and uid != self.uid
+        ]
 
     def toml(self, scope="board.edges."):
         yield f'uid     = "{self.uid}"'
@@ -415,10 +425,22 @@ class Board:
              xmlns:dunnart="http://www.dunnart.org/ns/dunnart"
         >
         """)
+        lookup = {i.uid : n for n, i in zip(itertools.count(1), self.items)}
+
         yield "<title>{0}</title>".format(html.escape(self.title)) if self.title else ""
         options = [f'{k}="{v}"' for k, v in self.xml_options.items()]
         yield '<dunnart:options {0}/>'.format(" ".join(options))
         nodes = [i for i in self.items if isinstance(i, Node)]
         for node in nodes:
-            yield f'<dunnart:node id="{node.uid}" type="org.dunnart.shapes.rect" />'
+            yield f'<dunnart:node id="{lookup[node.uid]}" type="org.dunnart.shapes.rect" />'
+        edges = [i for i in self.items if isinstance(i, Edge)]
+        for edge in edges:
+            j = edge.joins
+            yield (
+                f'<dunnart:node id="{lookup[edge.uid]}" type="connector" '
+                f'srcId="{lookup[j[0].uid]}" dstId="{lookup[j[1].uid]}" '
+                f'srcX="{j[0].pos[0]}" srcY="{j[0].pos[1]}" dstX="{j[1].pos[0]}" dstY="{j[1].pos[1]}" '
+                'directed="1" '
+                '/>'
+            )
         yield "</svg>"
