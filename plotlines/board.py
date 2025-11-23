@@ -28,6 +28,7 @@ import functools
 import html
 import itertools
 import logging
+import math
 from numbers import Number
 import sys
 import textwrap
@@ -278,8 +279,9 @@ class Node(Pin):
 class Board:
 
     xml_options = dict(
-        layoutMode=LayoutMode.FlowLayout,
+        layoutMode=LayoutMode.OrganicLayout,
         layoutMethod=OptimizationMethod.MAJORIZATION,
+        defaultIdealConnectorLength=1
     )
 
     @classmethod
@@ -432,9 +434,11 @@ class Board:
         yield '<dunnart:options {0}/>'.format(" ".join(options))
         nodes = [i for i in self.items if isinstance(i, Node)]
         for node in nodes:
+            size = max(math.sqrt(node.area), 10)
             yield (
                 f'<dunnart:node id="{lookup[node.uid]}" type="org.dunnart.shapes.rect" '
                 f'cx="{node.pos[0]}" cy="{node.pos[1]}" '
+                f'width="{size}" height="{size}" '
                 '/>'
             )
         edges = [i for i in self.items if isinstance(i, Edge)]
@@ -442,10 +446,10 @@ class Board:
             j = edge.joins
             yield (
                 f'<dunnart:node id="{lookup[edge.uid]}" type="connector" '
-                f'srcId="{lookup[j[0].uid]}" dstId="{lookup[j[1].uid]}" '
+                f'srcID="{lookup[j[0].uid]}" dstID="{lookup[j[1].uid]}" '
                 f'srcX="{j[0].pos[0]}" srcY="{j[0].pos[1]}" dstX="{j[1].pos[0]}" dstY="{j[1].pos[1]}" '
-                f'path="{j[0].pos[0]},{j[0].pos[1]},{j[1].pos[0]},{j[1].pos[1]}" '
-                'directed="1" '
+                f'path="{j[0].pos[0]},{j[0].pos[1]} {j[1].pos[0]},{j[1].pos[1]}" '
+                # 'directed="1" '
                 '/>'
             )
         yield "</svg>"
