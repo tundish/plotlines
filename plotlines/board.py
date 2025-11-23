@@ -432,7 +432,11 @@ class Board:
         yield '<dunnart:options {0}/>'.format(" ".join(options))
         nodes = [i for i in self.items if isinstance(i, Node)]
         for node in nodes:
-            yield f'<dunnart:node id="{lookup[node.uid]}" type="org.dunnart.shapes.rect" />'
+            yield (
+                f'<dunnart:node id="{lookup[node.uid]}" type="org.dunnart.shapes.rect" '
+                f'cx="{node.pos[0]}" cy="{node.pos[1]}" '
+                '/>'
+            )
         edges = [i for i in self.items if isinstance(i, Edge)]
         for edge in edges:
             j = edge.joins
@@ -440,6 +444,7 @@ class Board:
                 f'<dunnart:node id="{lookup[edge.uid]}" type="connector" '
                 f'srcId="{lookup[j[0].uid]}" dstId="{lookup[j[1].uid]}" '
                 f'srcX="{j[0].pos[0]}" srcY="{j[0].pos[1]}" dstX="{j[1].pos[0]}" dstY="{j[1].pos[1]}" '
+                f'path="{j[0].pos[0]},{j[0].pos[1]},{j[1].pos[0]},{j[1].pos[1]}" '
                 'directed="1" '
                 '/>'
             )
