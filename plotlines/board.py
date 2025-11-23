@@ -400,7 +400,7 @@ class Board:
         yield from lines
         yield "</svg>"
 
-    def svg(self, width=None, height=None) -> Generator[str]:
+    def xml(self, width=None, height=None) -> Generator[str]:
         defs = []
         frame = self.frame(*self.extent(self.items), square=width==height)
         yield textwrap.dedent(f"""

@@ -249,6 +249,7 @@ class BoardTests(unittest.TestCase):
                 check = Node.build(**data)
             except Exception:
                 self.fail("\n" + toml)
+                raise
 
             self.assertEqual(node.uid, check.uid)
             for field in dataclasses.fields(Node):
@@ -266,7 +267,7 @@ class BoardTests(unittest.TestCase):
             toml = "\n".join(edge.toml())
             try:
                 data = tomllib.loads(toml)
-                check = Edge.build(**data)
+                check = Edge.build(**data["edges"][0])
             except Exception:
                 self.fail("\n" + toml)
 
