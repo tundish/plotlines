@@ -87,7 +87,7 @@ def main(args):
         logger.debug(tk.font.families())
         items = plotter.draw_items(items, debug=args.debug, delay=0)
         plotter.turtle.screen.mainloop()
-    elif args.format == "svg":
+    elif args.format in ("svg", "xml"):
         plotter = Plotter(board, t=turtle.Turtle())
         size = plotter.turtle.screen.screensize()
         items = plotter.layout_board(size)
@@ -96,8 +96,12 @@ def main(args):
         items = plotter.draw_items(items, debug=args.debug, delay=0)
         width = frame[1][0] - frame[0][0]
         height = frame[1][1] - frame[0][1]
-        print(*board.svg(width=width, height=height), sep="\n", file=sys.stdout)
-        logger.warning("SVG output complete")
+        if args.format == "svg":
+            print(*board.svg(width=width, height=height), sep="\n", file=sys.stdout)
+            logger.warning("SVG output complete")
+        else:
+            print(*board.xml(width=width, height=height), sep="\n", file=sys.stdout)
+            logger.warning("XML output complete")
     elif args.format == "text":
         pprint.pprint(board, depth=3)
     elif args.format == "toml":
@@ -129,7 +133,7 @@ def parser():
         help="Fix the number of exiting Edges from each Node [4]"
     )
     rv.add_argument(
-        "--format", choices=["plot", "svg", "text", "toml"], default="toml",
+        "--format", choices=["plot", "svg", "text", "toml", "xml"], default="toml",
         help="Specify format of output [text]"
     )
     rv.convert_arg_line_to_args = lambda x: x.split()
