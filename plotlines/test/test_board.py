@@ -243,7 +243,7 @@ class BoardTests(unittest.TestCase):
     def test_3_nodes_toml(self):
         nodes, edges = self.build_3_nodes()
         for node in nodes:
-            toml = "\n".join(node.toml())
+            toml = "\n".join(node.toml(scope=""))
             try:
                 data = tomllib.loads(toml)
                 check = Node.build(**data)
@@ -264,10 +264,10 @@ class BoardTests(unittest.TestCase):
     def test_2_edges_toml(self):
         nodes, edges = self.build_3_nodes()
         for edge in edges:
-            toml = "\n".join(edge.toml())
+            toml = "\n".join(edge.toml(scope=""))
             try:
                 data = tomllib.loads(toml)
-                check = Edge.build(**data["edges"][0])
+                check = Edge.build(**data)
             except Exception:
                 self.fail("\n" + toml)
 

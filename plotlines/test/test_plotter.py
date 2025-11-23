@@ -182,7 +182,6 @@ class PlotterTests(unittest.TestCase):
 
             self.assertLessEqual(len(board.terminal), 4)
             self.assertLessEqual(sum(len(i) for i in witness.values()), 110)
-            print(*[f"{k} {len(v)}" for k, v in witness.items()])
         except AssertionError:
             self.display_items(board.items)
             print(*board.toml(), sep="\n", file=sys.stderr)
