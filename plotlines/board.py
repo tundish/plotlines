@@ -418,4 +418,7 @@ class Board:
         yield "<title>{0}</title>".format(html.escape(self.title)) if self.title else ""
         options = [f'{k}="{v}"' for k, v in self.xml_options.items()]
         yield '<dunnart:options {0}/>'.format(" ".join(options))
+        nodes = [i for i in self.items if isinstance(i, Node)]
+        for node in nodes:
+            yield f'<dunnart:node id="{node.uid}" type="org.dunnart.shapes.rect" />'
         yield "</svg>"
