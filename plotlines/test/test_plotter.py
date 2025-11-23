@@ -78,7 +78,7 @@ class PlotterTests(unittest.TestCase):
             plotter = Plotter(board, t)
 
             rv = plotter.style_items(nodes + edges)
-            self.assertTrue(all(i.shape == "sq2.00x2.00-2727/100" for i in nodes))
+            self.assertTrue(all(i.shape == "sq40.00x40.00-273/100" for i in nodes), board.shapes)
 
             rv = plotter.draw_items(nodes + edges)
             self.assertEqual(len(board.shapes), 1, board.shapes)

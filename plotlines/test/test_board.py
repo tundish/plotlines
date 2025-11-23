@@ -255,9 +255,9 @@ class BoardTests(unittest.TestCase):
             for field in dataclasses.fields(Node):
                 with self.subTest(field=field):
                     try:
-                        self.assertEqual(format(getattr(node, field.name)), format(getattr(check, field.name)), "\n" + toml)
+                        self.assertEqual(sorted(getattr(node, field.name)), sorted(getattr(check, field.name)), "\n" + toml)
                     except TypeError:
-                        self.assertEqual(getattr(node, field.name), getattr(check, field.name), "\n" + toml)
+                        self.assertEqual(format(getattr(node, field.name)), format(getattr(check, field.name)), "\n" + toml)
 
             self.assertEqual(node, check)
 
