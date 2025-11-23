@@ -428,8 +428,6 @@ class Board:
              xmlns:dunnart="http://www.dunnart.org/ns/dunnart"
         >
         """)
-        lookup = {i.uid : n for n, i in zip(itertools.count(1), self.items)}
-
         yield "<title>{0}</title>".format(html.escape(self.title)) if self.title else ""
         options = [f'{k}="{v}"' for k, v in self.xml_options.items()]
         yield '<dunnart:options {0}/>'.format(" ".join(options))
@@ -437,7 +435,8 @@ class Board:
         for node in nodes:
             size = math.sqrt(node.area)
             yield (
-                f'<dunnart:node id="{lookup[node.uid]}" type="org.dunnart.shapes.rect" '
+                f'<dunnart:node id="{node.uid}" '
+                f'type="org.dunnart.shapes.rect" '
                 f'cx="{node.pos[0]}" cy="{node.pos[1]}" '
                 f'width="{size:.2f}" height="{size:.2f}" '
                 '/>'
@@ -446,8 +445,8 @@ class Board:
         for edge in edges:
             j = edge.joins
             yield (
-                f'<dunnart:node id="{lookup[edge.uid]}" type="connector" '
-                f'srcID="{lookup[j[0].uid]}" dstID="{lookup[j[1].uid]}" '
+                f'<dunnart:node id="{edge.uid}" type="connector" '
+                f'srcID="{j[0].uid}" dstID="{j[1].uid}" '
                 'directed="1" '
                 '/>'
             )
