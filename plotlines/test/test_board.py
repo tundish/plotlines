@@ -297,3 +297,25 @@ class BoardTests(unittest.TestCase):
 
         title = root.find(f"svg:title", vars(ns))
         self.assertEqual(title.text, "Test")
+
+    def test_3_nodes_xml(self):
+        screen_size = (400, 300)
+        nodes, edges = self.build_3_nodes()
+
+        board = Board(title="Test", items=nodes + edges)
+        xml = "\n".join(board.xml(*screen_size))
+        root = ET.fromstring(xml)
+
+        ns = NS(
+            svg="http://www.w3.org/2000/svg",
+            xlink="http://www.w3.org/1999/xlink",
+            dunnart="http://www.dunnart.org/ns/dunnart"
+        )
+        self.assertEqual(root.tag, ET.QName(ns.svg, "svg"))
+        self.assertIn('xmlns:xlink="http://www.w3.org/1999/xlink"', xml)
+
+        self.assertNotIn("viewBox", root.attrib)
+        self.assertNotIn("preserveAspectRatio", root.attrib)
+
+        title = root.find(f"svg:title", vars(ns))
+        self.assertEqual(title.text, "Test")
