@@ -313,6 +313,7 @@ class BoardTests(unittest.TestCase):
         )
         self.assertEqual(root.tag, ET.QName(ns.svg, "svg"))
         self.assertIn('xmlns:xlink="http://www.w3.org/1999/xlink"', xml)
+        self.assertIn('xmlns:dunnart="http://www.dunnart.org/ns/dunnart"', xml)
 
         self.assertNotIn("viewBox", root.attrib)
         self.assertNotIn("preserveAspectRatio", root.attrib)
