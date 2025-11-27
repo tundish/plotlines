@@ -35,6 +35,7 @@ import textwrap
 import typing
 import uuid
 import weakref
+import xml.etree.ElementTree as ET
 
 from plotlines.coordinates import Coordinates
 from plotlines.dunnart import LayoutMode
@@ -359,6 +360,9 @@ class Board:
                     assert isinstance(item, Node)
 
         return list(survey.get(1, set()).difference(survey.get(0, set())))
+
+    def merge(self, root: ET) -> dict:
+        return dict()
 
     def toml(self) -> Generator[str]:
         yield "[board]"
