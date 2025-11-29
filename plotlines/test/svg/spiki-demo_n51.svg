@@ -387,16 +387,23 @@ font-family="Ubuntu" font-size="10" font-weight="400" font-style="normal"
 </g>
 <g fill="none" stroke="black" stroke-width="1" fill-rule="evenodd" stroke-linecap="square" stroke-linejoin="bevel" >
 
-<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,-944.156,513.425)"
+<g fill="none" stroke="#00ff00" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,-944.156,513.425)"
 font-family="Ubuntu" font-size="10" font-weight="400" font-style="normal" 
 >
 <path vector-effect="non-scaling-stroke" fill-rule="evenodd" d="M0,0 L160.999,306.732"/>
 </g>
 
-<g fill="#000000" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,-944.156,513.425)"
+<g fill="#00ff00" fill-opacity="1" stroke="#00ff00" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,-944.156,513.425)"
 font-family="Ubuntu" font-size="10" font-weight="400" font-style="normal" 
 >
 <path vector-effect="non-scaling-stroke" fill-rule="evenodd" d="M147.877,281.732 L142.432,277.814 L148.422,282.086 L147.745,275.025 L147.877,281.732"/>
+</g>
+
+<g fill="#00ff00" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,-944.156,513.425)"
+font-family="DejaVu Sans" font-size="11" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="40.2344" y="76.683" font-family="DejaVu Sans" font-size="11" font-weight="400" font-style="normal" 
+ >right</text>
 </g>
 </g>
 <g fill="none" stroke="black" stroke-width="1" fill-rule="evenodd" stroke-linecap="square" stroke-linejoin="bevel" >
@@ -1087,16 +1094,23 @@ font-family="Ubuntu" font-size="10" font-weight="400" font-style="normal"
 </g>
 <g fill="none" stroke="black" stroke-width="1" fill-rule="evenodd" stroke-linecap="square" stroke-linejoin="bevel" >
 
-<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,-944.156,513.425)"
+<g fill="none" stroke="#ff0000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,-944.156,513.425)"
 font-family="Ubuntu" font-size="10" font-weight="400" font-style="normal" 
 >
 <path vector-effect="non-scaling-stroke" fill-rule="evenodd" d="M0,0 L160.999,-315.924"/>
 </g>
 
-<g fill="#000000" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,-944.156,513.425)"
+<g fill="#ff0000" fill-opacity="1" stroke="#ff0000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,-944.156,513.425)"
 font-family="Ubuntu" font-size="10" font-weight="400" font-style="normal" 
 >
 <path vector-effect="non-scaling-stroke" fill-rule="evenodd" d="M148.259,-290.924 L148.208,-284.216 L148.264,-291.28 L142.862,-286.94 L148.259,-290.924"/>
+</g>
+
+<g fill="#ff0000" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,-944.156,513.425)"
+font-family="DejaVu Sans" font-size="11" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="40.2344" y="-78.981" font-family="DejaVu Sans" font-size="11" font-weight="400" font-style="normal" 
+ >left</text>
 </g>
 </g>
 <g fill="none" stroke="black" stroke-width="1" fill-rule="evenodd" stroke-linecap="square" stroke-linejoin="bevel" >
@@ -1500,6 +1514,13 @@ font-family="Ubuntu" font-size="10" font-weight="400" font-style="normal"
 >
 <path vector-effect="non-scaling-stroke" fill-rule="evenodd" d="M-35,-25 L35,-25 L35,25 L-35,25 L-35,-25"/>
 </g>
+
+<g fill="#f0f0d2" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,-944.156,513.425)"
+font-family="DejaVu Sans" font-size="11" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="-12.7969" y="4" font-family="DejaVu Sans" font-size="11" font-weight="400" font-style="normal" 
+ >start</text>
+</g>
 </g>
 <g fill="none" stroke="black" stroke-width="1" fill-rule="evenodd" stroke-linecap="square" stroke-linejoin="bevel" >
 
@@ -1783,13 +1804,31 @@ font-family="Ubuntu" font-size="10" font-weight="400" font-style="normal"
     <dunnart:options layoutMethod="0" routingBuffer="4" defaultIdealConnectorLength="1" colourInterferingConnectors="0" rubberBandRouting="0" layoutMode="0" preventOverlaps="0" layoutBeautify="1" pageBoundaryConstraints="0" segmentPenalty="50" avoidBuffer="0" automaticGraphLayout="0" penaliseCrossings="0" flowSeparation="0.5"/>
     <dunnart:node cx="89.891" height="50" id="14" cy="197.501" width="70" type="org.dunnart.shapes.rect"/>
     <dunnart:node cx="-408.781" height="50" id="20" cy="63.2811" width="70" type="org.dunnart.shapes.rect"/>
+    <dunnart:node direction="100" position="-615.448" id="244" type="guideline">
+        <dunnart:node objOneID="17" relType="alignment" type="constraint" constraintID="244" alignmentPos="4"/>
+        <dunnart:node objOneID="204" relType="alignment" type="constraint" constraintID="244" alignmentPos="4"/>
+        <dunnart:node objOneID="222" relType="alignment" type="constraint" constraintID="244" alignmentPos="4"/>
+        <dunnart:node objOneID="16" relType="alignment" type="constraint" constraintID="244" alignmentPos="4"/>
+        <dunnart:node objOneID="18" relType="alignment" type="constraint" constraintID="244" alignmentPos="4"/>
+        <dunnart:node objOneID="157" relType="alignment" type="constraint" constraintID="244" alignmentPos="4"/>
+    </dunnart:node>
     <dunnart:node cx="-5.11284" height="50" id="9" cy="360.554" width="70" type="org.dunnart.shapes.rect"/>
     <dunnart:node cx="338.916" height="50" id="11" cy="246.875" width="70" type="org.dunnart.shapes.rect"/>
+    <dunnart:node direction="100" position="797.313" id="241" type="guideline">
+        <dunnart:node objOneID="5" relType="alignment" type="constraint" constraintID="241" alignmentPos="4"/>
+        <dunnart:node objOneID="191" relType="alignment" type="constraint" constraintID="241" alignmentPos="4"/>
+    </dunnart:node>
     <dunnart:node direction="101" position="63.2811" id="239" type="guideline">
         <dunnart:node objOneID="26" relType="alignment" type="constraint" constraintID="239" alignmentPos="1"/>
         <dunnart:node objOneID="13" relType="alignment" type="constraint" constraintID="239" alignmentPos="1"/>
         <dunnart:node objOneID="16" relType="alignment" type="constraint" constraintID="239" alignmentPos="1"/>
         <dunnart:node objOneID="20" relType="alignment" type="constraint" constraintID="239" alignmentPos="1"/>
+    </dunnart:node>
+    <dunnart:node direction="101" position="946.876" id="240" type="guideline">
+        <dunnart:node objOneID="172" relType="alignment" type="constraint" constraintID="240" alignmentPos="1"/>
+        <dunnart:node objOneID="175" relType="alignment" type="constraint" constraintID="240" alignmentPos="1"/>
+        <dunnart:node objOneID="222" relType="alignment" type="constraint" constraintID="240" alignmentPos="1"/>
+        <dunnart:node objOneID="174" relType="alignment" type="constraint" constraintID="240" alignmentPos="1"/>
     </dunnart:node>
     <dunnart:node direction="100" position="-5.11284" id="238" type="guideline">
         <dunnart:node objOneID="160" relType="alignment" type="constraint" constraintID="238" alignmentPos="4"/>
@@ -1837,7 +1876,7 @@ font-family="Ubuntu" font-size="10" font-weight="400" font-style="normal"
     <dunnart:node cx="1066.01" height="50" id="208" cy="826.907" width="70" type="org.dunnart.shapes.rect"/>
     <dunnart:node cx="-5.11284" height="50" id="160" cy="619.531" width="70" type="org.dunnart.shapes.rect"/>
     <dunnart:node cx="797.313" height="50" id="5" cy="98.4375" width="70" type="org.dunnart.shapes.rect"/>
-    <dunnart:node cx="-944.156" height="50" id="1" cy="513.425" width="70" type="org.dunnart.shapes.rect"/>
+    <dunnart:node label="start" cx="-944.156" height="50" id="1" cy="513.425" width="70" type="org.dunnart.shapes.rect"/>
     <dunnart:node cx="-408.781" height="50" id="227" cy="1077.34" width="70" type="org.dunnart.shapes.rect"/>
     <dunnart:node cx="-408.781" height="50" id="172" cy="946.876" width="70" type="org.dunnart.shapes.rect"/>
     <dunnart:node cx="1066.01" height="50" id="220" cy="921.907" width="70" type="org.dunnart.shapes.rect"/>
@@ -1906,6 +1945,20 @@ font-family="Ubuntu" font-size="10" font-weight="400" font-style="normal"
         <dunnart:node objOneID="181" relType="alignment" type="constraint" constraintID="237" alignmentPos="4"/>
         <dunnart:node objOneID="7" relType="alignment" type="constraint" constraintID="237" alignmentPos="4"/>
     </dunnart:node>
+    <dunnart:node direction="100" position="89.891" id="242" type="guideline">
+        <dunnart:node objOneID="14" relType="alignment" type="constraint" constraintID="242" alignmentPos="4"/>
+        <dunnart:node objOneID="210" relType="alignment" type="constraint" constraintID="242" alignmentPos="4"/>
+        <dunnart:node objOneID="13" relType="alignment" type="constraint" constraintID="242" alignmentPos="4"/>
+        <dunnart:node objOneID="174" relType="alignment" type="constraint" constraintID="242" alignmentPos="4"/>
+    </dunnart:node>
+    <dunnart:node direction="100" position="-199.665" id="243" type="guideline">
+        <dunnart:node objOneID="26" relType="alignment" type="constraint" constraintID="243" alignmentPos="4"/>
+        <dunnart:node objOneID="163" relType="alignment" type="constraint" constraintID="243" alignmentPos="4"/>
+        <dunnart:node objOneID="25" relType="alignment" type="constraint" constraintID="243" alignmentPos="4"/>
+        <dunnart:node objOneID="24" relType="alignment" type="constraint" constraintID="243" alignmentPos="4"/>
+        <dunnart:node objOneID="175" relType="alignment" type="constraint" constraintID="243" alignmentPos="4"/>
+        <dunnart:node objOneID="180" relType="alignment" type="constraint" constraintID="243" alignmentPos="4"/>
+    </dunnart:node>
     <dunnart:node directed="1" srcY="946.876" path="-615.448,946.876 -408.781,946.876 " dstX="-408.781" id="218" type="connector" srcID="222" srcX="-615.448" dstID="172" libavoidPath="2 -615.448 946.876 19 9 -408.781 946.876 39 9 " dstY="946.876"/>
     <dunnart:node directed="1" srcY="994.532" path="338.916,994.532 797.313,671.093 " dstX="797.313" id="168" type="connector" srcID="224" srcX="338.916" dstID="191" libavoidPath="2 338.916 994.532 51 9 797.313 671.093 32 9 " dstY="671.093"/>
     <dunnart:node directed="1" srcY="12.5" path="338.916,12.5 608.641,331.25 " dstX="608.641" id="64" type="connector" srcID="8" srcX="338.916" dstID="7" libavoidPath="2 338.916 12.5 24 9 608.641 331.25 53 9 " dstY="331.25"/>
@@ -1926,7 +1979,7 @@ font-family="Ubuntu" font-size="10" font-weight="400" font-style="normal"
     <dunnart:node srcY="63.2811" path="-615.448,63.2811 -408.781,63.2811 " dstX="-408.781" id="32" type="connector" srcID="16" srcX="-615.448" dstID="20" libavoidPath="2 -615.448 63.2811 26 9 -408.781 63.2811 3 9 " dstY="63.2811"/>
     <dunnart:node directed="1" srcY="197.501" path="-783.157,197.501 -615.448,692.969 " dstX="-615.448" id="30" type="connector" srcID="15" srcX="-783.157" dstID="204" libavoidPath="2 -783.157 197.501 13 9 -615.448 692.969 20 9 " dstY="692.969"/>
     <dunnart:node srcY="63.2811" path="-615.448,63.2811 -408.781,197.501 " dstX="-408.781" id="33" type="connector" srcID="16" srcX="-615.448" dstID="21" libavoidPath="2 -615.448 63.2811 26 9 -408.781 197.501 11 9 " dstY="197.501"/>
-    <dunnart:node directed="1" srcY="513.425" path="-944.156,513.425 -783.157,197.501 " dstX="-783.157" id="27" type="connector" srcID="1" srcX="-944.156" dstID="15" libavoidPath="2 -944.156 513.425 37 9 -783.157 197.501 13 9 " dstY="197.501"/>
+    <dunnart:node directed="1" lineColour="ff0000ff" srcY="513.425" path="-944.156,513.425 -783.157,197.501 " dstX="-783.157" id="27" type="connector" srcID="1" srcX="-944.156" dstID="15" libavoidPath="2 -944.156 513.425 37 9 -783.157 197.501 13 9 " dstY="197.501"/>
     <dunnart:node directed="1" srcY="246.875" path="338.916,246.875 608.641,93.75 " dstX="608.641" id="67" type="connector" srcID="11" srcX="338.916" dstID="6" libavoidPath="2 338.916 246.875 2 9 608.641 93.75 29 9 " dstY="93.75"/>
     <dunnart:node directed="1" srcY="63.2811" path="-615.448,63.2811 -408.781,-48.4375 " dstX="-408.781" id="31" type="connector" srcID="16" srcX="-615.448" dstID="19" libavoidPath="2 -615.448 63.2811 26 9 -408.781 -48.4375 12 9 " dstY="-48.4375"/>
     <dunnart:node directed="1" srcY="197.501" path="-199.665,197.501 -5.11284,360.554 " dstX="-5.11284" id="54" type="connector" srcID="24" srcX="-199.665" dstID="9" libavoidPath="2 -199.665 197.501 8 9 -5.11284 360.554 5 9 " dstY="360.554"/>
@@ -1976,7 +2029,7 @@ font-family="Ubuntu" font-size="10" font-weight="400" font-style="normal"
     <dunnart:node directed="1" srcY="197.501" path="-615.448,197.501 -408.781,318.75 " dstX="-408.781" id="36" type="connector" srcID="17" srcX="-615.448" dstID="22" libavoidPath="2 -615.448 197.501 17 9 -408.781 318.75 41 9 " dstY="318.75"/>
     <dunnart:node directed="1" srcY="197.501" path="-615.448,197.501 -408.781,197.501 " dstX="-408.781" id="35" type="connector" srcID="17" srcX="-615.448" dstID="21" libavoidPath="2 -615.448 197.501 17 9 -408.781 197.501 11 9 " dstY="197.501"/>
     <dunnart:node directed="1" srcY="671.093" path="797.313,671.093 1066.01,826.907 " dstX="1066.01" id="212" type="connector" srcID="191" srcX="797.313" dstID="208" libavoidPath="2 797.313 671.093 32 9 1066.01 826.907 34 9 " dstY="826.907"/>
-    <dunnart:node directed="1" srcY="513.425" path="-944.156,513.425 -783.157,820.157 " dstX="-783.157" id="228" type="connector" srcID="1" srcX="-944.156" dstID="156" libavoidPath="2 -944.156 513.425 37 9 -783.157 820.157 33 9 " dstY="820.157"/>
+    <dunnart:node directed="1" lineColour="00ff00ff" srcY="513.425" path="-944.156,513.425 -783.157,820.157 " dstX="-783.157" id="228" type="connector" srcID="1" srcX="-944.156" dstID="156" libavoidPath="2 -944.156 513.425 37 9 -783.157 820.157 33 9 " dstY="820.157"/>
     <dunnart:node directed="1" srcY="946.876" path="89.891,946.876 338.916,994.532 " dstX="338.916" id="164" type="connector" srcID="174" srcX="89.891" dstID="224" libavoidPath="2 89.891 946.876 54 9 338.916 994.532 51 9 " dstY="994.532"/>
     <dunnart:node directed="1" srcY="820.157" path="-408.781,820.157 -199.665,659.636 " dstX="-199.665" id="226" type="connector" srcID="179" srcX="-408.781" dstID="163" libavoidPath="2 -408.781 820.157 44 9 -199.665 659.636 45 9 " dstY="659.636"/>
     <dunnart:node directed="1" srcY="946.876" path="-408.781,946.876 -199.665,820.157 " dstX="-199.665" id="203" type="connector" srcID="172" srcX="-408.781" dstID="180" libavoidPath="2 -408.781 946.876 39 9 -199.665 820.157 46 9 " dstY="820.157"/>
@@ -2004,36 +2057,4 @@ font-family="Ubuntu" font-size="10" font-weight="400" font-style="normal"
     <dunnart:node directed="1" srcY="659.636" path="-199.665,659.636 -5.11284,619.531 " dstX="-5.11284" id="209" type="connector" srcID="163" srcX="-199.665" dstID="160" libavoidPath="2 -199.665 659.636 45 9 -5.11284 619.531 35 9 " dstY="619.531"/>
     <dunnart:node directed="1" srcY="758.594" path="338.916,758.594 608.641,650.782 " dstX="608.641" id="177" type="connector" srcID="186" srcX="338.916" dstID="181" libavoidPath="2 338.916 758.594 23 9 608.641 650.782 42 9 " dstY="650.782"/>
     <dunnart:node directed="1" srcY="913.282" path="608.641,913.282 1066.01,729.906 " dstX="1066.01" id="158" type="connector" srcID="169" srcX="608.641" dstID="190" libavoidPath="2 608.641 913.282 48 9 1066.01 729.906 22 9 " dstY="729.906"/>
-    <dunnart:node direction="101" position="946.876" id="240" type="guideline">
-        <dunnart:node objOneID="172" relType="alignment" type="constraint" constraintID="240" alignmentPos="1"/>
-        <dunnart:node objOneID="175" relType="alignment" type="constraint" constraintID="240" alignmentPos="1"/>
-        <dunnart:node objOneID="222" relType="alignment" type="constraint" constraintID="240" alignmentPos="1"/>
-        <dunnart:node objOneID="174" relType="alignment" type="constraint" constraintID="240" alignmentPos="1"/>
-    </dunnart:node>
-    <dunnart:node direction="100" position="797.313" id="241" type="guideline">
-        <dunnart:node objOneID="5" relType="alignment" type="constraint" constraintID="241" alignmentPos="4"/>
-        <dunnart:node objOneID="191" relType="alignment" type="constraint" constraintID="241" alignmentPos="4"/>
-    </dunnart:node>
-    <dunnart:node direction="100" position="89.891" id="242" type="guideline">
-        <dunnart:node objOneID="14" relType="alignment" type="constraint" constraintID="242" alignmentPos="4"/>
-        <dunnart:node objOneID="210" relType="alignment" type="constraint" constraintID="242" alignmentPos="4"/>
-        <dunnart:node objOneID="13" relType="alignment" type="constraint" constraintID="242" alignmentPos="4"/>
-        <dunnart:node objOneID="174" relType="alignment" type="constraint" constraintID="242" alignmentPos="4"/>
-    </dunnart:node>
-    <dunnart:node direction="100" position="-199.665" id="243" type="guideline">
-        <dunnart:node objOneID="26" relType="alignment" type="constraint" constraintID="243" alignmentPos="4"/>
-        <dunnart:node objOneID="163" relType="alignment" type="constraint" constraintID="243" alignmentPos="4"/>
-        <dunnart:node objOneID="25" relType="alignment" type="constraint" constraintID="243" alignmentPos="4"/>
-        <dunnart:node objOneID="24" relType="alignment" type="constraint" constraintID="243" alignmentPos="4"/>
-        <dunnart:node objOneID="175" relType="alignment" type="constraint" constraintID="243" alignmentPos="4"/>
-        <dunnart:node objOneID="180" relType="alignment" type="constraint" constraintID="243" alignmentPos="4"/>
-    </dunnart:node>
-    <dunnart:node direction="100" position="-615.448" id="244" type="guideline">
-        <dunnart:node objOneID="17" relType="alignment" type="constraint" constraintID="244" alignmentPos="4"/>
-        <dunnart:node objOneID="204" relType="alignment" type="constraint" constraintID="244" alignmentPos="4"/>
-        <dunnart:node objOneID="222" relType="alignment" type="constraint" constraintID="244" alignmentPos="4"/>
-        <dunnart:node objOneID="16" relType="alignment" type="constraint" constraintID="244" alignmentPos="4"/>
-        <dunnart:node objOneID="18" relType="alignment" type="constraint" constraintID="244" alignmentPos="4"/>
-        <dunnart:node objOneID="157" relType="alignment" type="constraint" constraintID="244" alignmentPos="4"/>
-    </dunnart:node>
 </svg>
