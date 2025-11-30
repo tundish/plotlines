@@ -21,6 +21,7 @@ import dataclasses
 from decimal import Decimal
 from fractions import Fraction
 import functools
+import importlib.resources
 import textwrap
 import tkinter as tk
 import tomllib
@@ -347,4 +348,14 @@ class BoardTests(unittest.TestCase):
                 self.assertTrue(edge.attrib["srcID"], edge)
                 self.assertTrue(edge.attrib["dstID"], edge)
         self.assertEqual(len(edges), 2, edges)
-        print(xml)
+
+    def test_51_nodes_merge(self):
+        ns = NS(
+            svg="http://www.w3.org/2000/svg",
+            xlink="http://www.w3.org/1999/xlink",
+            dunnart="http://www.dunnart.org/ns/dunnart"
+        )
+        text = importlib.resources.read_text("plotlines.test.svg", "spiki-demo_n51.svg")
+        root = ET.fromstring(text)
+        board = Board()
+        self.fail(board)
