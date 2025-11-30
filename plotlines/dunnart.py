@@ -18,6 +18,14 @@
 # If not, see <https://www.gnu.org/licenses/>.
 
 import enum
+from types import SimpleNamespace as NS
+
+
+NAMESPACE = NS(
+    svg="http://www.w3.org/2000/svg",
+    xlink="http://www.w3.org/1999/xlink",
+    dunnart="http://www.dunnart.org/ns/dunnart"
+)
 
 
 class Direction(enum.IntEnum):

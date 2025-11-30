@@ -39,6 +39,7 @@ from plotlines.board import Port
 from plotlines.board import RGB
 from plotlines.board import Style
 from plotlines.coordinates import Coordinates as C
+from plotlines.dunnart import NAMESPACE
 
 
 class EdgeTests(unittest.TestCase):
@@ -315,33 +316,28 @@ class BoardTests(unittest.TestCase):
             print(xml)
             raise
 
-        ns = NS(
-            svg="http://www.w3.org/2000/svg",
-            xlink="http://www.w3.org/1999/xlink",
-            dunnart="http://www.dunnart.org/ns/dunnart"
-        )
-        self.assertEqual(root.tag, ET.QName(ns.svg, "svg"))
+        self.assertEqual(root.tag, ET.QName(NAMESPACE.svg, "svg"))
         self.assertIn('xmlns:xlink="http://www.w3.org/1999/xlink"', xml)
         self.assertIn('xmlns:dunnart="http://www.dunnart.org/ns/dunnart"', xml)
 
         self.assertNotIn("viewBox", root.attrib)
         self.assertNotIn("preserveAspectRatio", root.attrib)
 
-        title = root.find(f"svg:title", vars(ns))
+        title = root.find(f"svg:title", vars(NAMESPACE))
         self.assertEqual(title.text, "Test")
 
-        options = root.find("dunnart:options", namespaces=vars(ns))
+        options = root.find("dunnart:options", namespaces=vars(NAMESPACE))
         self.assertIsNotNone(options, xml)
-        self.assertEqual(options.tag, ET.QName(ns.dunnart, "options"))
+        self.assertEqual(options.tag, ET.QName(NAMESPACE.dunnart, "options"))
 
-        nodes = root.findall("dunnart:node[@type!='connector']", namespaces=vars(ns))
+        nodes = root.findall("dunnart:node[@type!='connector']", namespaces=vars(NAMESPACE))
         for n, node in enumerate(nodes):
             with self.subTest(n=n, node=node):
                 self.assertTrue(node.attrib["id"], node)
                 self.assertEqual(node.attrib["type"], "org.dunnart.shapes.rect")
         self.assertEqual(len(nodes), 3, nodes)
 
-        edges = root.findall("dunnart:node[@type='connector']", namespaces=vars(ns))
+        edges = root.findall("dunnart:node[@type='connector']", namespaces=vars(NAMESPACE))
         for e, edge in enumerate(edges):
             with self.subTest(e=e, edge=edge):
                 self.assertTrue(edge.attrib["id"], edge)
@@ -350,11 +346,6 @@ class BoardTests(unittest.TestCase):
         self.assertEqual(len(edges), 2, edges)
 
     def test_51_nodes_merge(self):
-        ns = NS(
-            svg="http://www.w3.org/2000/svg",
-            xlink="http://www.w3.org/1999/xlink",
-            dunnart="http://www.dunnart.org/ns/dunnart"
-        )
         text = importlib.resources.read_text("plotlines.test.svg", "spiki-demo_n51.svg")
         root = ET.fromstring(text)
         board = Board()
