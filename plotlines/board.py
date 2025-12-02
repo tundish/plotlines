@@ -40,6 +40,7 @@ import xml.etree.ElementTree as ET
 from plotlines.coordinates import Coordinates
 from plotlines.dunnart import LayoutMode
 from plotlines.dunnart import OptimizationMethod
+from plotlines.dunnart import NAMESPACE
 
 RGB = functools.partial(Coordinates, coerce=int)
 
@@ -362,6 +363,11 @@ class Board:
         return list(survey.get(1, set()).difference(survey.get(0, set())))
 
     def merge(self, root: ET) -> dict:
+        items = [i.attrib for i in root.findall("dunnart:node[@type!='guideline']", namespaces=vars(NAMESPACE))]
+        edges = [i for i in items if i.get("type") == "connector"]
+        nodes = [i for i in items if i.get("type") != "connector"]
+        print(*edges, sep="\n")
+        # edges = root.findall("dunnart:node[@type!='connector']", namespaces=vars(NAMESPACE))
         return dict()
 
     def toml(self) -> Generator[str]:

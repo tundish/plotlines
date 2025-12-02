@@ -350,5 +350,5 @@ class BoardTests(unittest.TestCase):
         root = ET.fromstring(text)
         board = Board()
         rv = board.merge(root)
-        nodes = [i for i in board.items if isinstance(i, Node)]
+        nodes = {i.get("id"): i for i in board.items if isinstance(i, Node)}
         self.assertEqual(len(nodes), 51)
