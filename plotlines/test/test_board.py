@@ -349,4 +349,6 @@ class BoardTests(unittest.TestCase):
         text = importlib.resources.read_text("plotlines.test.svg", "spiki-demo_n51.svg")
         root = ET.fromstring(text)
         board = Board()
-        self.fail(board)
+        rv = board.merge(root)
+        nodes = [i for i in board.items if isinstance(i, Node)]
+        self.assertEqual(len(nodes), 51)
