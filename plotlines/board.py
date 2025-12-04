@@ -368,11 +368,16 @@ class Board:
     def merge(self, root: ET) -> dict:
         items = [i.attrib for i in root.findall("dunnart:node[@type!='guideline']", namespaces=vars(NAMESPACE))]
         nodes = {
-            int(n["id"]): Node(id=int(n.pop("id")), area=n.pop("width") * n.pop("height"), **n)
+            int(n["id"]): Node(
+                id=int(n.pop("id")),
+                area=n.pop("width") * n.pop("height"),
+                pos=(n.pop("cx"), n.pop("cy")),
+                **n
+            )
             for n in (
                 dict(
                     (a, i.get(a) if a in ("id", "label") else Decimal(i[a]))
-                    for a in ("id", "width", "height", "label")
+                    for a in ("id", "width", "height", "label", "cx", "cy")
                 )
                 for i in items if i.get("type") != "connector"
             )
@@ -387,7 +392,9 @@ class Board:
                 for i in items if i.get("type") != "connector"
             )
         }
-        return list(nodes.values()) + list(edges.values())
+        rv = list(nodes.values()) + list(edges.values())
+        self.items.extend(rv)
+        return rv
 
     def toml(self) -> Generator[str]:
         yield "[board]"

@@ -351,5 +351,7 @@ class BoardTests(unittest.TestCase):
         board = Board()
         rv = board.merge(root)
         print(*rv, sep="\n")
-        nodes = {i.get("id"): i for i in board.items if isinstance(i, Node)}
-        self.assertEqual(len(rv), 51)
+        nodes = {i.id: i for i in board.items if isinstance(i, Node)}
+        self.assertEqual(len(nodes), 51)
+        self.assertTrue(all(isinstance(i.pos, C) for i in nodes.values()))
+        self.assertEqual(len(rv), 102)
