@@ -364,9 +364,18 @@ class Board:
 
     def merge(self, root: ET) -> dict:
         items = [i.attrib for i in root.findall("dunnart:node[@type!='guideline']", namespaces=vars(NAMESPACE))]
-        node_data = [i for i in items if i.get("type") != "connector"]  # id, width, height, label
+        node_data = {
+            n["id"]: n
+            for n in (
+                dict(
+                    (a, i.get(a) if a in ("id", "label") else Decimal(i[a]))
+                    for a in ("id", "width", "height", "label")
+                )
+                for i in items if i.get("type") != "connector"
+            )
+        }
         # edge_data = [i for i in items if i.get("type") == "connector"]  # id, srcID, dstID
-        print(*node_data, sep="\n")
+        print(*node_data.items(), sep="\n")
         # edges = root.findall("dunnart:node[@type!='connector']", namespaces=vars(NAMESPACE))
         return dict()
 
