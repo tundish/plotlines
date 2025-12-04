@@ -351,4 +351,4 @@ class BoardTests(unittest.TestCase):
         board = Board()
         rv = board.merge(root)
         nodes = {i.get("id"): i for i in board.items if isinstance(i, Node)}
-        self.assertEqual(len(nodes), 51)
+        self.assertEqual(len(rv), 51)
