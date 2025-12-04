@@ -56,6 +56,7 @@ class Style:
 class Item:
     store: typing.ClassVar[dict] = defaultdict(weakref.WeakValueDictionary)
 
+    id:         int = dataclasses.field(default=0, kw_only=True)
     uid:        uuid.UUID = dataclasses.field(default_factory=uuid.uuid4, kw_only=True)
     style:      Style = dataclasses.field(default_factory=Style, kw_only=True)
     label:      str = dataclasses.field(default="", kw_only=True)
@@ -149,6 +150,7 @@ class Edge(Item):
         ]
 
     def toml(self, scope="board.edges."):
+        yield f'id      = {self.id}'
         yield f'uid     = "{self.uid}"'
         yield f'label   = "{self.label}"'
         yield f"[{scope}style]"
@@ -264,6 +266,7 @@ class Node(Pin):
             port.pos += vec
 
     def toml(self, scope="board.nodes."):
+        yield f'id      = {self.id}'
         yield f'uid     = "{self.uid}"'
         yield f'label   = "{self.label}"'
         yield f'zone    = {self.zone}'
@@ -364,8 +367,8 @@ class Board:
 
     def merge(self, root: ET) -> dict:
         items = [i.attrib for i in root.findall("dunnart:node[@type!='guideline']", namespaces=vars(NAMESPACE))]
-        node_data = {
-            n["id"]: n
+        nodes = {
+            int(n["id"]): Node(id=int(n.pop("id")), area=n.pop("width") * n.pop("height"), **n)
             for n in (
                 dict(
                     (a, i.get(a) if a in ("id", "label") else Decimal(i[a]))
@@ -375,7 +378,7 @@ class Board:
             )
         }
         # edge_data = [i for i in items if i.get("type") == "connector"]  # id, srcID, dstID
-        print(*node_data.items(), sep="\n")
+        print(*nodes.items(), sep="\n")
         # edges = root.findall("dunnart:node[@type!='connector']", namespaces=vars(NAMESPACE))
         return dict()
 
