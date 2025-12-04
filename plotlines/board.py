@@ -377,10 +377,16 @@ class Board:
                 for i in items if i.get("type") != "connector"
             )
         }
-        edges = {}
-        # edge_data = [i for i in items if i.get("type") == "connector"]  # id, srcID, dstID
-        print(*nodes.items(), sep="\n")
-        # edges = root.findall("dunnart:node[@type!='connector']", namespaces=vars(NAMESPACE))
+        edges = {
+            int(n["id"]): Edge(id=int(n.pop("id")), **n)
+            for n in (
+                dict(
+                    (a, i.get(a) if a in ("id", "label") else Decimal(i[a]))
+                    for a in ("id", "label")
+                )
+                for i in items if i.get("type") != "connector"
+            )
+        }
         return list(nodes.values()) + list(edges.values())
 
     def toml(self) -> Generator[str]:
