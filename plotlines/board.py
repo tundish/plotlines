@@ -382,17 +382,14 @@ class Board:
                 for i in items if i.get("type") != "connector"
             )
         }
-        edges = {
-            int(n["id"]): Edge(id=int(n.pop("id")), **n)
-            for n in (
-                dict(
-                    (a, i.get(a) if a in ("id", "label") else Decimal(i[a]))
-                    for a in ("id", "label")
-                )
-                for i in items if i.get("type") != "connector"
+        edges = [
+            nodes[e.pop("srcID")].connect(nodes[e.pop("dstID")], **e)
+            for e in (
+                dict((a, int(i[a])) for a in ("id", "srcID", "dstID"))
+                for i in items if i.get("type") == "connector"
             )
-        }
-        rv = list(nodes.values()) + list(edges.values())
+        ]
+        rv = list(nodes.values()) + edges
         self.items.extend(rv)
         return rv
 

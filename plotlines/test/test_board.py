@@ -350,8 +350,14 @@ class BoardTests(unittest.TestCase):
         root = ET.fromstring(text)
         board = Board()
         rv = board.merge(root)
-        print(*rv, sep="\n")
-        nodes = {i.id: i for i in board.items if isinstance(i, Node)}
+        self.assertEqual(len(rv), 151)
+        nodes = {i.uid: i for i in board.items if isinstance(i, Node)}
+        edges = {i.uid: i for i in board.items if isinstance(i, Edge)}
         self.assertEqual(len(nodes), 51)
         self.assertTrue(all(isinstance(i.pos, C) for i in nodes.values()))
-        self.assertEqual(len(rv), 102)
+
+        self.assertEqual(len(edges), 100)
+        for edge in edges.values():
+            with self.subTest(edge=edge):
+                self.assertEqual(len(edge.joins), 2)
+                self.assertTrue(all(i.uid in nodes) for i in edge.joins)
