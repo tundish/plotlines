@@ -52,6 +52,7 @@ def main(args):
 
     logger.debug(f"{args=}")
 
+    width, height = None, None
     if args.input:
         text = args.input.read_text()
         if args.input.suffix == ".toml":
@@ -76,35 +77,35 @@ def main(args):
             return 0
         else:
             board = Board(items=items)
+            plotter = Plotter(board, t=turtle.Turtle())
+            size = plotter.turtle.screen.screensize()
+            items = plotter.layout_board(size)
+            frame, scale = plotter.style_items(board.items, size=size)
+            items = plotter.draw_items(items, debug=args.debug, delay=0)
+            width = frame[1][0] - frame[0][0]
+            height = frame[1][1] - frame[0][1]
 
-    args.format = args.format or args.output and args.output.parts[-1].strip(".").lower() or "text"
-    logger.info(f"Format option: {args.format and args.format.upper()}")
-    lines = []
-    width, height = None, None
-    if args.format == "plot":
-        plotter = Plotter(board, t=turtle.Turtle())
-        size = plotter.turtle.screen.screensize()
-        items = plotter.layout_board(size)
-        frame, scale = plotter.style_items(board.items, size=size)
-        items = plotter.draw_items(items, debug=args.debug, delay=0)
-        width = frame[1][0] - frame[0][0]
-        height = frame[1][1] - frame[0][1]
+    mode = args.output and args.output.parts[-1].strip(".").lower() or "plot"
+    logger.info(f"Format option: {mode.upper()}")
+    if mode == "plot":
         plotter.turtle.screen.mainloop()
-        args.format = args.output and args.output.parts[-1].strip(".").lower() or "text"
+        return 0
 
-    if args.format == "svg":
+    lines = []
+    if mode == "svg":
         lines = board.svg(width=width, height=height)
-    elif args.format in ("text", "txt"):
+    elif mode in ("text", "txt"):
         lines = pprint.pformat(vars(board), depth=3).splitlines()
-    elif args.format == "toml":
+    elif mode == "toml":
         lines = board.toml()
     else:
         lines = board.xml(width=width, height=height)
 
     write = args.output.write_text if args.output else sys.stdout.write
+    write = sys.stdout.write if format(args.output).startswith(".") else args.output.write_text
     write("\n".join(lines))
     write("\n")
-    logger.info(f"{args.format.upper()} output complete")
+    logger.info(f"{mode.upper()} output complete")
     return 0
 
 
@@ -130,10 +131,6 @@ def parser():
     rv.add_argument(
         "--exits", type=int, default=4,
         help="Fix the number of exiting Edges from each Node [4]"
-    )
-    rv.add_argument(
-        "--format", choices=["plot", "svg", "text", "toml", "xml"], default=None,
-        help="Specify format of output [text]"
     )
     rv.convert_arg_line_to_args = lambda x: x.split()
     return rv

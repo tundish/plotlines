@@ -336,10 +336,13 @@ class Board:
 
     @staticmethod
     def scale_factor(geom: tuple[Number], frame: tuple[Coordinates, Coordinates], quant: str = ".01"):
-        return Fraction(*min(
-            Decimal(geom[0]) / (frame[1][0] - frame[0][0]),
-            Decimal(geom[1]) / (frame[1][1] - frame[0][1])
-        ).quantize(Decimal(quant)).as_integer_ratio())
+        try:
+            return Fraction(*min(
+                Decimal(geom[0]) / (frame[1][0] - frame[0][0]),
+                Decimal(geom[1]) / (frame[1][1] - frame[0][1])
+            ).quantize(Decimal(quant)).as_integer_ratio())
+        except Exception:
+            return Fraction(1, 1)
 
     @property
     def initial(self) -> list[Node]:
@@ -411,6 +414,8 @@ class Board:
                 yield ""
 
     def svg(self, width=None, height=None) -> Generator[str]:
+        height = height or 480
+        width = width or 640
         frame = self.frame(*self.extent(self.items), square=width==height)
         size = (width, height)
         scale = self.scale_factor(size, frame)
