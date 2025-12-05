@@ -29,6 +29,7 @@ import sys
 import tomllib
 import turtle
 
+import plotlines
 from plotlines.board import Board
 from plotlines.plotter import Plotter
 
@@ -36,17 +37,20 @@ from plotlines.plotter import Plotter
 class Tree:
 
     @staticmethod
-    def html_head():
+    def comment(ts):
+        return f"# Generated {ts} by Plotlines {plotlines.__version__}"
+
+    @staticmethod
+    def html_head(preamble=""):
         text = importlib.resources.read_text("plotlines.assets", "head.toml")
-        return text
+        return "\n".join((preamble, text)).lstrip()
 
     def __init__(self, board: Board):
         self.board = board
 
     def __call__(self, parent: pathlib.Path, ts: datetime.datetime = None):
         ts = ts or datetime.datetime.now(tz=datetime.timezone.utc)
-        print(f"{ts=}")
-        yield self.html_head(), parent.joinpath("index.toml")
+        yield self.html_head(self.comment(ts)), parent.joinpath("index.toml")
 
 
 def setup_logger(level=logging.INFO):
