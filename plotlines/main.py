@@ -45,11 +45,11 @@ class Tree:
         return f"# Generated {ts} by Plotlines {plotlines.__version__}"
 
     @staticmethod
-    def html_head():
+    def base_head():
         return importlib.resources.read_text("plotlines.assets", "head.toml")
 
     @staticmethod
-    def html_link(path: pathlib.Path):
+    def base_link(path: pathlib.Path):
         return textwrap.dedent(f"""
         [[base.html.head.link]]
         config = {{tag_mode = "void"}}
@@ -57,16 +57,34 @@ class Tree:
 
         """).lstrip()
 
+    @staticmethod
+    def edge_nav(path: pathlib.Path):
+        return textwrap.dedent(f"""
+        [[doc.html.body.footer.nav.ul.li]]
+        attrib = {{class = "spiki next", href = "b.html"}}
+        a = "Next"
+
+        """).lstrip()
+
+    @staticmethod
+    def edge_blocks(path: pathlib.Path):
+        return textwrap.dedent(f'''
+        [doc.html.body.main]
+        blocks = """
+        """
+
+        ''').lstrip()
+
     def __init__(self, board: Board):
         self.board = board
 
     def __call__(self, parent: pathlib.Path, ts: datetime.datetime = None):
         ts = ts or datetime.datetime.now(tz=datetime.timezone.utc)
-        chunks = [self.comment(ts), self.html_head()]
+        chunks = [self.comment(ts), self.base_head()]
         for path in importlib.resources.files("plotlines.assets").iterdir():
             if path.suffix == ".css":
                 yield path.read_text(), parent.joinpath(path.name)
-                chunks.append(self.html_link(path))
+                chunks.append(self.base_link(path))
         yield "\n".join(chunks), parent.joinpath("index.toml")
 
         nodes = {i.uid: i for i in self.board.items if isinstance(i, Node)}
