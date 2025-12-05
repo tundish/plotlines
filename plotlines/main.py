@@ -19,6 +19,7 @@
 
 import argparse
 import datetime
+import importlib.resources
 import logging
 import pathlib
 import pprint
@@ -30,6 +31,22 @@ import turtle
 
 from plotlines.board import Board
 from plotlines.plotter import Plotter
+
+
+class Tree:
+
+    @staticmethod
+    def html_head():
+        text = importlib.resources.read_text("plotlines.assets", "head.toml")
+        return text
+
+    def __init__(self, board: Board):
+        self.board = board
+
+    def __call__(self, parent: pathlib.Path, ts: datetime.datetime = None):
+        ts = ts or datetime.datetime.now(tz=datetime.timezone.utc)
+        print(f"{ts=}")
+        yield self.html_head(), parent.joinpath("index.toml")
 
 
 def setup_logger(level=logging.INFO):
@@ -108,7 +125,10 @@ def main(args):
         except Exception as error:
             logger.warning(format(error), exc_info=error)
             return 1
-        print(f"{parent=}")
+        tree = Tree(board)
+        for text, path in tree(parent):
+            path.write_text(text)
+            print(f"{path=}")
         return 0
     elif mode == "svg":
         lines = board.svg(width=width, height=height)
