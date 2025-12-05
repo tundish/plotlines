@@ -23,6 +23,7 @@ import logging
 import pathlib
 import pprint
 import re
+import shutil
 import sys
 import tomllib
 import turtle
@@ -52,8 +53,8 @@ def main(args):
 
     logger.debug(f"{args=}")
 
-    width, height = None, None
     if args.input:
+        width, height = None, None
         text = args.input.read_text()
         if args.input.suffix == ".toml":
             try:
@@ -85,14 +86,31 @@ def main(args):
             width = frame[1][0] - frame[0][0]
             height = frame[1][1] - frame[0][1]
 
-    mode = args.output and args.output.parts[-1].strip(".").lower() or "plot"
+    if args.output:
+        if "." in format(args.output):
+            mode = args.output.parts[-1].strip(".").lower()
+        else:
+            mode = "spiki"
+    else:
+        mode = "plot"
+
     logger.info(f"Format option: {mode.upper()}")
     if mode == "plot":
         plotter.turtle.screen.mainloop()
         return 0
 
     lines = []
-    if mode == "svg":
+    if mode == "spiki":
+        try:
+            parent = args.output.resolve()
+            shutil.rmtree(parent)
+            parent.mkdir(parents=True, exist_ok=True)
+        except Exception as error:
+            logger.warning(format(error), exc_info=error)
+            return 1
+        print(f"{parent=}")
+        return 0
+    elif mode == "svg":
         lines = board.svg(width=width, height=height)
     elif mode in ("text", "txt"):
         lines = pprint.pformat(vars(board), depth=3).splitlines()
