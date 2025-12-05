@@ -23,10 +23,7 @@ import logging
 import pathlib
 import pprint
 import re
-import string
 import sys
-import tkinter as tk
-import tkinter.font
 import tomllib
 import turtle
 
@@ -55,13 +52,11 @@ def main(args):
 
     logger.debug(f"{args=}")
 
-    # Open output file
     if args.input:
         text = args.input.read_text()
         if args.input.suffix == ".toml":
             try:
                 data = tomllib.loads(text)
-                # pprint.pprint(data)
             except tomllib.TOMLDecodeError as error:
                 detail = format(error).splitlines()[-1]
                 n = int(re.compile(r"(?<=line )(\d+)").search(detail).group(0))
@@ -85,16 +80,8 @@ def main(args):
     args.format = args.format or args.output and args.output.parts[-1].strip(".").lower() or "text"
     logger.info(f"Format option: {args.format and args.format.upper()}")
     lines = []
+    width, height = None, None
     if args.format == "plot":
-        plotter = Plotter(board, t=turtle.Turtle())
-        size = plotter.turtle.screen.screensize()
-        items = plotter.layout_board(size)
-        frame, scale = plotter.style_items(board.items, size=size)
-
-        logger.debug(tk.font.families())
-        items = plotter.draw_items(items, debug=args.debug, delay=0)
-        plotter.turtle.screen.mainloop()
-    elif args.format in ("svg", "xml"):
         plotter = Plotter(board, t=turtle.Turtle())
         size = plotter.turtle.screen.screensize()
         items = plotter.layout_board(size)
@@ -102,14 +89,17 @@ def main(args):
         items = plotter.draw_items(items, debug=args.debug, delay=0)
         width = frame[1][0] - frame[0][0]
         height = frame[1][1] - frame[0][1]
-        if args.format == "svg":
-            lines = board.svg(width=width, height=height)
-        else:
-            lines = board.xml(width=width, height=height)
+        plotter.turtle.screen.mainloop()
+        args.format = args.output and args.output.parts[-1].strip(".").lower() or "text"
+
+    if args.format == "svg":
+        lines = board.svg(width=width, height=height)
     elif args.format in ("text", "txt"):
-        lines = pprint.pformat(board.items, depth=3).splitlines()
+        lines = pprint.pformat(vars(board), depth=3).splitlines()
     elif args.format == "toml":
         lines = board.toml()
+    else:
+        lines = board.xml(width=width, height=height)
 
     write = args.output.write_text if args.output else sys.stdout.write
     write("\n".join(lines))
