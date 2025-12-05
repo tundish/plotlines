@@ -80,6 +80,7 @@ def main(args):
         else:
             board = Board(items=items)
 
+    # Open output file
     if args.format == "plot":
         plotter = Plotter(board, t=turtle.Turtle())
         size = plotter.turtle.screen.screensize()

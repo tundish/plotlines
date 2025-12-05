@@ -346,7 +346,7 @@ class BoardTests(unittest.TestCase):
         self.assertEqual(len(edges), 2, edges)
 
     def test_51_nodes_merge(self):
-        text = importlib.resources.read_text("plotlines.test.svg", "spiki-demo_n51.svg")
+        text = importlib.resources.read_text("plotlines.test.data", "spiki-demo_n51.xml")
         root = ET.fromstring(text)
         board = Board()
         rv = board.merge(root)
