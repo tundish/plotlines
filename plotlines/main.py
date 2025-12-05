@@ -54,22 +54,24 @@ def main(args):
     logger = logging.getLogger("plotlines")
 
     logger.debug(f"{args=}")
-    args.format = args.format or args.output and args.output.parts[-1].strip(".").lower()
-    logger.info(f"Format option: {args.format.upper()}")
 
-    if args.read:
-        text = sys.stdin.read()
-        try:
-            data = tomllib.loads(text)
-            # pprint.pprint(data)
-        except tomllib.TOMLDecodeError as error:
-            detail = format(error).splitlines()[-1]
-            n = int(re.compile(r"(?<=line )(\d+)").search(detail).group(0))
-            logger.warning(detail)
-            logger.warning(f"{n}: " + text.splitlines()[n-1])
-            return 1
-        else:
-            board = Board.build(data)
+    # Open output file
+    if args.input:
+        text = args.input.read_text()
+        if args.input.suffix == ".toml":
+            try:
+                data = tomllib.loads(text)
+                # pprint.pprint(data)
+            except tomllib.TOMLDecodeError as error:
+                detail = format(error).splitlines()[-1]
+                n = int(re.compile(r"(?<=line )(\d+)").search(detail).group(0))
+                logger.warning(detail)
+                logger.warning(f"{n}: " + text.splitlines()[n-1])
+                return 1
+            else:
+                board = Board.build(data)
+        elif args.input.suffix == ".xml":
+            raise NotImplementedError
     else:
         items = []
         steps = args.limit // 10
@@ -80,7 +82,8 @@ def main(args):
         else:
             board = Board(items=items)
 
-    # Open output file
+    args.format = args.format or args.output and args.output.parts[-1].strip(".").lower()
+    logger.info(f"Format option: {args.format and args.format.upper()}")
     if args.format == "plot":
         plotter = Plotter(board, t=turtle.Turtle())
         size = plotter.turtle.screen.screensize()
@@ -124,7 +127,6 @@ class InlineValues:
 def parser():
     rv = argparse.ArgumentParser(usage=__doc__, fromfile_prefix_chars="=")
     rv.add_argument("--debug", action="store_true", default=False, help="Display debug information")
-    rv.add_argument("--read", action="store_true", default=False, help="Read a TOML graph from stdin [False]")
     rv.add_argument("-i", "--input", type=pathlib.Path, default=None, help="Specify an input file")
     rv.add_argument("-o", "--output", type=pathlib.Path, default=None, help="Specify an output file or directory")
     rv.add_argument("--ending", type=int, default=4, help="Set the number of endings [4].")
