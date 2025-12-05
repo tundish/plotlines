@@ -29,9 +29,12 @@ import sys
 import textwrap
 import tomllib
 import turtle
+import xml.etree.ElementTree as ET
 
 import plotlines
 from plotlines.board import Board
+from plotlines.board import Edge
+from plotlines.board import Node
 from plotlines.plotter import Plotter
 
 
@@ -65,6 +68,11 @@ class Tree:
                 yield path.read_text(), parent.joinpath(path.name)
                 chunks.append(self.html_link(path))
         yield "\n".join(chunks), parent.joinpath("index.toml")
+
+        nodes = {i.uid: i for i in self.board.items if isinstance(i, Node)}
+        edges = {i.uid: i for i in self.board.items if isinstance(i, Edge)}
+        for node in nodes.values():
+            print(f"{node=}")
 
 
 def setup_logger(level=logging.INFO):
@@ -103,7 +111,9 @@ def main(args):
             else:
                 board = Board.build(data)
         elif args.input.suffix == ".xml":
-            raise NotImplementedError
+            root = ET.fromstring(text)
+            board = Board()
+            items = board.merge(root)
     else:
         items = []
         steps = args.limit // 10
