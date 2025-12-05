@@ -82,8 +82,9 @@ def main(args):
         else:
             board = Board(items=items)
 
-    args.format = args.format or args.output and args.output.parts[-1].strip(".").lower()
+    args.format = args.format or args.output and args.output.parts[-1].strip(".").lower() or "text"
     logger.info(f"Format option: {args.format and args.format.upper()}")
+    lines = []
     if args.format == "plot":
         plotter = Plotter(board, t=turtle.Turtle())
         size = plotter.turtle.screen.screensize()
@@ -102,16 +103,18 @@ def main(args):
         width = frame[1][0] - frame[0][0]
         height = frame[1][1] - frame[0][1]
         if args.format == "svg":
-            print(*board.svg(width=width, height=height), sep="\n", file=sys.stdout)
-            logger.warning("SVG output complete")
+            lines = board.svg(width=width, height=height)
         else:
-            print(*board.xml(width=width, height=height), sep="\n", file=sys.stdout)
-            logger.warning("XML output complete")
-    elif args.format == "text":
-        pprint.pprint(board, depth=3)
+            lines = board.xml(width=width, height=height)
+    elif args.format in ("text", "txt"):
+        lines = pprint.pformat(board.items, depth=3).splitlines()
     elif args.format == "toml":
-        print(*board.toml(), sep="\n", file=sys.stdout)
+        lines = board.toml()
 
+    write = args.output.write_text if args.output else sys.stdout.write
+    write("\n".join(lines))
+    write("\n")
+    logger.info(f"{args.format.upper()} output complete")
     return 0
 
 
