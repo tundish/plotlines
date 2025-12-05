@@ -26,6 +26,7 @@ import pprint
 import re
 import shutil
 import sys
+import textwrap
 import tomllib
 import turtle
 
@@ -41,19 +42,29 @@ class Tree:
         return f"# Generated {ts} by Plotlines {plotlines.__version__}"
 
     @staticmethod
-    def html_head(preamble=""):
-        text = importlib.resources.read_text("plotlines.assets", "head.toml")
-        return "\n".join((preamble, text)).lstrip()
+    def html_head():
+        return importlib.resources.read_text("plotlines.assets", "head.toml")
+
+    @staticmethod
+    def html_link(path: pathlib.Path):
+        return textwrap.dedent(f"""
+        [[base.html.head.link]]
+        config = {{tag_mode = "void"}}
+        attrib = {{rel= "stylesheet", href="{path.name}"}}
+
+        """).lstrip()
 
     def __init__(self, board: Board):
         self.board = board
 
     def __call__(self, parent: pathlib.Path, ts: datetime.datetime = None):
         ts = ts or datetime.datetime.now(tz=datetime.timezone.utc)
+        chunks = [self.comment(ts), self.html_head()]
         for path in importlib.resources.files("plotlines.assets").iterdir():
             if path.suffix == ".css":
                 yield path.read_text(), parent.joinpath(path.name)
-        yield self.html_head(self.comment(ts)), parent.joinpath("index.toml")
+                chunks.append(self.html_link(path))
+        yield "\n".join(chunks), parent.joinpath("index.toml")
 
 
 def setup_logger(level=logging.INFO):
