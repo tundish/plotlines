@@ -50,6 +50,9 @@ class Tree:
 
     def __call__(self, parent: pathlib.Path, ts: datetime.datetime = None):
         ts = ts or datetime.datetime.now(tz=datetime.timezone.utc)
+        for path in importlib.resources.files("plotlines.assets").iterdir():
+            if path.suffix == ".css":
+                yield path.read_text(), parent.joinpath(path.name)
         yield self.html_head(self.comment(ts)), parent.joinpath("index.toml")
 
 
@@ -132,7 +135,7 @@ def main(args):
         tree = Tree(board)
         for text, path in tree(parent):
             path.write_text(text)
-            print(f"{path=}")
+            logger.info(f"Wrote {path}")
         return 0
     elif mode == "svg":
         lines = board.svg(width=width, height=height)
