@@ -54,8 +54,8 @@ def main(args):
     logger = logging.getLogger("plotlines")
 
     logger.debug(f"{args=}")
+    args.format = args.format or args.output and args.output.parts[-1].strip(".").lower()
     logger.info(f"Format option: {args.format.upper()}")
-    logger.info(f"{args.output=} {args.output.stem=}")
 
     if args.read:
         text = sys.stdin.read()
@@ -136,7 +136,7 @@ def parser():
         help="Fix the number of exiting Edges from each Node [4]"
     )
     rv.add_argument(
-        "--format", choices=["plot", "svg", "text", "toml", "xml"], default="toml",
+        "--format", choices=["plot", "svg", "text", "toml", "xml"], default=None,
         help="Specify format of output [text]"
     )
     rv.convert_arg_line_to_args = lambda x: x.split()
