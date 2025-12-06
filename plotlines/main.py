@@ -76,13 +76,14 @@ class Tree:
         ''').lstrip()
 
     @staticmethod
-    def node_nav(path: pathlib.Path):
-        return textwrap.dedent(f"""
-        [[doc.html.body.footer.nav.ul.li]]
-        attrib = {{class = "spiki next", href = "b.html"}}
-        a = "Next"
-
-        """).lstrip()
+    def node_nav(node: Node):
+        for edge in node.connections[1]:
+            trail = edge.trail or "next"
+            yield textwrap.dedent(f"""
+            [[doc.html.body.footer.nav.ul.li]]
+            attrib = {{class = "spiki {trail}", href = "{edge.name}.html"}}
+            a = "{edge.label or 'Next'}"
+            """).lstrip()
 
     @staticmethod
     def node_blocks(path: pathlib.Path):
@@ -108,8 +109,9 @@ class Tree:
         nodes = {i.uid: i for i in self.board.items if isinstance(i, Node)}
         edges = {i.uid: i for i in self.board.items if isinstance(i, Edge)}
         for node in nodes.values():
-            print(f"{node.name=}")
-            print(f"{node.connections[1]=}")
+            path = parent.joinpath(node.name).with_suffix(".toml")
+            text = "\n".join(self.node_nav(node))
+            yield text, path
 
 
 def setup_logger(level=logging.INFO):
