@@ -20,14 +20,12 @@
 import argparse
 import datetime
 import importlib.resources
-import itertools
 import logging
 import pathlib
 import pprint
 import re
 import shutil
 import sys
-import textwrap
 import tomllib
 import turtle
 import xml.etree.ElementTree as ET
@@ -37,95 +35,7 @@ from plotlines.board import Board
 from plotlines.board import Edge
 from plotlines.board import Node
 from plotlines.plotter import Plotter
-
-
-class Tree:
-
-    @staticmethod
-    def comment(ts):
-        return f"# Generated {ts} by Plotlines {plotlines.__version__}"
-
-    @staticmethod
-    def base_head():
-        return importlib.resources.read_text("plotlines.assets", "head.toml")
-
-    @staticmethod
-    def base_link(path: pathlib.Path):
-        return textwrap.dedent(f"""
-        [[base.html.head.link]]
-        config = {{tag_mode = "void"}}
-        attrib = {{rel= "stylesheet", href="{path.name}"}}
-
-        """).lstrip()
-
-    @staticmethod
-    def edge_nav(edge: Edge):
-        node = edge.joins[1]
-        return textwrap.dedent(f"""
-        [[doc.html.body.footer.nav.ul.li]]
-        attrib = {{class = "spiki next", href = "{node.name}.html"}}
-        a = "{node.label or 'Next'}"
-        """).lstrip()
-
-    @staticmethod
-    def edge_blocks(edge: Edge):
-        if isinstance(edge.contents, list):
-            contents = "\n".join(i for i in edge.contents if isinstance(i, str))
-        else:
-            contents = edge.contents
-        return textwrap.dedent(f'''
-        [doc.html.body.main]
-        blocks = """
-        {contents}
-        """
-        ''').lstrip()
-
-    @staticmethod
-    def node_nav(node: Node):
-        for edge in node.connections[1]:
-            trail = edge.trail or "next"
-            yield textwrap.dedent(f"""
-            [[doc.html.body.footer.nav.ul.li]]
-            attrib = {{class = "spiki {trail}", href = "{edge.name}.html"}}
-            a = "{edge.label or 'Next'}"
-            """).lstrip()
-
-    @staticmethod
-    def node_blocks(node: Node):
-        if isinstance(node.contents, list):
-            contents = "\n".join(i for i in node.contents if isinstance(i, str))
-        else:
-            contents = node.contents
-        return textwrap.dedent(f'''
-        [doc.html.body.main]
-        blocks = """
-        {contents}
-        """
-        ''').lstrip()
-
-    def __init__(self, board: Board):
-        self.board = board
-
-    def __call__(self, parent: pathlib.Path, ts: datetime.datetime = None):
-        ts = ts or datetime.datetime.now(tz=datetime.timezone.utc)
-        chunks = [self.comment(ts), self.base_head()]
-        for path in importlib.resources.files("plotlines.assets").iterdir():
-            if path.suffix == ".css":
-                yield path.read_text(), parent.joinpath(path.name)
-                chunks.append(self.base_link(path))
-        yield "\n".join(chunks), parent.joinpath("index.toml")
-
-        nodes = [i for i in self.board.items if isinstance(i, Node)]
-        for node in nodes:
-            path = parent.joinpath(node.name).with_suffix(".toml")
-            text = "\n".join(itertools.chain(self.node_nav(node), [self.node_blocks(node)]))
-            yield text, path
-
-        edges = [i for i in self.board.items if isinstance(i, Edge)]
-        for edge in edges:
-            path = parent.joinpath(edge.name).with_suffix(".toml")
-            text = "\n".join((self.edge_nav(edge), self.edge_blocks(edge)))
-            yield text, path
+from plotlines.tree import Tree
 
 
 def setup_logger(level=logging.INFO):
