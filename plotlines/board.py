@@ -87,6 +87,14 @@ class Item:
 
         self.__class__.store[self.uid] = self
 
+    @property
+    def name(self):
+        if self.id:
+            max_id = max(i.id for i in self.store.values())
+            digits = math.ceil(math.log10(max_id))
+            return f"{{0:0{digits}d}}".format(self.id)
+        return format(self.uid)
+
 
 @dataclasses.dataclass(unsafe_hash=True)
 class Link:

@@ -75,6 +75,24 @@ class Tree:
 
         ''').lstrip()
 
+    @staticmethod
+    def node_nav(path: pathlib.Path):
+        return textwrap.dedent(f"""
+        [[doc.html.body.footer.nav.ul.li]]
+        attrib = {{class = "spiki next", href = "b.html"}}
+        a = "Next"
+
+        """).lstrip()
+
+    @staticmethod
+    def node_blocks(path: pathlib.Path):
+        return textwrap.dedent(f'''
+        [doc.html.body.main]
+        blocks = """
+        """
+
+        ''').lstrip()
+
     def __init__(self, board: Board):
         self.board = board
 
@@ -90,7 +108,8 @@ class Tree:
         nodes = {i.uid: i for i in self.board.items if isinstance(i, Node)}
         edges = {i.uid: i for i in self.board.items if isinstance(i, Edge)}
         for node in nodes.values():
-            print(f"{node=}")
+            print(f"{node.name=}")
+            print(f"{node.connections[1]=}")
 
 
 def setup_logger(level=logging.INFO):
