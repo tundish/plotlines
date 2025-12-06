@@ -59,21 +59,25 @@ class Tree:
         """).lstrip()
 
     @staticmethod
-    def edge_nav(path: pathlib.Path):
+    def edge_nav(edge: Edge):
+        node = edge.joins[1]
         return textwrap.dedent(f"""
         [[doc.html.body.footer.nav.ul.li]]
-        attrib = {{class = "spiki next", href = "b.html"}}
-        a = "Next"
-
+        attrib = {{class = "spiki next", href = "{node.name}.html"}}
+        a = "{node.label or 'Next'}"
         """).lstrip()
 
     @staticmethod
-    def edge_blocks(path: pathlib.Path):
+    def edge_blocks(edge: Edge):
+        if isinstance(edge.contents, list):
+            contents = "\n".join(i for i in edge.contents if isinstance(i, str))
+        else:
+            contents = edge.contents
         return textwrap.dedent(f'''
         [doc.html.body.main]
         blocks = """
+        {contents}
         """
-
         ''').lstrip()
 
     @staticmethod
@@ -111,11 +115,16 @@ class Tree:
                 chunks.append(self.base_link(path))
         yield "\n".join(chunks), parent.joinpath("index.toml")
 
-        nodes = {i.uid: i for i in self.board.items if isinstance(i, Node)}
-        edges = {i.uid: i for i in self.board.items if isinstance(i, Edge)}
-        for node in nodes.values():
+        nodes = [i for i in self.board.items if isinstance(i, Node)]
+        for node in nodes:
             path = parent.joinpath(node.name).with_suffix(".toml")
             text = "\n".join(itertools.chain(self.node_nav(node), [self.node_blocks(node)]))
+            yield text, path
+
+        edges = [i for i in self.board.items if isinstance(i, Edge)]
+        for edge in edges:
+            path = parent.joinpath(edge.name).with_suffix(".toml")
+            text = "\n".join((self.edge_nav(edge), self.edge_blocks(edge)))
             yield text, path
 
 
@@ -192,7 +201,8 @@ def main(args):
     if mode == "spiki":
         try:
             parent = args.output.resolve()
-            shutil.rmtree(parent)
+            if parent.exists():
+                shutil.rmtree(parent)
             parent.mkdir(parents=True, exist_ok=True)
         except Exception as error:
             logger.warning(format(error), exc_info=error)
