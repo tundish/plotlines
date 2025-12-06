@@ -20,6 +20,7 @@
 import argparse
 import datetime
 import importlib.resources
+import itertools
 import logging
 import pathlib
 import pprint
@@ -86,12 +87,16 @@ class Tree:
             """).lstrip()
 
     @staticmethod
-    def node_blocks(path: pathlib.Path):
+    def node_blocks(node: Node):
+        if isinstance(node.contents, list):
+            contents = "\n".join(i for i in node.contents if isinstance(i, str))
+        else:
+            contents = node.contents
         return textwrap.dedent(f'''
         [doc.html.body.main]
         blocks = """
+        {contents}
         """
-
         ''').lstrip()
 
     def __init__(self, board: Board):
@@ -110,7 +115,7 @@ class Tree:
         edges = {i.uid: i for i in self.board.items if isinstance(i, Edge)}
         for node in nodes.values():
             path = parent.joinpath(node.name).with_suffix(".toml")
-            text = "\n".join(self.node_nav(node))
+            text = "\n".join(itertools.chain(self.node_nav(node), [self.node_blocks(node)]))
             yield text, path
 
 
