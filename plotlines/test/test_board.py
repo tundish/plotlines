@@ -345,7 +345,7 @@ class BoardTests(unittest.TestCase):
                 self.assertTrue(edge.attrib["dstID"], edge)
         self.assertEqual(len(edges), 2, edges)
 
-    def test_51_nodes_merge(self):
+    def test_51_nodes_merge_xml(self):
         text = importlib.resources.read_text("plotlines.test.data", "spiki-demo_n51.xml")
         root = ET.fromstring(text)
         board = Board()
@@ -361,3 +361,10 @@ class BoardTests(unittest.TestCase):
             with self.subTest(edge=edge):
                 self.assertEqual(len(edge.joins), 2)
                 self.assertTrue(all(i.uid in nodes) for i in edge.joins)
+
+    def test_inkscape_properties_merge_xml(self):
+        text = importlib.resources.read_text("plotlines.test.data", "inkscape_properties_n03e02.svg")
+        root = ET.fromstring(text)
+        board = Board()
+        rv = board.merge(root)
+        self.assertEqual(len(rv), 5, text)
