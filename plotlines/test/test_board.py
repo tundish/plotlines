@@ -371,10 +371,10 @@ class BoardTests(unittest.TestCase):
         self.assertEqual(len(board.items), 5)
         self.assertEqual(len(board.initial), 1)
         self.assertEqual(len(board.initial[0].nearby), 2)
-        print(f"{board.terminal[1]=}")
 
         good = next(i for i in board.terminal if i.id == 825)
         self.assertEqual(good.name, "825")
         self.assertEqual(good.label, "Win")
         self.assertEqual(good.edges[0].label, "A arc")
-        self.assertEqual(good.contents, "Win", rv)
+        self.assertEqual(good.contents, ["Good ending.\n\n<NARRATOR>\tOr is it?"], rv)
+        self.assertEqual(good.edges[0].contents, ["This is what happens if you go left."])
