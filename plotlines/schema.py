@@ -27,6 +27,7 @@ NAMESPACE = NS(
     dunnart="http://www.dunnart.org/ns/dunnart"
 )
 
+# Dunnart codes
 
 class Direction(enum.IntEnum):
     GUIDE_TYPE_VERT = 100

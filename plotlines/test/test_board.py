@@ -39,7 +39,7 @@ from plotlines.board import Port
 from plotlines.board import RGB
 from plotlines.board import Style
 from plotlines.coordinates import Coordinates as C
-from plotlines.dunnart import NAMESPACE
+from plotlines.schema import NAMESPACE
 
 
 class EdgeTests(unittest.TestCase):

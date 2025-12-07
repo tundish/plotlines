@@ -38,9 +38,9 @@ import weakref
 import xml.etree.ElementTree as ET
 
 from plotlines.coordinates import Coordinates
-from plotlines.dunnart import LayoutMode
-from plotlines.dunnart import OptimizationMethod
-from plotlines.dunnart import NAMESPACE
+from plotlines.schema import LayoutMode
+from plotlines.schema import OptimizationMethod
+from plotlines.schema import NAMESPACE
 
 RGB = functools.partial(Coordinates, coerce=int)
 
@@ -422,6 +422,7 @@ class Board:
                 yield ""
 
     def svg(self, width=None, height=None) -> Generator[str]:
+        # TODO: Switch tou connectors.
         height = height or 480
         width = width or 640
         frame = self.frame(*self.extent(self.items), square=width==height)
