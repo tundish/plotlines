@@ -208,7 +208,7 @@ class Node(Pin):
     @property
     def density(self):
         "Degree of node divided by number of neighbours"
-        return []
+        raise NotImplementedError
 
     @property
     def edges(self):
@@ -385,15 +385,15 @@ class Board:
             node_id_end = edge_elem.attrib[ET.QName(NAMESPACE.inkscape, "connection-end")].lstrip("#")
             joins = [
                 nodes.setdefault(id_, Node(
-                    id=attrib.get("id"),
+                    id=int(''.join(i for i in attrib.get("id") if i.isdigit())),
                     area=Decimal(attrib.get("width")) * Decimal(attrib.get("height")),
                     pos=(attrib.get("x"), attrib.get("y")),
                 ))
                 for id_ in (node_id_start, node_id_end)
-                if (elem := root.find(f".//*[@id='{id_}']"))
+                if (elem := root.find(f".//*[@id='{id_}']")) is not None
                 and (attrib := elem.attrib)
             ]
-            edges.append(joins[0].connect(joins[1], id=edge_elem.attrib["id"]))
+            edges.append(joins[0].connect(joins[1], id=int(''.join(i for i in attrib.get("id") if i.isdigit()))))
         rv = list(nodes.values()) + edges
         self.items.extend(rv)
         return rv

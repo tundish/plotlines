@@ -368,3 +368,12 @@ class BoardTests(unittest.TestCase):
         board = Board()
         rv = board.merge(root)
         self.assertEqual(len(rv), 5, text)
+        self.assertEqual(len(board.items), 5)
+        self.assertEqual(len(board.initial), 1)
+        self.assertEqual(len(board.initial[0].nearby), 2)
+        print(f"{board.terminal[1]=}")
+
+        good = next(i for i in board.terminal if i.id == 825)
+        self.assertEqual(good.name, "825")
+        self.assertEqual(good.label, "Win")
+        self.assertEqual(good.contents, "Win")
