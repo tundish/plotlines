@@ -383,10 +383,14 @@ class Board:
             node_id_start = edge_elem.attrib[ET.QName(NAMESPACE.inkscape, "connection-start")].lstrip("#")
             node_id_end = edge_elem.attrib[ET.QName(NAMESPACE.inkscape, "connection-end")].lstrip("#")
             joins = [
-                nodes.setdefault(i, dict(area=Decimal(n.attrib.pop("width")) * Decimal(n.attrib.pop("height"))))
-                # dict(**n.attrib)
-                for i in (node_id_start, node_id_end)
-                if (n := root.find(f".//*[@id='{i}']"))
+                nodes.setdefault(id_, Node(
+                    id=n.get("id"),
+                    area=Decimal(n.get("width")) * Decimal(n.get("height")),
+                    pos=(n.get("x"), n.get("y")),
+                ))
+                for id_ in (node_id_start, node_id_end)
+                if (elem := root.find(f".//*[@id='{id_}']"))
+                and (n := elem.attrib.copy())
             ]
             print(f"{joins=}")
         return []
