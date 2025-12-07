@@ -376,7 +376,12 @@ class Board:
 
         return list(survey.get(1, set()).difference(survey.get(0, set())))
 
-    def merge(self, root: ET) -> dict:
+    def merge_svg(self, root: ET) -> dict:
+        "Merge from Inkscape format."
+        return []
+
+    def merge_xml(self, root: ET) -> dict:
+        "Merge from Dunnart format."
         items = [i.attrib for i in root.findall("dunnart:node[@type!='guideline']", namespaces=vars(NAMESPACE))]
         nodes = {
             int(n["id"]): Node(
@@ -403,6 +408,13 @@ class Board:
         rv = list(nodes.values()) + edges
         self.items.extend(rv)
         return rv
+
+    def merge(self, root: ET) -> dict:
+        svg_like = bool(root.attrib.get(ET.QName(NAMESPACE.sodipodi, "docname")))
+        if svg_like:
+            return self.merge_svg(root)
+        else:
+            return self.merge_xml(root)
 
     def toml(self) -> Generator[str]:
         yield "[board]"
