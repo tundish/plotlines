@@ -378,6 +378,8 @@ class Board:
 
     def merge_svg(self, root: ET) -> dict:
         "Merge from Inkscape format."
+        edges = list(root.iterfind(".//*[@inkscape:connector-type]", namespaces=vars(NAMESPACE)))
+        print(f"{edges=}")
         return []
 
     def merge_xml(self, root: ET) -> dict:
