@@ -388,12 +388,17 @@ class Board:
                     id=int(''.join(i for i in attrib.get("id") if i.isdigit())),
                     area=Decimal(attrib.get("width")) * Decimal(attrib.get("height")),
                     pos=(attrib.get("x"), attrib.get("y")),
+                    label=elem.findtext("{*}title"),
                 ))
                 for id_ in (node_id_start, node_id_end)
                 if (elem := root.find(f".//*[@id='{id_}']")) is not None
                 and (attrib := elem.attrib)
             ]
-            edges.append(joins[0].connect(joins[1], id=int(''.join(i for i in attrib.get("id") if i.isdigit()))))
+            edges.append(joins[0].connect(
+                joins[1],
+                id=int(''.join(i for i in attrib.get("id") if i.isdigit())),
+                label=edge_elem.findtext("{*}title"),
+            ))
         rv = list(nodes.values()) + edges
         self.items.extend(rv)
         return rv

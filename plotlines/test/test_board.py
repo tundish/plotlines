@@ -376,4 +376,5 @@ class BoardTests(unittest.TestCase):
         good = next(i for i in board.terminal if i.id == 825)
         self.assertEqual(good.name, "825")
         self.assertEqual(good.label, "Win")
-        self.assertEqual(good.contents, "Win")
+        self.assertEqual(good.edges[0].label, "A arc")
+        self.assertEqual(good.contents, "Win", rv)
