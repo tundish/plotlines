@@ -382,7 +382,12 @@ class Board:
         for edge_elem in root.findall(".//*[@inkscape:connector-type]", namespaces=vars(NAMESPACE)):
             node_id_start = edge_elem.attrib[ET.QName(NAMESPACE.inkscape, "connection-start")].lstrip("#")
             node_id_end = edge_elem.attrib[ET.QName(NAMESPACE.inkscape, "connection-end")].lstrip("#")
-            joins = [nodes.setdefault(i, root.find(f".//*[@id='{i}']")) for i in (node_id_start, node_id_end)]
+            joins = [
+                nodes.setdefault(i, dict(area=Decimal(n.attrib.pop("width")) * Decimal(n.attrib.pop("height"))))
+                # dict(**n.attrib)
+                for i in (node_id_start, node_id_end)
+                if (n := root.find(f".//*[@id='{i}']"))
+            ]
             print(f"{joins=}")
         return []
 
