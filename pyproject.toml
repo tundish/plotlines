@@ -40,8 +40,13 @@ packages = [
 
 [tool.setuptools.package-data]
 plotlines = [
+    "assets/*.css",
     "assets/*.toml",
     "assets/*.txt",
+]
+"plotlines.test" = [
+    "data/*.svg",
+    "data/*.xml",
 ]
 
 [tool.setuptools.dynamic]
