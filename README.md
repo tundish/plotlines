@@ -7,12 +7,17 @@ Authors create a basic story structure in [Inkscape](https://inkscape.org/).
 Plotlines will read the SVG file and generate templates for HTML5 output.
 
 Works-in-progress can be saved in human-readable [TOML](https://toml.io/en/) format,
-suitable for collaboration and iterativce editing.
+which is more suitable for collaboration and editing.
 
-Use Case
+Workflow
 --------
 
+Inkscape's *connectors* tool makes it easy to design a branching narrative structure.
+
 ![Story board](./plotlines/test/data/spiki-demo_n51.svg)
+
+You can capture ideas in the `title` and `description` fields of both modes and edges using the *Object Properties*
+editor.
 
 [TOML](https://toml.io/en/)
 [Dunnart](https://github.com/mjwybrow/dunnart)
