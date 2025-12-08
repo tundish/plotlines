@@ -4,7 +4,14 @@
  xmlns:dunnart="http://www.dunnart.org/ns/dunnart"
  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  version="1.2" baseProfile="tiny"
 >
-<style type="text/css">svg { background-color: #030303; }</style>
+<style type="text/css">
+/* Assume Light mode */
+path { fill: #141416; }
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  path { fill: #ffffff; }
+}
+</style>
 <title>spiki-demo_n51.svg</title>
 <desc>This SVG file was saved from Dunnart.  http://www.dunnart.org/</desc>
 <defs>
