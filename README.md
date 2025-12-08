@@ -19,7 +19,7 @@ Inkscape's *Connectors* tool makes it easy to design a branching narrative struc
 You can capture ideas in the `title` and `description` fields of both nodes and edges using the *Object Properties*
 editor.
 
-When that phase is complete, you use **Plotlines** to save the structure as `.toml` files where the serious process of writing and editing begins.
+When that phase is complete, you use **Plotlines** to save the structure as a `.toml` file where the serious process of writing and editing begins.
 
 Finally, you can export to a template tree ready for [Spiki](https://pypi.org/project/spiki/) to generate the HTML
 suitable for a static web site on the Internet.
