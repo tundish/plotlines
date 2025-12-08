@@ -70,6 +70,31 @@ class TreeTests(unittest.TestCase):
         links = {i.get("attrib", {}).get("href") for i in index["base"]["html"]["head"]["link"]}
         self.assertIn("basics.css", links)
 
+    def test_n03e02_edge(self):
+        text = importlib.resources.read_text("plotlines.test.data", "inkscape_properties_n03e02.svg")
+        root = ET.fromstring(text)
+        board = Board()
+        board.merge(root)
+        tree = Tree(board)
+        for text, path in tree(self.parent):
+            path.write_text(text)
+
+        path = self.parent.joinpath("831.toml")
+        self.assertTrue(path.exists())
+
+        text = path.read_text()
+        self.assertIn("A arc", text)
+        node = tomllib.loads(text)
+
+        nav_links = node["doc"]["html"]["body"]["footer"]["nav"]["ul"]["li"]
+        self.assertEqual({i.get("attrib", {}).get("href") for i in nav_links}, {"825.html"})
+        self.assertEqual({i.get("a") for i in nav_links}, {"Win"})
+
+        self.assertEqual(
+            node["doc"]["html"]["body"]["main"].get("blocks", "").strip(),
+            "This is what happens if you go left."
+        )
+
     def test_n03e02_node(self):
         text = importlib.resources.read_text("plotlines.test.data", "inkscape_properties_n03e02.svg")
         root = ET.fromstring(text)
@@ -87,7 +112,7 @@ class TreeTests(unittest.TestCase):
         node = tomllib.loads(text)
 
         nav_links = node["doc"]["html"]["body"]["footer"]["nav"]["ul"]["li"]
-        self.assertEqual({i.get("attrib", {}).get("href") for i in nav_links}, {"825.html", "827.html"})
+        self.assertEqual({i.get("attrib", {}).get("href") for i in nav_links}, {"831.html", "833.html"})
         self.assertEqual({i.get("a") for i in nav_links}, {"A arc", "B arc"})
 
         self.assertEqual(node["doc"]["html"]["body"]["main"].get("blocks", "").strip(), "First node.")

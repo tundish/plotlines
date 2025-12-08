@@ -397,7 +397,7 @@ class Board:
             ]
             edges.append(joins[0].connect(
                 joins[1],
-                id=int(''.join(i for i in attrib.get("id") if i.isdigit())),
+                id=int(''.join(i for i in edge_elem.attrib.get("id") if i.isdigit())),
                 label=edge_elem.findtext("{*}title"),
                 contents=[edge_elem.findtext("{*}desc")],
             ))

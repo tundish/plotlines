@@ -72,6 +72,10 @@ class Tree:
             """).lstrip()
 
     @staticmethod
+    def edge_comment(edge: Edge):
+        return f"# Edge '{edge.label}'\n"
+
+    @staticmethod
     def edge_nav(edge: Edge):
         node = edge.joins[1]
         return textwrap.dedent(f"""
@@ -145,5 +149,5 @@ class Tree:
         edges = [i for i in self.board.items if isinstance(i, Edge)]
         for edge in edges:
             path = parent.joinpath(edge.name).with_suffix(".toml")
-            text = "\n".join((self.edge_nav(edge), self.edge_blocks(edge)))
+            text = "\n".join((self.edge_comment(edge), self.edge_nav(edge), self.edge_blocks(edge)))
             yield text, path
