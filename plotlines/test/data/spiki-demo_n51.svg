@@ -5,11 +5,11 @@
  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  version="1.2" baseProfile="tiny"
 >
 <style type="text/css">
-/* Assume Light mode */
-path { fill: #141416; }
+/* Default mode */
+path[vector-effect="non-scaling-stroke"] { stroke: #141416; }
 /* Dark mode */
 @media (prefers-color-scheme: dark) {
-  path { fill: #ffffff; }
+path[vector-effect="non-scaling-stroke"] { stroke: #FFFFFF; }
 }
 </style>
 <title>spiki-demo_n51.svg</title>
