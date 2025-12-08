@@ -8,6 +8,14 @@ Use Case
 
 ![Story board](./plotlines/test/data/spiki-demo_n51.svg)
 
+Features
+--------
+
+Mode of use                         | CLI options               |   Status          |   Icon
+--------------------------------------------------------------------------------------------
+Auto-generation of plot structures  | Without `--input` option  |   Experimental    | :x:
+
+
 Usage
 -----
 
