@@ -21,11 +21,8 @@ editor.
 
 When that phase is complete, you use **Plotlines** to save the structure as `.toml` files where the serious process of writing and editing begins.
 
-Finally, you can export to a templete tree ready for [Spiki](https://pypi.org/project/spiki/) to generate HTML5
-files suitable for serving as a static web site on the Internet.
-
-[TOML](https://toml.io/en/)
-
+Finally, you can export to a template tree ready for [Spiki](https://pypi.org/project/spiki/) to generate the HTML
+suitable for a static web site on the Internet.
 
 Features
 --------
