@@ -27,6 +27,7 @@ import xml.etree.ElementTree as ET
 from plotlines.board import Board
 from plotlines.board import Edge
 from plotlines.board import Node
+from plotlines.tree import Tree
 
 
 class TreeTests(unittest.TestCase):
@@ -53,3 +54,8 @@ class TreeTests(unittest.TestCase):
         self.assertEqual(node.edges[0].label, "A arc")
         self.assertEqual(node.contents, ["Good ending.\n\n<NARRATOR>\tOr is it?"], rv)
         self.assertEqual(node.edges[0].contents, ["This is what happens if you go left."])
+
+        tree = Tree(board)
+        for text, path in tree(self.parent):
+            path.write_text(text)
+            print(f"Wrote {path}")
