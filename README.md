@@ -6,8 +6,8 @@ Plotlines
 Authors create a basic story structure in [Inkscape](https://inkscape.org/).
 Plotlines will read the SVG file and generate templates for HTML5 output.
 
-Works-in-progress can be saved in human-readable [TOML](https://toml.io/en/) format,
-which is more suitable for collaboration and editing.
+Works-in-progress can be saved in human-readable [TOML](https://toml.io/en/) files.
+This format is better suited to collaborative editing.
 
 Workflow
 --------
