@@ -65,11 +65,12 @@ class TreeTests(unittest.TestCase):
 
         text = path.read_text()
         index = tomllib.loads(text)
+        print(text)
 
         links = {i.get("attrib", {}).get("href") for i in index["base"]["html"]["head"]["link"]}
         self.assertIn("basics.css", links)
 
-        nav_list = index["doc"]["html"]["body"]["header"]["nav"]["ul"]["li"]
+        nav_list = index["base"]["html"]["body"]["header"]["nav"]["ul"]["li"]
         self.assertEqual(len(nav_list), 5)
 
     def test_n03e02_edge(self):

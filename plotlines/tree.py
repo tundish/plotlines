@@ -47,15 +47,26 @@ class Tree:
         [[base.html.head.link]]
         config = {{tag_mode = "void"}}
         attrib = {{rel= "stylesheet", href="{path.name}"}}
-
         """).lstrip()
 
     @staticmethod
     def index_nav(board: Board):
+        for item in board.items:
+            yield textwrap.dedent(f"""
+            [[base.html.body.header.nav.ul.li]]
+            attrib = {{class = "card"}}
+
+            [base.html.body.header.nav.ul.li.div.span]
+            attrib = {{href = "{item.name}.html"}}
+            a = "{item.name}"
+
+            [base.html.body.header.nav.ul.li.div]
+            p = "{item.label}"
+            """).lstrip()
+
         yield textwrap.dedent("""
         [base.html.body.main]
         config = {tag_mode = "pair", block_wrap = "div"}
-
         """).lstrip()
 
         yield textwrap.dedent("""
