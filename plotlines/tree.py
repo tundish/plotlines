@@ -34,7 +34,7 @@ class Tree:
     "Generates a tree of files suitable for Spiki processing"
 
     @staticmethod
-    def comment(ts):
+    def index_comment(ts):
         return f"# Generated {ts} by Plotlines {plotlines.__version__}"
 
     @staticmethod
@@ -94,6 +94,10 @@ class Tree:
         ''').lstrip()
 
     @staticmethod
+    def node_comment(node: Node):
+        return f"# Node '{node.label}'\n"
+
+    @staticmethod
     def node_nav(node: Node):
         for edge in node.connections[1]:
             trail = edge.trail or "next"
@@ -121,7 +125,7 @@ class Tree:
 
     def __call__(self, parent: pathlib.Path, ts: datetime.datetime = None):
         ts = ts or datetime.datetime.now(tz=datetime.timezone.utc)
-        chunks = [self.comment(ts), self.base_head()]
+        chunks = [self.index_comment(ts), self.base_head()]
         for path in importlib.resources.files("plotlines.assets").iterdir():
             if path.suffix == ".css":
                 yield path.read_text(), parent.joinpath(path.name)
@@ -133,7 +137,9 @@ class Tree:
         nodes = [i for i in self.board.items if isinstance(i, Node)]
         for node in nodes:
             path = parent.joinpath(node.name).with_suffix(".toml")
-            text = "\n".join(itertools.chain(self.node_nav(node), [self.node_blocks(node)]))
+            text = "\n".join(itertools.chain(
+                [self.node_comment(node)], self.node_nav(node), [self.node_blocks(node)]
+            ))
             yield text, path
 
         edges = [i for i in self.board.items if isinstance(i, Edge)]
