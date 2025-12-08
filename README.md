@@ -12,20 +12,27 @@ This format is better suited to collaborative editing.
 Workflow
 --------
 
-Inkscape's *connectors* tool makes it easy to design a branching narrative structure.
+Inkscape's *Connectors* tool makes it easy to design a branching narrative structure.
 
 ![Story board](./plotlines/test/data/spiki-demo_n51.svg)
 
-You can capture ideas in the `title` and `description` fields of both modes and edges using the *Object Properties*
+You can capture ideas in the `title` and `description` fields of both nodes and edges using the *Object Properties*
 editor.
 
+When that phase is complete, you use **Plotlines** to save the structure as `.toml` files where the serious process of writing and editing begins.
+
+Finally, you can export to a templete tree ready for [Spiki](https://pypi.org/project/spiki/) to generate HTML5
+files suitable for serving as a static web site on the Internet.
+
 [TOML](https://toml.io/en/)
-[Dunnart](https://github.com/mjwybrow/dunnart)
-[Inkscape](https://inkscape.org/)
-[Spiki](https://pypi.org/project/spiki/)
+
 
 Features
 --------
+
+Plotlines can import SVG from either of these editors:
++ [Dunnart](https://github.com/mjwybrow/dunnart)
++ [Inkscape](https://inkscape.org/)
 
 Mode of use                                     | CLI options               |   Progress        |   Status
 ------------------------------------------------|---------------------------|-------------------|-------
