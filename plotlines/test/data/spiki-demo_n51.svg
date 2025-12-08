@@ -6,10 +6,12 @@
 >
 <style type="text/css">
 /* Default mode */
-path[vector-effect="non-scaling-stroke"] { stroke: #141416; }
+path[vector-effect="non-scaling-stroke"] { stroke: #141414; }
+text { fill: #141414; }
 /* Dark mode */
 @media (prefers-color-scheme: dark) {
 path[vector-effect="non-scaling-stroke"] { stroke: #FFFFFF; }
+text { fill: #FFFFFF; }
 }
 </style>
 <title>spiki-demo_n51.svg</title>
