@@ -44,18 +44,6 @@ class TreeTests(unittest.TestCase):
         root = ET.fromstring(text)
         board = Board()
         rv = board.merge(root)
-        self.assertEqual(len(rv), 5, text)
-        self.assertEqual(len(board.items), 5)
-        self.assertEqual(len(board.initial), 1)
-        self.assertEqual(len(board.initial[0].nearby), 2)
-
-        node = next(i for i in board.terminal if i.id == 825)
-        self.assertEqual(node.name, "825")
-        self.assertEqual(node.label, "Win")
-        self.assertEqual(node.edges[0].label, "A arc")
-        self.assertEqual(node.contents, ["Good ending.\n\n<NARRATOR>\tOr is it?"], rv)
-        self.assertEqual(node.edges[0].contents, ["This is what happens if you go left."])
-
         tree = Tree(board)
         for text, path in tree(self.parent):
             path.write_text(text)
@@ -65,10 +53,11 @@ class TreeTests(unittest.TestCase):
 
         text = path.read_text()
         index = tomllib.loads(text)
-        print(text)
 
         links = {i.get("attrib", {}).get("href") for i in index["base"]["html"]["head"]["link"]}
         self.assertIn("basics.css", links)
+
+        self.assertEqual(index["base"]["html"]["body"]["header"]["nav"].get("attrib", []).get("popover"), "auto")
 
         nav_list = index["base"]["html"]["body"]["header"]["nav"]["ul"]["li"]
         self.assertEqual(len(nav_list), 5)

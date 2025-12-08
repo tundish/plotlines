@@ -73,7 +73,7 @@ def main(args):
                 return 1
             else:
                 board = Board.build(data)
-        elif args.input.suffix == ".xml":
+        elif args.input.suffix in (".svg", ".xml"):
             root = ET.fromstring(text)
             board = Board()
             items = board.merge(root)

@@ -51,6 +51,15 @@ class Tree:
 
     @staticmethod
     def index_nav(board: Board):
+        yield textwrap.dedent("""
+        [base.html.body.header]
+        attrib = {popovertarget = "nav-upper"}
+        button = "≡"  # "IDENTICAL TO" (U+2261)
+
+        [base.html.body.header.nav]
+        attrib = {id="nav-upper", popover = "auto"}
+        """).lstrip()
+
         for item in board.items:
             yield textwrap.dedent(f"""
             [[base.html.body.header.nav.ul.li]]
