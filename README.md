@@ -3,11 +3,16 @@ Plotlines
 
 Create and display Story structure.
 
+Use Case
+--------
+
+![Story board](./plotlines/test/data/spiki-demo_n51.svg)
+
 Usage
 -----
 
 ```
-python -m plotlines.main --help
+python3 -m plotlines.main --help
 usage: python -m plotlines.main [-h] [--debug] [-i INPUT] [-o OUTPUT] [--ending ENDING] [--limit LIMIT] [--exits EXITS]
 
 options:
