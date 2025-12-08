@@ -11,13 +11,13 @@ Use Case
 Features
 --------
 
-Mode of use                             | CLI options               |   Progress        |   Status
-----------------------------------------|---------------------------|-------------------|-------
-Auto-generation of plot structures      | Omit `--i` option         |   Ongoing         | :x:
-Convert Dunnart files to TOML format    | `--i design.svg -o .toml` |   Complete        | :ok:
-Convert Inkscape files to TOML format   | `--i design.svg -o .toml` |   Complete        | :ok:
-Load and plot a file in TOML format     | `--i design.toml`         |   Complete        | :ok:
-Load and generate a Spiki template tree | `--i design.svg -o <dir>` |   Complete        | :ok:
+Mode of use                                     | CLI options               |   Progress        |   Status
+------------------------------------------------|---------------------------|-------------------|-------
+Auto-generation of plot structures              | Omit `-i` option          |   Ongoing         | :x:
+Convert Dunnart files to TOML format            | `-i <file>.svg -o .toml`  |   Complete        | :ok:
+Convert Inkscape files to TOML format           | `-i <file>.svg -o .toml`  |   Complete        | :ok:
+Load and plot a file in TOML format             | `-i <file>.toml`          |   Complete        | :ok:
+Load file and generate a Spiki template tree    | `-i <file>.svg -o <dir>`  |   Complete        | :ok:
 
 
 Usage
