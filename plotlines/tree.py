@@ -53,7 +53,7 @@ class Tree:
     def index_nav(board: Board):
         yield textwrap.dedent("""
         [base.html.body.header]
-        attrib = {popovertarget = "nav-upper"}
+        attrib = {accesskey = "m", popovertarget = "nav-upper"}
         button = "≡"  # "IDENTICAL TO" (U+2261)
 
         [base.html.body.header.nav]
