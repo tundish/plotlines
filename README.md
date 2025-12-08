@@ -11,9 +11,10 @@ Use Case
 Features
 --------
 
-Mode of use                         | CLI options               |   Status          |   Icon
-------------------------------------|---------------------------|-------------------|-------
-Auto-generation of plot structures  | Without `--input` option  |   Experimental    | :x:
+Mode of use                             | CLI options               |   Status          |   Icon
+----------------------------------------|---------------------------|-------------------|-------
+Auto-generation of plot structures      | Omit `--i` option         |   Experimental    | :x:
+Convert Dunnart files to TOML format    | `--i ???.svg -o .toml`    |   Complete        | :ok:
 
 
 Usage
