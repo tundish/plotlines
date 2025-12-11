@@ -60,7 +60,6 @@ class Item:
     uid:        uuid.UUID = dataclasses.field(default_factory=uuid.uuid4, kw_only=True)
     style:      Style = dataclasses.field(default_factory=Style, kw_only=True)
     label:      str = dataclasses.field(default="", kw_only=True)
-    contents:   list = dataclasses.field(default_factory=list, compare=False, kw_only=True)
 
     @staticmethod
     def key(val):
@@ -102,6 +101,11 @@ class Link:
 
 
 @dataclasses.dataclass(unsafe_hash=True)
+class Feature:
+    contents:   list = dataclasses.field(default_factory=list, compare=False, kw_only=True)
+
+
+@dataclasses.dataclass(unsafe_hash=True)
 class Pin(Item):
     pos:        Coordinates = None
     area:       int = dataclasses.field(default=4, kw_only=True)
@@ -115,7 +119,7 @@ class Port(Pin, Link):
 
 
 @dataclasses.dataclass(unsafe_hash=True)
-class Edge(Item):
+class Edge(Feature, Item):
     pos_0: dataclasses.InitVar[Coordinates | None] = None
     pos_1: dataclasses.InitVar[Coordinates | None] = None
     trail: str = ""
@@ -173,7 +177,7 @@ class Edge(Item):
 
 
 @dataclasses.dataclass(unsafe_hash=True)
-class Node(Pin):
+class Node(Feature, Pin):
     ports:  dict[int, Port] = dataclasses.field(default_factory=dict, compare=False)
 
     @classmethod
