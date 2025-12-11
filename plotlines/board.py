@@ -102,7 +102,9 @@ class Link:
 
 @dataclasses.dataclass(unsafe_hash=True)
 class Feature:
+    # TODO: Align with Balladeer Events
     contents:   list = dataclasses.field(default_factory=list, compare=False, kw_only=True)
+    triggers:   list = dataclasses.field(default_factory=list, compare=False, kw_only=True)
 
 
 @dataclasses.dataclass(unsafe_hash=True)
