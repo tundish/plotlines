@@ -167,7 +167,7 @@ class Edge(Feature, Item):
         yield f'id          = {self.id}'
         yield f'uid         = "{self.uid}"'
         yield f'label       = "{self.label}"'
-        yield f'contents    = "{self.contents}"'
+        yield f'contents    = [{{0}}]'.format(", ".join(f'"{i}"' for i in self.contents))
         yield f"[{scope}style]"
         yield f'stroke      = {list(self.style.stroke)}'
         yield f'fill        = {list(self.style.fill)}'
