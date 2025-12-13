@@ -281,21 +281,22 @@ class Node(Feature, Pin):
             port.pos += vec
 
     def toml(self, scope="board.nodes."):
-        yield f'id      = {self.id}'
-        yield f'uid     = "{self.uid}"'
-        yield f'label   = "{self.label}"'
-        yield f'zone    = {self.zone}'
-        yield f'pos     = {list(self.pos or [])}'
-        yield f'area    = {self.area}'
+        yield f'id          = {self.id}'
+        yield f'uid         = "{self.uid}"'
+        yield f'label       = "{self.label}"'
+        yield f'zone        = {self.zone}'
+        yield f'pos         = {list(self.pos or [])}'
+        yield f'area        = {self.area}'
+        yield f'contents    = [{{0}}]'.format(", ".join(f'"{i}"' for i in self.contents))
         yield f"[{scope}style]"
-        yield f'stroke  = {list(self.style.stroke)}'
-        yield f'fill    = {list(self.style.fill)}'
-        yield f'weight  = {self.style.weight}'
+        yield f'stroke      = {list(self.style.stroke)}'
+        yield f'fill        = {list(self.style.fill)}'
+        yield f'weight      = {self.style.weight}'
         for handle, port in self.ports.items():
             yield f"[{scope}ports.{handle}]"
-            yield f'uid     = "{port.uid}"'
-            yield f'pos     = {list(port.pos or [])}'
-            yield f'joins   = {[str(i) for i in port.joins]}'
+            yield f'uid         = "{port.uid}"'
+            yield f'pos         = {list(port.pos or [])}'
+            yield f'joins       = {[str(i) for i in port.joins]}'
 
 
 class Board:
