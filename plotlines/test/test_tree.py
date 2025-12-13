@@ -46,7 +46,7 @@ class TreeTests(unittest.TestCase):
         rv = board.merge(root)
         tree = Tree(board)
         for text, path in tree(self.parent):
-            path.write_text(text)
+            path.write_text(text, encoding="utf8")
 
         path = self.parent.joinpath("index.toml")
         self.assertTrue(path.exists())
@@ -69,7 +69,7 @@ class TreeTests(unittest.TestCase):
         board.merge(root)
         tree = Tree(board)
         for text, path in tree(self.parent):
-            path.write_text(text)
+            path.write_text(text, encoding="utf8")
 
         path = self.parent.joinpath("831.toml")
         self.assertTrue(path.exists())
@@ -94,7 +94,7 @@ class TreeTests(unittest.TestCase):
         board.merge(root)
         tree = Tree(board)
         for text, path in tree(self.parent):
-            path.write_text(text)
+            path.write_text(text, encoding="utf8")
 
         path = self.parent.joinpath("815.toml")
         self.assertTrue(path.exists())
