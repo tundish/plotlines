@@ -164,18 +164,19 @@ class Edge(Feature, Item):
         ]
 
     def toml(self, scope="board.edges."):
-        yield f'id      = {self.id}'
-        yield f'uid     = "{self.uid}"'
-        yield f'label   = "{self.label}"'
+        yield f'id          = {self.id}'
+        yield f'uid         = "{self.uid}"'
+        yield f'label       = "{self.label}"'
+        yield f'contents    = "{self.contents}"'
         yield f"[{scope}style]"
-        yield f'stroke  = {list(self.style.stroke)}'
-        yield f'fill    = {list(self.style.fill)}'
-        yield f'weight  = {self.style.weight}'
+        yield f'stroke      = {list(self.style.stroke)}'
+        yield f'fill        = {list(self.style.fill)}'
+        yield f'weight      = {self.style.weight}'
         for port in self.ports:
             yield f"[[{scope}ports]]"
-            yield f'uid     = "{port.uid}"'
-            yield f'pos     = {list(port.pos or [])}'
-            yield f'joins   = {[str(i) for i in port.joins]}'
+            yield f'uid         = "{port.uid}"'
+            yield f'pos         = {list(port.pos or [])}'
+            yield f'joins       = {[str(i) for i in port.joins]}'
 
 
 @dataclasses.dataclass(unsafe_hash=True)
