@@ -104,6 +104,10 @@ def main(args):
 
     logger.info(f"Format option: {mode.upper()}")
     if mode == "plot":
+        plotter = Plotter(board, t=turtle.Turtle())
+        size = plotter.turtle.screen.screensize()
+        frame, scale = plotter.style_items(board.items, size=size)
+        items = plotter.draw_items(items, debug=args.debug, delay=0)
         plotter.turtle.screen.mainloop()
         return 0
 

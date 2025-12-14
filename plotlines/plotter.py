@@ -288,6 +288,9 @@ class Plotter:
                     except turtle.TurtleGraphicsError:
                         # TODO: Diagnose shape bug
                         pass
+                    except TypeError:
+                        print(f"{node=}", file=sys.stderr)
+                        raise
                     else:
                         self.stamps[self.turtle.stamp()] = node.shape
                         nodes.add(node_uid)

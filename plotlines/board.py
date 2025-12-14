@@ -395,7 +395,7 @@ class Board:
                 nodes.setdefault(id_, Node(
                     id=int(''.join(i for i in attrib.get("id") if i.isdigit())),
                     area=Decimal(attrib.get("width")) * Decimal(attrib.get("height")),
-                    pos=(attrib.get("x"), attrib.get("y")),
+                    pos=Coordinates(attrib.get("x"), attrib.get("y"), coerce=float),
                     label=elem.findtext("{*}title"),
                     contents=[elem.findtext("{*}desc")],
                 ))
