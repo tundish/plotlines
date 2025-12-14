@@ -360,6 +360,14 @@ class Board:
         except Exception:
             return Fraction(1, 1)
 
+    @staticmethod
+    def node_size(node: Node):
+        connections = node.connections
+        lhs_sizes = {edge: math.sqrt(edge.ports[1].area) for edge in connections[0]}
+        rhs_sizes = {edge: math.sqrt(edge.ports[0].area) for edge in connections[1]}
+        height = max(sum(lhs_sizes.values()), sum(rhs_sizes.values()), math.sqrt(node.area))
+        return height
+
     @property
     def initial(self) -> list[Node]:
         survey = defaultdict(set)
@@ -467,7 +475,7 @@ class Board:
                 yield ""
 
     def svg(self, width=None, height=None) -> Generator[str]:
-        # TODO: Switch tou connectors.
+        # TODO: Switch to connectors.
         height = height or 480
         width = width or 640
         frame = self.frame(*self.extent(self.items), square=width==height)

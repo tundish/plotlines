@@ -132,14 +132,6 @@ class Plotter:
                     break
 
     @staticmethod
-    def node_size(node: Node):
-        connections = node.connections
-        lhs_sizes = {edge: math.sqrt(edge.ports[1].area) for edge in connections[0]}
-        rhs_sizes = {edge: math.sqrt(edge.ports[0].area) for edge in connections[1]}
-        height = max(sum(lhs_sizes.values()), sum(rhs_sizes.values()), math.sqrt(node.area))
-        return height
-
-    @staticmethod
     def expandex(length: int):
         "Generate indexes from the middle outwards"
         mid = length // 2
@@ -154,7 +146,7 @@ class Plotter:
     def place_items(items: list = None, boundary: tuple = None, visited=None):
         visited = set() if visited is None else visited
         work = list()
-        sizes = {item: Plotter.node_size(item) for item in items if isinstance(item, Node)}
+        sizes = {item: Board.node_size(item) for item in items if isinstance(item, Node)}
         zones = dict(
             [
                 (key, list(group))
