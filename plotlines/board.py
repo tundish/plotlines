@@ -368,6 +368,27 @@ class Board:
         height = max(sum(lhs_sizes.values()), sum(rhs_sizes.values()), math.sqrt(node.area))
         return height
 
+    @staticmethod
+    def position_node_ports(node: Node):
+        lhs_edges = {edge: math.sqrt(edge.ports[1].area) for edge in node.edges if node.uid in edge.ports[1].joins}
+        rhs_edges = {edge: math.sqrt(edge.ports[0].area) for edge in node.edges if node.uid in edge.ports[0].joins}
+
+        height = max(sum(lhs_edges.values()), sum(rhs_edges.values()))
+        width = max(height, math.sqrt(node.area))
+
+        for n, (edge, size) in enumerate(lhs_edges.items()):
+            if n == 0:
+                pos = node.pos - Coordinates(width / 2, size / 2 + sum(lhs_edges.values()) / 2)
+            pos += Coordinates(0, size)
+            edge.ports[1].pos = pos
+        for n, (edge, size) in enumerate(rhs_edges.items()):
+            if n == 0:
+                pos = node.pos - Coordinates(width / -2, size / 2 + sum(rhs_edges.values()) / 2)
+            pos += Coordinates(0, size)
+            edge.ports[0].pos = pos
+
+        return list(lhs_edges), list(rhs_edges)
+
     @property
     def initial(self) -> list[Node]:
         survey = defaultdict(set)
@@ -417,6 +438,10 @@ class Board:
                 label=edge_elem.findtext("{*}title"),
                 contents=[edge_elem.findtext("{*}desc")],
             ))
+
+        for node in nodes.values():
+            self.position_node_ports(node)
+
         rv = list(nodes.values()) + edges
         self.items.extend(rv)
         return rv

@@ -259,7 +259,7 @@ class Plotter:
             # Test fixture
             pass
 
-        self.turtle.pensize(10)  # FIXME
+        # self.turtle.pensize(10)  # FIXME
         self.turtle.shape("blank")
         self.turtle.color((0, 0, 0), (255, 255, 255))
         nodes = set()
