@@ -98,8 +98,10 @@ class Tree:
 
     @staticmethod
     def edge_meta(edge: Edge):
-        return ""
-        return f"# Edge '{edge.label}'\n"
+        return textwrap.dedent(f"""
+        [metadata]
+        title = "FIXME"
+        """).lstrip()
 
     @staticmethod
     def edge_nav(edge: Edge):
@@ -129,8 +131,10 @@ class Tree:
 
     @staticmethod
     def node_meta(node: Node):
-        return ""
-        return f"# Node '{node.label}'\n"
+        return textwrap.dedent(f"""
+        [metadata]
+        title = "FIXME"
+        """).lstrip()
 
     @staticmethod
     def node_nav(node: Node):
