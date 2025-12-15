@@ -96,7 +96,7 @@ def main(args):
 
     if args.output:
         if "." in format(args.output):
-            mode = args.output.parts[-1].strip(".").lower()
+            mode = format(args.output).split(".")[-1].lower()
         else:
             mode = "spiki"
     else:
