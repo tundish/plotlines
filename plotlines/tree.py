@@ -100,7 +100,7 @@ class Tree:
     def edge_meta(edge: Edge):
         return textwrap.dedent(f"""
         [metadata]
-        title = "FIXME"
+        title = "{edge.title}"
         """).lstrip()
 
     @staticmethod
@@ -109,7 +109,7 @@ class Tree:
         return textwrap.dedent(f"""
         [[doc.html.body.footer.nav.ul.li]]
         attrib = {{class = "spiki next", href = "{node.name}.html"}}
-        a = "{node.label or 'Next'}"
+        a = "{node.title or 'Next'}"
         """).lstrip()
 
     @staticmethod
@@ -133,7 +133,7 @@ class Tree:
     def node_meta(node: Node):
         return textwrap.dedent(f"""
         [metadata]
-        title = "FIXME"
+        title = "{node.title}"
         """).lstrip()
 
     @staticmethod
@@ -143,7 +143,7 @@ class Tree:
             yield textwrap.dedent(f"""
             [[doc.html.body.footer.nav.ul.li]]
             attrib = {{class = "spiki {trail}", href = "{edge.name}.html"}}
-            a = "{edge.label or 'Next'}"
+            a = "{edge.title or edge.label or 'Next'}"
             """).lstrip()
 
     @staticmethod
