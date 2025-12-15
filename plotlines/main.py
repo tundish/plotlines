@@ -123,6 +123,7 @@ def main(args):
         for text, path in tree(parent):
             path.write_text(text)
             logger.info(f"Wrote {path}")
+        logger.info(f"{mode.upper()} output complete")
         return 0
     elif mode == "svg":
         lines = board.svg(width=width, height=height)
