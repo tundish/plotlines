@@ -62,16 +62,17 @@ class Tree:
         """).lstrip()
 
         for item in board.items:
+            title = f"{item.__class__.__name__} {item.name}"
             yield textwrap.dedent(f"""
             [[base.html.body.header.nav.ul.li]]
             attrib = {{class = "card"}}
 
             [base.html.body.header.nav.ul.li.div.span]
             attrib = {{href = "{item.name}.html"}}
-            a = "{item.name}"
+            a = "{item.label}"
 
             [base.html.body.header.nav.ul.li.div]
-            p = "{item.label}"
+            p = "{item.title or title}"
             """).lstrip()
 
         yield textwrap.dedent("""
