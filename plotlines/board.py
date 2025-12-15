@@ -103,6 +103,7 @@ class Link:
 @dataclasses.dataclass(unsafe_hash=True)
 class Feature:
     # TODO: Align with Balladeer Events
+    title:      str = dataclasses.field(default="", kw_only=True)
     contents:   list = dataclasses.field(default_factory=list, compare=False, kw_only=True)
     triggers:   list = dataclasses.field(default_factory=list, compare=False, kw_only=True)
 
@@ -167,6 +168,7 @@ class Edge(Feature, Item):
         yield f'id          = {self.id}'
         yield f'uid         = "{self.uid}"'
         yield f'label       = "{self.label}"'
+        yield f'title       = "{self.title}"'
         yield f'contents    = [{{0}}]'.format(", ".join(f'"{i}"' for i in self.contents))
         yield f"[{scope}style]"
         yield f'stroke      = {list(self.style.stroke)}'
@@ -284,6 +286,7 @@ class Node(Feature, Pin):
         yield f'id          = {self.id}'
         yield f'uid         = "{self.uid}"'
         yield f'label       = "{self.label}"'
+        yield f'title       = "{self.title}"'
         yield f'zone        = {self.zone}'
         yield f'pos         = {list(self.pos or [])}'
         yield f'area        = {self.area}'
@@ -426,7 +429,8 @@ class Board:
                     area=Decimal(attrib.get("width")) * Decimal(attrib.get("height")),
                     pos=Coordinates(attrib.get("x"), attrib.get("y"), coerce=float),
                     label=elem.findtext("{*}title"),
-                    contents=[elem.findtext("{*}desc")],
+                    contents=[desc := elem.findtext("{*}desc")],
+                    title=desc and desc.splitlines()[0].title(),
                 ))
                 for id_ in (node_id_start, node_id_end)
                 if (elem := root.find(f".//*[@id='{id_}']")) is not None
@@ -436,7 +440,8 @@ class Board:
                 joins[1],
                 id=int(''.join(i for i in edge_elem.attrib.get("id") if i.isdigit())),
                 label=edge_elem.findtext("{*}title"),
-                contents=[edge_elem.findtext("{*}desc")],
+                contents=[desc := edge_elem.findtext("{*}desc")],
+                title=desc and desc.splitlines()[0].title(),
             ))
 
         for node in nodes.values():

@@ -138,7 +138,6 @@ def main(args):
     write = args.output.write_text if args.output else sys.stdout.write
     write = sys.stdout.write if format(args.output).startswith(".") else args.output.write_text
     write("\n".join(lines))
-    write("\n")
     logger.info(f"{mode.upper()} output complete")
     return 0
 
