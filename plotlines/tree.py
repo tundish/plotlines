@@ -97,6 +97,11 @@ class Tree:
         return f"# Edge '{edge.label}'\n"
 
     @staticmethod
+    def edge_meta(edge: Edge):
+        return ""
+        return f"# Edge '{edge.label}'\n"
+
+    @staticmethod
     def edge_nav(edge: Edge):
         node = edge.joins[1]
         return textwrap.dedent(f"""
@@ -120,6 +125,11 @@ class Tree:
 
     @staticmethod
     def node_comment(node: Node):
+        return f"# Node '{node.label}'\n"
+
+    @staticmethod
+    def node_meta(node: Node):
+        return ""
         return f"# Node '{node.label}'\n"
 
     @staticmethod
@@ -163,12 +173,12 @@ class Tree:
         for node in nodes:
             path = parent.joinpath(node.name).with_suffix(".toml")
             text = "\n".join(itertools.chain(
-                [self.node_comment(node)], self.node_nav(node), [self.node_blocks(node)]
+                [self.node_comment(node), self.node_meta(node)], self.node_nav(node), [self.node_blocks(node)]
             ))
             yield text, path
 
         edges = [i for i in self.board.items if isinstance(i, Edge)]
         for edge in edges:
             path = parent.joinpath(edge.name).with_suffix(".toml")
-            text = "\n".join((self.edge_comment(edge), self.edge_nav(edge), self.edge_blocks(edge)))
+            text = "\n".join((self.edge_comment(edge), self.edge_meta(edge), self.edge_nav(edge), self.edge_blocks(edge)))
             yield text, path
