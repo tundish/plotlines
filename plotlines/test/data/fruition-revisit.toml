@@ -1,0 +1,642 @@
+[board]
+[board.shapes]
+
+[[board.nodes]]
+id          = 834
+uid         = "c4078c07-eb9f-471f-9044-a7306b8e0a2c"
+label       = "1"
+title       = "Inception"
+zone        = 0
+pos         = [11.753163, 182.90282]
+area        = 193.154820940225
+contents    = ["inception"]
+[board.nodes.style]
+stroke      = [0, 0, 0]
+fill        = [255, 255, 255]
+weight      = 1
+[board.nodes.ports.00]
+uid         = "c02242fe-e69c-4a3a-b144-f72be9f00cbc"
+pos         = [18.7021705, 182.90282]
+joins       = ['c4078c07-eb9f-471f-9044-a7306b8e0a2c', '5a7a92c8-6596-4e13-81ad-9ea7c2839d02']
+[board.nodes.ports.01]
+uid         = "0d656f3d-15e3-434f-965b-222dfca1afba"
+pos         = [4.804155500000001, 179.90282]
+joins       = ['c4078c07-eb9f-471f-9044-a7306b8e0a2c', '8c8128ee-818b-42af-825d-3264c28d94db']
+[board.nodes.ports.02]
+uid         = "cc8e2764-4b99-4e57-a493-c8369f95d5e4"
+pos         = [4.804155500000001, 181.90282]
+joins       = ['c4078c07-eb9f-471f-9044-a7306b8e0a2c', '845efaaa-62dd-4fbe-a4ae-50364625222f']
+[board.nodes.ports.03]
+uid         = "beda0e45-6997-4519-9a5e-6169849d7f46"
+pos         = [4.804155500000001, 183.90282]
+joins       = ['c4078c07-eb9f-471f-9044-a7306b8e0a2c', '10acf85e-5231-44b6-aa49-d9a95420d835']
+[board.nodes.ports.04]
+uid         = "6e4bc0b5-6282-4b85-a44f-0c4b96c68c07"
+pos         = [4.804155500000001, 185.90282]
+joins       = ['e5862bc0-0a47-44fd-ab59-ca16e8069f72', 'c4078c07-eb9f-471f-9044-a7306b8e0a2c']
+
+[[board.nodes]]
+id          = 836
+uid         = "62531d1a-fd4f-4b91-95a9-a6f66d5ad04c"
+label       = "2"
+title       = "Elaboration"
+zone        = 0
+pos         = [93.506241, 184.50642]
+area        = 193.154820940225
+contents    = ["elaboration"]
+[board.nodes.style]
+stroke      = [0, 0, 0]
+fill        = [255, 255, 255]
+weight      = 1
+[board.nodes.ports.00]
+uid         = "ef617e2c-ba39-4791-87df-a710f9b1f4dd"
+pos         = [86.55723350000001, 183.50642]
+joins       = ['62531d1a-fd4f-4b91-95a9-a6f66d5ad04c', '5a7a92c8-6596-4e13-81ad-9ea7c2839d02']
+[board.nodes.ports.01]
+uid         = "b9318fa8-ee79-4f4b-8f39-ee281151b001"
+pos         = [100.4552485, 181.50642]
+joins       = ['a5c51311-ec5c-42ac-ba41-7955ed26e021', '62531d1a-fd4f-4b91-95a9-a6f66d5ad04c']
+[board.nodes.ports.02]
+uid         = "78700aae-01d7-4937-9ab2-3caf949dd804"
+pos         = [100.4552485, 183.50642]
+joins       = ['62531d1a-fd4f-4b91-95a9-a6f66d5ad04c', '5cf4109d-8ba0-479f-b246-4bff8f46ac53']
+[board.nodes.ports.03]
+uid         = "f53b3c6e-c5c8-4f62-b44c-d08c06489d80"
+pos         = [86.55723350000001, 185.50642]
+joins       = ['62531d1a-fd4f-4b91-95a9-a6f66d5ad04c', '2d17860d-a401-43c4-8714-da0e9c1326a4']
+[board.nodes.ports.04]
+uid         = "2f5a5136-cf06-46f9-9e94-f4e7073a3dfe"
+pos         = [100.4552485, 185.50642]
+joins       = ['62531d1a-fd4f-4b91-95a9-a6f66d5ad04c', '2eff51b6-ee43-4edf-8bab-4f1b8b805abc']
+[board.nodes.ports.05]
+uid         = "1d80d95e-982f-4539-8fe2-c73b1ce2c680"
+pos         = [100.4552485, 187.50642]
+joins       = ['62531d1a-fd4f-4b91-95a9-a6f66d5ad04c', '62ec79b6-2738-4c39-a8e9-3eb0b647ed6f']
+
+[[board.nodes]]
+id          = 838
+uid         = "3644ecac-0cc1-41bf-84cd-dd6499123e41"
+label       = "3"
+title       = "Construction"
+zone        = 0
+pos         = [186.54704, 167.40118]
+area        = 193.154820940225
+contents    = ["construction"]
+[board.nodes.style]
+stroke      = [0, 0, 0]
+fill        = [255, 255, 255]
+weight      = 1
+[board.nodes.ports.00]
+uid         = "25e35a6b-a36a-46eb-80b7-f28ea118c37d"
+pos         = [179.59803250000002, 165.40118]
+joins       = ['a5c51311-ec5c-42ac-ba41-7955ed26e021', '3644ecac-0cc1-41bf-84cd-dd6499123e41']
+[board.nodes.ports.01]
+uid         = "bc991699-afa3-46a9-9648-dc2ff2fe5452"
+pos         = [193.4960475, 165.40118]
+joins       = ['3644ecac-0cc1-41bf-84cd-dd6499123e41', 'ce428944-475d-45e9-bab8-8d497b616fe6']
+[board.nodes.ports.02]
+uid         = "9cdf6e97-5d21-4882-a534-30d117969111"
+pos         = [179.59803250000002, 167.40118]
+joins       = ['ba922c36-362b-4fa1-8190-4303979d49e8', '3644ecac-0cc1-41bf-84cd-dd6499123e41']
+[board.nodes.ports.03]
+uid         = "8f2fba1a-1c48-4e26-a1d1-5809224927ee"
+pos         = [193.4960475, 167.40118]
+joins       = ['3644ecac-0cc1-41bf-84cd-dd6499123e41', 'cc631453-7525-4d43-a0e1-99114f642f6d']
+[board.nodes.ports.04]
+uid         = "e98a66f9-1b44-4c6d-b543-7eeecd885274"
+pos         = [193.4960475, 169.40118]
+joins       = ['3644ecac-0cc1-41bf-84cd-dd6499123e41', 'e3944acc-a4d5-46a8-bb61-7d133c1077df']
+[board.nodes.ports.05]
+uid         = "ebf77b40-1563-4c1c-b795-407e9afbe559"
+pos         = [179.59803250000002, 169.40118]
+joins       = ['892db3a4-d8e5-4de8-855a-b59402f4f4d3', '3644ecac-0cc1-41bf-84cd-dd6499123e41']
+
+[[board.nodes]]
+id          = 840
+uid         = "8a1a3ccb-fe0e-45cc-b0d8-a7514b3461ba"
+label       = "4"
+title       = "Evaluation"
+zone        = 0
+pos         = [213.80853, 200.5426]
+area        = 193.154820940225
+contents    = ["evaluation"]
+[board.nodes.style]
+stroke      = [0, 0, 0]
+fill        = [255, 255, 255]
+weight      = 1
+[board.nodes.ports.00]
+uid         = "bb1bc1f2-1274-4cb4-9c65-82c519a0a776"
+pos         = [206.8595225, 200.5426]
+joins       = ['8a1a3ccb-fe0e-45cc-b0d8-a7514b3461ba', 'ce428944-475d-45e9-bab8-8d497b616fe6']
+[board.nodes.ports.01]
+uid         = "9784a709-a139-4878-81af-92cbe2312438"
+pos         = [220.75753749999998, 198.5426]
+joins       = ['d425fd3a-5457-48ea-9aa3-70d418b6f72f', '8a1a3ccb-fe0e-45cc-b0d8-a7514b3461ba']
+[board.nodes.ports.02]
+uid         = "6fe57972-cf59-4aad-af51-671f75433cdd"
+pos         = [220.75753749999998, 200.5426]
+joins       = ['892db3a4-d8e5-4de8-855a-b59402f4f4d3', '8a1a3ccb-fe0e-45cc-b0d8-a7514b3461ba']
+[board.nodes.ports.03]
+uid         = "0e1b8162-d62d-4e02-b674-c882fc11ee91"
+pos         = [220.75753749999998, 202.5426]
+joins       = ['8a1a3ccb-fe0e-45cc-b0d8-a7514b3461ba', '20d04dc4-2267-4521-850e-ccb3badcb457']
+
+[[board.nodes]]
+id          = 842
+uid         = "820a1af1-d6fc-4b7b-8a68-1c52e1f56db2"
+label       = "5"
+title       = "Completion"
+zone        = 0
+pos         = [188.68518, 273.10626]
+area        = 193.154820940225
+contents    = ["completion"]
+[board.nodes.style]
+stroke      = [0, 0, 0]
+fill        = [255, 255, 255]
+weight      = 1
+[board.nodes.ports.00]
+uid         = "cb7e6b31-12d0-4ef7-ba4b-d9a2d1021b97"
+pos         = [181.7361725, 273.10626]
+joins       = ['d425fd3a-5457-48ea-9aa3-70d418b6f72f', '820a1af1-d6fc-4b7b-8a68-1c52e1f56db2']
+[board.nodes.ports.01]
+uid         = "8b23cf2a-d9fb-487d-ac37-729b1d38f3c2"
+pos         = [195.6341875, 273.10626]
+joins       = ['e5862bc0-0a47-44fd-ab59-ca16e8069f72', '820a1af1-d6fc-4b7b-8a68-1c52e1f56db2']
+
+[[board.nodes]]
+id          = 844
+uid         = "01f9397a-2f48-422a-92dd-f518a9dfce57"
+label       = "6"
+title       = "Discussion"
+zone        = 0
+pos         = [174.52017, 210.16431]
+area        = 193.154820940225
+contents    = ["discussion"]
+[board.nodes.style]
+stroke      = [0, 0, 0]
+fill        = [255, 255, 255]
+weight      = 1
+[board.nodes.ports.00]
+uid         = "ea8a4f55-65e4-4df9-b9ad-9b765b2a15b1"
+pos         = [167.5711625, 210.16431]
+joins       = ['01f9397a-2f48-422a-92dd-f518a9dfce57', '5cf4109d-8ba0-479f-b246-4bff8f46ac53']
+[board.nodes.ports.01]
+uid         = "8ef0dad4-f52d-417d-aee9-c38f84524381"
+pos         = [181.4691775, 207.16431]
+joins       = ['2d17860d-a401-43c4-8714-da0e9c1326a4', '01f9397a-2f48-422a-92dd-f518a9dfce57']
+[board.nodes.ports.02]
+uid         = "f15e01f1-ce42-41f6-8621-9d19f6a5a19a"
+pos         = [181.4691775, 209.16431]
+joins       = ['01f9397a-2f48-422a-92dd-f518a9dfce57', '470aee43-be8b-4905-b6d2-c56a6e5db0d7']
+[board.nodes.ports.03]
+uid         = "3d7810a7-38dd-42f0-9acd-f26d82c7e5d0"
+pos         = [181.4691775, 211.16431]
+joins       = ['01f9397a-2f48-422a-92dd-f518a9dfce57', '2edf0a7b-60e3-4771-b0ae-83057081778e']
+[board.nodes.ports.04]
+uid         = "bca274b5-fbcc-4dcf-9f36-c08dc7b93aa0"
+pos         = [181.4691775, 213.16431]
+joins       = ['ba922c36-362b-4fa1-8190-4303979d49e8', '01f9397a-2f48-422a-92dd-f518a9dfce57']
+
+[[board.nodes]]
+id          = 848
+uid         = "f7ec83a5-6915-4aae-aa66-a39fe5e28f9e"
+label       = "8"
+title       = "Withdrawn"
+zone        = 0
+pos         = [127.48088, 220.66844]
+area        = 193.154820940225
+contents    = ["withdrawn"]
+[board.nodes.style]
+stroke      = [0, 0, 0]
+fill        = [255, 255, 255]
+weight      = 1
+[board.nodes.ports.00]
+uid         = "032634a1-e77b-48e4-b580-3facde6882c4"
+pos         = [120.5318725, 217.66844]
+joins       = ['f7ec83a5-6915-4aae-aa66-a39fe5e28f9e', '2eff51b6-ee43-4edf-8bab-4f1b8b805abc']
+[board.nodes.ports.01]
+uid         = "4d96bfd4-8d90-4665-9968-14ed72556772"
+pos         = [120.5318725, 219.66844]
+joins       = ['f7ec83a5-6915-4aae-aa66-a39fe5e28f9e', '62ec79b6-2738-4c39-a8e9-3eb0b647ed6f']
+[board.nodes.ports.02]
+uid         = "d5bc646e-7ba9-441d-b864-01bbe7c3d87f"
+pos         = [120.5318725, 221.66844]
+joins       = ['f7ec83a5-6915-4aae-aa66-a39fe5e28f9e', '470aee43-be8b-4905-b6d2-c56a6e5db0d7']
+[board.nodes.ports.03]
+uid         = "d04e6fb1-3b0f-48f2-a924-b203a4fd6e16"
+pos         = [120.5318725, 223.66844]
+joins       = ['f7ec83a5-6915-4aae-aa66-a39fe5e28f9e', '2edf0a7b-60e3-4771-b0ae-83057081778e']
+[board.nodes.ports.04]
+uid         = "dc5170d4-bc16-4a3d-baa6-68951dc3fc63"
+pos         = [134.4298875, 220.66844]
+joins       = ['f7ec83a5-6915-4aae-aa66-a39fe5e28f9e', '845efaaa-62dd-4fbe-a4ae-50364625222f']
+
+[[board.nodes]]
+id          = 846
+uid         = "4400be32-95d5-40b3-8444-e556720dee94"
+label       = "7"
+title       = "Defaulted"
+zone        = 0
+pos         = [115.45336, 161.26279]
+area        = 193.154820940225
+contents    = ["defaulted"]
+[board.nodes.style]
+stroke      = [0, 0, 0]
+fill        = [255, 255, 255]
+weight      = 1
+[board.nodes.ports.00]
+uid         = "17b1ed6d-cdbf-4d24-bd48-70ff2890bf9f"
+pos         = [108.50435250000001, 161.26279]
+joins       = ['4400be32-95d5-40b3-8444-e556720dee94', 'cc631453-7525-4d43-a0e1-99114f642f6d']
+[board.nodes.ports.01]
+uid         = "dcdd4b76-8d58-4101-8d90-523acbde4b12"
+pos         = [122.4023675, 161.26279]
+joins       = ['4400be32-95d5-40b3-8444-e556720dee94', '8c8128ee-818b-42af-825d-3264c28d94db']
+
+[[board.nodes]]
+id          = 850
+uid         = "fa7a6f70-6762-4476-810e-5dc047e22b28"
+label       = "9"
+title       = "Cancelled"
+zone        = 0
+pos         = [228.50838, 102.95473]
+area        = 193.154820940225
+contents    = ["cancelled"]
+[board.nodes.style]
+stroke      = [0, 0, 0]
+fill        = [255, 255, 255]
+weight      = 1
+[board.nodes.ports.00]
+uid         = "ea7a3c15-4310-4641-83fb-c7d9d62e893d"
+pos         = [221.5593725, 101.95473]
+joins       = ['fa7a6f70-6762-4476-810e-5dc047e22b28', 'e3944acc-a4d5-46a8-bb61-7d133c1077df']
+[board.nodes.ports.01]
+uid         = "23269659-8c24-4f42-8702-84eaeae4d4ab"
+pos         = [221.5593725, 103.95473]
+joins       = ['fa7a6f70-6762-4476-810e-5dc047e22b28', '20d04dc4-2267-4521-850e-ccb3badcb457']
+[board.nodes.ports.02]
+uid         = "13763c37-b5cb-48d4-a91b-7b4e8f5231da"
+pos         = [235.45738749999998, 102.95473]
+joins       = ['fa7a6f70-6762-4476-810e-5dc047e22b28', '10acf85e-5231-44b6-aa49-d9a95420d835']
+
+
+[[board.edges]]
+id          = 852
+uid         = "5a7a92c8-6596-4e13-81ad-9ea7c2839d02"
+label       = "a"
+title       = "Proposal"
+contents    = ["proposal"]
+[board.edges.style]
+stroke      = [0, 0, 0]
+fill        = [255, 255, 255]
+weight      = 1
+[[board.edges.ports]]
+uid         = "c02242fe-e69c-4a3a-b144-f72be9f00cbc"
+pos         = [18.7021705, 182.90282]
+joins       = ['c4078c07-eb9f-471f-9044-a7306b8e0a2c', '5a7a92c8-6596-4e13-81ad-9ea7c2839d02']
+[[board.edges.ports]]
+uid         = "ef617e2c-ba39-4791-87df-a710f9b1f4dd"
+pos         = [86.55723350000001, 183.50642]
+joins       = ['62531d1a-fd4f-4b91-95a9-a6f66d5ad04c', '5a7a92c8-6596-4e13-81ad-9ea7c2839d02']
+
+[[board.edges]]
+id          = 1136
+uid         = "a5c51311-ec5c-42ac-ba41-7955ed26e021"
+label       = "b"
+title       = "Promise"
+contents    = ["promise"]
+[board.edges.style]
+stroke      = [0, 0, 0]
+fill        = [255, 255, 255]
+weight      = 1
+[[board.edges.ports]]
+uid         = "b9318fa8-ee79-4f4b-8f39-ee281151b001"
+pos         = [100.4552485, 181.50642]
+joins       = ['a5c51311-ec5c-42ac-ba41-7955ed26e021', '62531d1a-fd4f-4b91-95a9-a6f66d5ad04c']
+[[board.edges.ports]]
+uid         = "25e35a6b-a36a-46eb-80b7-f28ea118c37d"
+pos         = [179.59803250000002, 165.40118]
+joins       = ['a5c51311-ec5c-42ac-ba41-7955ed26e021', '3644ecac-0cc1-41bf-84cd-dd6499123e41']
+
+[[board.edges]]
+id          = 1176
+uid         = "ce428944-475d-45e9-bab8-8d497b616fe6"
+label       = "c"
+title       = "Delivery"
+contents    = ["delivery"]
+[board.edges.style]
+stroke      = [0, 0, 0]
+fill        = [255, 255, 255]
+weight      = 1
+[[board.edges.ports]]
+uid         = "bc991699-afa3-46a9-9648-dc2ff2fe5452"
+pos         = [193.4960475, 165.40118]
+joins       = ['3644ecac-0cc1-41bf-84cd-dd6499123e41', 'ce428944-475d-45e9-bab8-8d497b616fe6']
+[[board.edges.ports]]
+uid         = "bb1bc1f2-1274-4cb4-9c65-82c519a0a776"
+pos         = [206.8595225, 200.5426]
+joins       = ['8a1a3ccb-fe0e-45cc-b0d8-a7514b3461ba', 'ce428944-475d-45e9-bab8-8d497b616fe6']
+
+[[board.edges]]
+id          = 1218
+uid         = "d425fd3a-5457-48ea-9aa3-70d418b6f72f"
+label       = "d"
+title       = "Adoption"
+contents    = ["adoption"]
+[board.edges.style]
+stroke      = [0, 0, 0]
+fill        = [255, 255, 255]
+weight      = 1
+[[board.edges.ports]]
+uid         = "9784a709-a139-4878-81af-92cbe2312438"
+pos         = [220.75753749999998, 198.5426]
+joins       = ['d425fd3a-5457-48ea-9aa3-70d418b6f72f', '8a1a3ccb-fe0e-45cc-b0d8-a7514b3461ba']
+[[board.edges.ports]]
+uid         = "cb7e6b31-12d0-4ef7-ba4b-d9a2d1021b97"
+pos         = [181.7361725, 273.10626]
+joins       = ['d425fd3a-5457-48ea-9aa3-70d418b6f72f', '820a1af1-d6fc-4b7b-8a68-1c52e1f56db2']
+
+[[board.edges]]
+id          = 1266
+uid         = "5cf4109d-8ba0-479f-b246-4bff8f46ac53"
+label       = "g"
+title       = "Offer"
+contents    = ["offer"]
+[board.edges.style]
+stroke      = [0, 0, 0]
+fill        = [255, 255, 255]
+weight      = 1
+[[board.edges.ports]]
+uid         = "78700aae-01d7-4937-9ab2-3caf949dd804"
+pos         = [100.4552485, 183.50642]
+joins       = ['62531d1a-fd4f-4b91-95a9-a6f66d5ad04c', '5cf4109d-8ba0-479f-b246-4bff8f46ac53']
+[[board.edges.ports]]
+uid         = "ea8a4f55-65e4-4df9-b9ad-9b765b2a15b1"
+pos         = [167.5711625, 210.16431]
+joins       = ['01f9397a-2f48-422a-92dd-f518a9dfce57', '5cf4109d-8ba0-479f-b246-4bff8f46ac53']
+
+[[board.edges]]
+id          = 4510
+uid         = "2d17860d-a401-43c4-8714-da0e9c1326a4"
+label       = "h"
+title       = "Clarification"
+contents    = ["clarification"]
+[board.edges.style]
+stroke      = [0, 0, 0]
+fill        = [255, 255, 255]
+weight      = 1
+[[board.edges.ports]]
+uid         = "8ef0dad4-f52d-417d-aee9-c38f84524381"
+pos         = [181.4691775, 207.16431]
+joins       = ['2d17860d-a401-43c4-8714-da0e9c1326a4', '01f9397a-2f48-422a-92dd-f518a9dfce57']
+[[board.edges.ports]]
+uid         = "f53b3c6e-c5c8-4f62-b44c-d08c06489d80"
+pos         = [86.55723350000001, 185.50642]
+joins       = ['62531d1a-fd4f-4b91-95a9-a6f66d5ad04c', '2d17860d-a401-43c4-8714-da0e9c1326a4']
+
+[[board.edges]]
+id          = 4578
+uid         = "2eff51b6-ee43-4edf-8bab-4f1b8b805abc"
+label       = "e"
+title       = "Disinclination"
+contents    = ["disinclination"]
+[board.edges.style]
+stroke      = [0, 0, 0]
+fill        = [255, 255, 255]
+weight      = 1
+[[board.edges.ports]]
+uid         = "2f5a5136-cf06-46f9-9e94-f4e7073a3dfe"
+pos         = [100.4552485, 185.50642]
+joins       = ['62531d1a-fd4f-4b91-95a9-a6f66d5ad04c', '2eff51b6-ee43-4edf-8bab-4f1b8b805abc']
+[[board.edges.ports]]
+uid         = "032634a1-e77b-48e4-b580-3facde6882c4"
+pos         = [120.5318725, 217.66844]
+joins       = ['f7ec83a5-6915-4aae-aa66-a39fe5e28f9e', '2eff51b6-ee43-4edf-8bab-4f1b8b805abc']
+
+[[board.edges]]
+id          = 4646
+uid         = "62ec79b6-2738-4c39-a8e9-3eb0b647ed6f"
+label       = "f"
+title       = "Withdrawal"
+contents    = ["withdrawal"]
+[board.edges.style]
+stroke      = [0, 0, 0]
+fill        = [255, 255, 255]
+weight      = 1
+[[board.edges.ports]]
+uid         = "1d80d95e-982f-4539-8fe2-c73b1ce2c680"
+pos         = [100.4552485, 187.50642]
+joins       = ['62531d1a-fd4f-4b91-95a9-a6f66d5ad04c', '62ec79b6-2738-4c39-a8e9-3eb0b647ed6f']
+[[board.edges.ports]]
+uid         = "4d96bfd4-8d90-4665-9968-14ed72556772"
+pos         = [120.5318725, 219.66844]
+joins       = ['f7ec83a5-6915-4aae-aa66-a39fe5e28f9e', '62ec79b6-2738-4c39-a8e9-3eb0b647ed6f']
+
+[[board.edges]]
+id          = 4720
+uid         = "470aee43-be8b-4905-b6d2-c56a6e5db0d7"
+label       = "i"
+title       = "Disinclination"
+contents    = ["disinclination"]
+[board.edges.style]
+stroke      = [0, 0, 0]
+fill        = [255, 255, 255]
+weight      = 1
+[[board.edges.ports]]
+uid         = "f15e01f1-ce42-41f6-8621-9d19f6a5a19a"
+pos         = [181.4691775, 209.16431]
+joins       = ['01f9397a-2f48-422a-92dd-f518a9dfce57', '470aee43-be8b-4905-b6d2-c56a6e5db0d7']
+[[board.edges.ports]]
+uid         = "d5bc646e-7ba9-441d-b864-01bbe7c3d87f"
+pos         = [120.5318725, 221.66844]
+joins       = ['f7ec83a5-6915-4aae-aa66-a39fe5e28f9e', '470aee43-be8b-4905-b6d2-c56a6e5db0d7']
+
+[[board.edges]]
+id          = 4806
+uid         = "2edf0a7b-60e3-4771-b0ae-83057081778e"
+label       = "j"
+title       = "Withdrawal"
+contents    = ["withdrawal"]
+[board.edges.style]
+stroke      = [0, 0, 0]
+fill        = [255, 255, 255]
+weight      = 1
+[[board.edges.ports]]
+uid         = "3d7810a7-38dd-42f0-9acd-f26d82c7e5d0"
+pos         = [181.4691775, 211.16431]
+joins       = ['01f9397a-2f48-422a-92dd-f518a9dfce57', '2edf0a7b-60e3-4771-b0ae-83057081778e']
+[[board.edges.ports]]
+uid         = "d04e6fb1-3b0f-48f2-a924-b203a4fd6e16"
+pos         = [120.5318725, 223.66844]
+joins       = ['f7ec83a5-6915-4aae-aa66-a39fe5e28f9e', '2edf0a7b-60e3-4771-b0ae-83057081778e']
+
+[[board.edges]]
+id          = 4892
+uid         = "ba922c36-362b-4fa1-8190-4303979d49e8"
+label       = "k"
+title       = "Confirmation"
+contents    = ["confirmation"]
+[board.edges.style]
+stroke      = [0, 0, 0]
+fill        = [255, 255, 255]
+weight      = 1
+[[board.edges.ports]]
+uid         = "bca274b5-fbcc-4dcf-9f36-c08dc7b93aa0"
+pos         = [181.4691775, 213.16431]
+joins       = ['ba922c36-362b-4fa1-8190-4303979d49e8', '01f9397a-2f48-422a-92dd-f518a9dfce57']
+[[board.edges.ports]]
+uid         = "9cdf6e97-5d21-4882-a534-30d117969111"
+pos         = [179.59803250000002, 167.40118]
+joins       = ['ba922c36-362b-4fa1-8190-4303979d49e8', '3644ecac-0cc1-41bf-84cd-dd6499123e41']
+
+[[board.edges]]
+id          = 4984
+uid         = "cc631453-7525-4d43-a0e1-99114f642f6d"
+label       = "o"
+title       = "Disavowal"
+contents    = ["disavowal"]
+[board.edges.style]
+stroke      = [0, 0, 0]
+fill        = [255, 255, 255]
+weight      = 1
+[[board.edges.ports]]
+uid         = "8f2fba1a-1c48-4e26-a1d1-5809224927ee"
+pos         = [193.4960475, 167.40118]
+joins       = ['3644ecac-0cc1-41bf-84cd-dd6499123e41', 'cc631453-7525-4d43-a0e1-99114f642f6d']
+[[board.edges.ports]]
+uid         = "17b1ed6d-cdbf-4d24-bd48-70ff2890bf9f"
+pos         = [108.50435250000001, 161.26279]
+joins       = ['4400be32-95d5-40b3-8444-e556720dee94', 'cc631453-7525-4d43-a0e1-99114f642f6d']
+
+[[board.edges]]
+id          = 5082
+uid         = "e3944acc-a4d5-46a8-bb61-7d133c1077df"
+label       = "m"
+title       = "Cancellation"
+contents    = ["cancellation"]
+[board.edges.style]
+stroke      = [0, 0, 0]
+fill        = [255, 255, 255]
+weight      = 1
+[[board.edges.ports]]
+uid         = "e98a66f9-1b44-4c6d-b543-7eeecd885274"
+pos         = [193.4960475, 169.40118]
+joins       = ['3644ecac-0cc1-41bf-84cd-dd6499123e41', 'e3944acc-a4d5-46a8-bb61-7d133c1077df']
+[[board.edges.ports]]
+uid         = "ea7a3c15-4310-4641-83fb-c7d9d62e893d"
+pos         = [221.5593725, 101.95473]
+joins       = ['fa7a6f70-6762-4476-810e-5dc047e22b28', 'e3944acc-a4d5-46a8-bb61-7d133c1077df']
+
+[[board.edges]]
+id          = 5194
+uid         = "892db3a4-d8e5-4de8-855a-b59402f4f4d3"
+label       = "l"
+title       = "Refusal"
+contents    = ["refusal"]
+[board.edges.style]
+stroke      = [0, 0, 0]
+fill        = [255, 255, 255]
+weight      = 1
+[[board.edges.ports]]
+uid         = "6fe57972-cf59-4aad-af51-671f75433cdd"
+pos         = [220.75753749999998, 200.5426]
+joins       = ['892db3a4-d8e5-4de8-855a-b59402f4f4d3', '8a1a3ccb-fe0e-45cc-b0d8-a7514b3461ba']
+[[board.edges.ports]]
+uid         = "ebf77b40-1563-4c1c-b795-407e9afbe559"
+pos         = [179.59803250000002, 169.40118]
+joins       = ['892db3a4-d8e5-4de8-855a-b59402f4f4d3', '3644ecac-0cc1-41bf-84cd-dd6499123e41']
+
+[[board.edges]]
+id          = 5304
+uid         = "20d04dc4-2267-4521-850e-ccb3badcb457"
+label       = "n"
+title       = "Cancellation"
+contents    = ["cancellation"]
+[board.edges.style]
+stroke      = [0, 0, 0]
+fill        = [255, 255, 255]
+weight      = 1
+[[board.edges.ports]]
+uid         = "0e1b8162-d62d-4e02-b674-c882fc11ee91"
+pos         = [220.75753749999998, 202.5426]
+joins       = ['8a1a3ccb-fe0e-45cc-b0d8-a7514b3461ba', '20d04dc4-2267-4521-850e-ccb3badcb457']
+[[board.edges.ports]]
+uid         = "23269659-8c24-4f42-8702-84eaeae4d4ab"
+pos         = [221.5593725, 103.95473]
+joins       = ['fa7a6f70-6762-4476-810e-5dc047e22b28', '20d04dc4-2267-4521-850e-ccb3badcb457']
+
+[[board.edges]]
+id          = 6003
+uid         = "8c8128ee-818b-42af-825d-3264c28d94db"
+label       = "p"
+title       = "Revisit"
+contents    = ["revisit"]
+[board.edges.style]
+stroke      = [0, 0, 0]
+fill        = [255, 255, 255]
+weight      = 1
+[[board.edges.ports]]
+uid         = "dcdd4b76-8d58-4101-8d90-523acbde4b12"
+pos         = [122.4023675, 161.26279]
+joins       = ['4400be32-95d5-40b3-8444-e556720dee94', '8c8128ee-818b-42af-825d-3264c28d94db']
+[[board.edges.ports]]
+uid         = "0d656f3d-15e3-434f-965b-222dfca1afba"
+pos         = [4.804155500000001, 179.90282]
+joins       = ['c4078c07-eb9f-471f-9044-a7306b8e0a2c', '8c8128ee-818b-42af-825d-3264c28d94db']
+
+[[board.edges]]
+id          = 6127
+uid         = "845efaaa-62dd-4fbe-a4ae-50364625222f"
+label       = "q"
+title       = "Revisit"
+contents    = ["revisit"]
+[board.edges.style]
+stroke      = [0, 0, 0]
+fill        = [255, 255, 255]
+weight      = 1
+[[board.edges.ports]]
+uid         = "dc5170d4-bc16-4a3d-baa6-68951dc3fc63"
+pos         = [134.4298875, 220.66844]
+joins       = ['f7ec83a5-6915-4aae-aa66-a39fe5e28f9e', '845efaaa-62dd-4fbe-a4ae-50364625222f']
+[[board.edges.ports]]
+uid         = "cc8e2764-4b99-4e57-a493-c8369f95d5e4"
+pos         = [4.804155500000001, 181.90282]
+joins       = ['c4078c07-eb9f-471f-9044-a7306b8e0a2c', '845efaaa-62dd-4fbe-a4ae-50364625222f']
+
+[[board.edges]]
+id          = 6265
+uid         = "10acf85e-5231-44b6-aa49-d9a95420d835"
+label       = "r"
+title       = "Revisit"
+contents    = ["revisit"]
+[board.edges.style]
+stroke      = [0, 0, 0]
+fill        = [255, 255, 255]
+weight      = 1
+[[board.edges.ports]]
+uid         = "13763c37-b5cb-48d4-a91b-7b4e8f5231da"
+pos         = [235.45738749999998, 102.95473]
+joins       = ['fa7a6f70-6762-4476-810e-5dc047e22b28', '10acf85e-5231-44b6-aa49-d9a95420d835']
+[[board.edges.ports]]
+uid         = "beda0e45-6997-4519-9a5e-6169849d7f46"
+pos         = [4.804155500000001, 183.90282]
+joins       = ['c4078c07-eb9f-471f-9044-a7306b8e0a2c', '10acf85e-5231-44b6-aa49-d9a95420d835']
+
+[[board.edges]]
+id          = 6401
+uid         = "e5862bc0-0a47-44fd-ab59-ca16e8069f72"
+label       = "s"
+title       = "Revisit"
+contents    = ["revisit"]
+[board.edges.style]
+stroke      = [0, 0, 0]
+fill        = [255, 255, 255]
+weight      = 1
+[[board.edges.ports]]
+uid         = "8b23cf2a-d9fb-487d-ac37-729b1d38f3c2"
+pos         = [195.6341875, 273.10626]
+joins       = ['e5862bc0-0a47-44fd-ab59-ca16e8069f72', '820a1af1-d6fc-4b7b-8a68-1c52e1f56db2']
+[[board.edges.ports]]
+uid         = "6e4bc0b5-6282-4b85-a44f-0c4b96c68c07"
+pos         = [4.804155500000001, 185.90282]
+joins       = ['e5862bc0-0a47-44fd-ab59-ca16e8069f72', 'c4078c07-eb9f-471f-9044-a7306b8e0a2c']

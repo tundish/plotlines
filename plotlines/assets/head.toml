@@ -1,4 +1,5 @@
 # For use with Spiki: https://pypi.org/project/spiki/
+
 [base]
 config = {tag_mode = "open"}
 "!doctype html" = ""

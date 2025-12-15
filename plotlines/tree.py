@@ -51,7 +51,6 @@ class Tree:
 
     @staticmethod
     def index_nav(board: Board):
-        # TODO: Rework nav for name, label, title
         yield textwrap.dedent("""
         [base.html.body.header]
         attrib = {accesskey = "m", popovertarget = "nav-upper"}
@@ -86,11 +85,12 @@ class Tree:
         a = "Home"
         """).lstrip()
 
-        for node in board.initial:
+        initial = board.initial or (nodes := [i for i in board.items if isinstance(i, Node)]) and nodes[:1]
+        for node in initial:
             yield textwrap.dedent(f"""
             [[doc.html.body.footer.nav.ul.li]]
             attrib = {{class = "spiki next", href = "{node.name}.html"}}
-            a = "{node.label or 'Start'}"
+            a = "{node.title or 'Start'}"
             """).lstrip()
 
     @staticmethod
