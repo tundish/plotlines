@@ -51,6 +51,7 @@ class Tree:
 
     @staticmethod
     def index_nav(board: Board):
+        # TODO: Rework nav for name, label, title
         yield textwrap.dedent("""
         [base.html.body.header]
         attrib = {accesskey = "m", popovertarget = "nav-upper"}
