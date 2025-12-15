@@ -44,17 +44,15 @@ def setup_logger(level=logging.INFO):
     for handler in root_logger.handlers:
         handler.setFormatter(
             logging.Formatter(
-                fmt="{asctime}|{levelname:>8}|{phase.name:^8}| {name:<16}| {path!s:<72}| {message}",
+                fmt="{asctime}|{levelname:>8}| {name:<16}| {message}",
                 datefmt=None, style='{',
-                # defaults=dict(phase=Phase.CONFIG, path="")
             )
         )
 
 
 def main(args):
     level = logging.DEBUG if args.debug else logging.INFO
-    # setup_logger(level=level)
-    logging.basicConfig(level=level)
+    setup_logger(level=level)
     logger = logging.getLogger("plotlines")
 
     logger.debug(f"{args=}")
@@ -95,7 +93,7 @@ def main(args):
             height = frame[1][1] - frame[0][1]
 
     if args.output:
-        if "." in format(args.output):
+        if format(args.output).startswith(".") and format(args.output).count(".") == 1:
             mode = format(args.output).split(".")[-1].lower()
         else:
             mode = "spiki"
