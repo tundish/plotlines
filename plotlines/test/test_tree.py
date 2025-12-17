@@ -80,7 +80,7 @@ class TreeTests(unittest.TestCase):
 
         nav_list = node["doc"]["html"]["body"]["footer"]["nav"]["ul"]["li"]
         self.assertEqual({i.get("attrib", {}).get("href") for i in nav_list}, {"825.html"})
-        self.assertEqual({i.get("a") for i in nav_list}, {"Win"})
+        self.assertEqual({i.get("a") for i in nav_list}, {"Good Ending."})
 
         self.assertEqual(
             node["doc"]["html"]["body"]["main"].get("blocks", "").strip(),
@@ -105,6 +105,9 @@ class TreeTests(unittest.TestCase):
 
         nav_list = node["doc"]["html"]["body"]["footer"]["nav"]["ul"]["li"]
         self.assertEqual({i.get("attrib", {}).get("href") for i in nav_list}, {"831.html", "833.html"})
-        self.assertEqual({i.get("a") for i in nav_list}, {"A arc", "B arc"})
+        self.assertEqual(
+            {i.get("a") for i in nav_list},
+            {f"This Is What Happens If You Go {i}." for i in ("Left", "Right")}
+        )
 
         self.assertEqual(node["doc"]["html"]["body"]["main"].get("blocks", "").strip(), "First node.")
